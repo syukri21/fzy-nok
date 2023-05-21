@@ -125,3 +125,8 @@ nb-configuration.xml
 /phpunit*.xml
 /.phpunit.*.cache
 
+
+./logs/
+./docker/dbvolume/
+/logs/
+/docker/db/

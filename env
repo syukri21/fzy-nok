@@ -15,6 +15,7 @@
 #--------------------------------------------------------------------
 
 # CI_ENVIRONMENT = production
+CI_ENVIRONMENT = development
 
 #--------------------------------------------------------------------
 # APP
@@ -22,7 +23,7 @@
 
 # app.baseURL = ''
 # If you have trouble with `.`, you could also use `_`.
-# app_baseURL = ''
+app_baseURL = 'http://localhost/'
 # app.forceGlobalSecureRequests = false
 # app.CSPEnabled = false
 
@@ -37,6 +38,14 @@
 # database.default.DBDriver = MySQLi
 # database.default.DBPrefix =
 # database.default.port = 3306
+
+database.default.hostname = database
+database.default.database = nok
+database.default.username = fuzi
+database.default.password = fuzi123
+database.default.DBDriver = pdo
+database.default.DBPrefix =
+database.default.port = 3306
 
 # database.tests.hostname = localhost
 # database.tests.database = ci4_test
@@ -89,7 +98,7 @@
 # ENCRYPTION
 #--------------------------------------------------------------------
 
-# encryption.key =
+encryption.key = uziuki
 # encryption.driver = OpenSSL
 # encryption.blockSize = 16
 # encryption.digest = SHA512
