@@ -33,6 +33,8 @@ $routes->get('/', 'Home::index');
 $routes->get('/login', 'Login::index');
 $routes->get('/changepassword', 'Login::index');
 
+service('auth')->routes($routes);
+
 
 /*
  * --------------------------------------------------------------------
