@@ -31,8 +31,6 @@ services:
         depends_on:
             database:
                 condition: service_healthy
-        ports:
-            - 9000:9000
     database:
         container_name: database
         image: mysql

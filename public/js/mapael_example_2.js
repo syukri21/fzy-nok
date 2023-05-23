@@ -159,7 +159,6 @@ $(function() {
       },
       "La Roche Sur-Yon": {
         type: "circle",
-        value: 860000,
         size: 20,
         value: [150000, 2000],
         latitude: 47.114166666667,

@@ -12,7 +12,7 @@ RUN apt update && \
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/install-php-extensions && \
-     install-php-extensions xdebug intl mysqli
+     install-php-extensions xdebug intl mysqli pdo_mysql
 
 # copy the Composer PHAR from the Composer image into the PHP image
 COPY --from=composer /usr/bin/composer /usr/bin/composer
