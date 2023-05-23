@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Config;
 
+use CodeIgniter\Shield\Authentication\Passwords\PwnedValidator;
 use CodeIgniter\Shield\Config\Auth as ShieldAuth;
 use CodeIgniter\Shield\Authentication\Actions\ActionInterface;
 use CodeIgniter\Shield\Authentication\AuthenticatorInterface;
@@ -260,9 +261,8 @@ class Auth extends ShieldAuth
      */
     public array $passwordValidators = [
         CompositionValidator::class,
-        NothingPersonalValidator::class,
         DictionaryValidator::class,
-        // PwnedValidator::class,
+        PwnedValidator::class,
     ];
 
     /**
@@ -272,6 +272,8 @@ class Auth extends ShieldAuth
      * Fields that are available to be used as credentials for login.
      */
     public array $validFields = [
+        'email',
+        'username',
         'employee_id'
     ];
 
@@ -335,7 +337,7 @@ class Auth extends ShieldAuth
      * - PASSWORD_ARGON2I  - As of PHP 7.2 only if compiled with support for it
      * - PASSWORD_ARGON2ID - As of PHP 7.3 only if compiled with support for it
      */
-    public string $hashAlgorithm = PASSWORD_DEFAULT;
+    public string $hashAlgorithm = PASSWORD_BCRYPT;
 
     /**
      * --------------------------------------------------------------------
