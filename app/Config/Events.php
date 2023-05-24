@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Controllers\LoginController;
 use CodeIgniter\Events\Events;
 use CodeIgniter\Exceptions\FrameworkException;
 
@@ -41,8 +42,13 @@ Events::on('pre_system', static function () {
      * --------------------------------------------------------------------
      * If you delete, they will no longer be collected.
      */
-    if (CI_DEBUG && ! is_cli()) {
+    if (CI_DEBUG && !is_cli()) {
         Events::on('DBQuery', 'CodeIgniter\Debug\Toolbar\Collectors\Database::collect');
         Services::toolbar()->respond();
     }
+});
+
+
+Events::on('login', function ($user) {
+    LoginController::handleLogin($user);
 });

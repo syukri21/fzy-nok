@@ -15,19 +15,33 @@
                         <h6 class="fw-light">Sign untuk melanjutkan.</h6>
                         <form class="pt-3" action="<?= base_url() ?>login" method="post" autocomplete="off">
                             <div class="form-group">
-                                <input type="text" name="username" class="form-control form-control-lg" id="username" autocomplete="off" placeholder="Username">
+                                <label for="username_field">Username</label>
+                                <input type="text" name="username" class="form-control form-control-lg" id="username"
+                                       autocomplete="off" placeholder="Username">
                             </div>
                             <div class="form-group">
-                                <input type="password" name="password" class="form-control form-control-lg" id="password" autocomplete="off" placeholder="Password">
+                                <label for="password_field">Password</label>
+                                <input type="password" name="password" class="form-control form-control-lg"
+                                       id="passwords" autocomplete="off" placeholder="Password">
                             </div>
                             <div class="mt-3">
-                                <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit">Sign In</button>
+                                <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
+                                        type="submit">Sign In
+                                </button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+        <script lang="javascript">
+            window.addEventListener('load', function () {
+                var some_id = $('#username_field');
+                some_id.prop('type', 'text');
+                some_id.removeAttr('autocomplete');
+                console.log("go")
+            })
+        </script>
         <!-- content-wrapper ends -->
     </div>
     <!-- page-body-wrapper ends -->
