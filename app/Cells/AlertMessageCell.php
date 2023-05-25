@@ -17,7 +17,6 @@ class AlertMessageCell extends Cell
             return $this->error;
         }
 
-
         if ($this->errors !== null && sizeof($this->errors) > 0) {
             foreach ($this->errors as $error) {
                 return $error;
@@ -36,9 +35,7 @@ class AlertMessageCell extends Cell
         if ($this->errors !== null && sizeof($this->errors) > 0){
             return true;
         }
-
         return false;
     }
-
 
 }

@@ -5,7 +5,7 @@
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
 
-        <?= $this->include('layout/dashboard/sidebar') ?>
+        <?= view_cell('SidebarCell') ?>
 
         <div class="main-panel">
             <div class="content-wrapper">

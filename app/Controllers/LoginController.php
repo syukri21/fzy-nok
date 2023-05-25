@@ -16,6 +16,7 @@ class LoginController extends BaseLoginController
             $user = auth()->user();
             $session->set('user.first_name', $user->getFirstName());
             $session->set('user.last_name', $user->getLastName());
+            $session->set('user.email', $user->getEmail());
         }
     }
 

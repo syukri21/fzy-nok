@@ -18,6 +18,7 @@
     <!-- End plugin css for this page -->
     <!-- inject:css -->
     <link rel="stylesheet" href="/css/vertical-layout-light/style.css">
+    <link rel="stylesheet" href="/css/index.css">
     <!-- endinject -->
     <link rel="shortcut icon" href="/images/favicon.png"/>
     <link rel="icon" type="image/png" href="https://www.nok.co.jp/favicon.ico" sizes="32x32">
