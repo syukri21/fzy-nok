@@ -32,8 +32,12 @@ $routes->set404Override();
 $routes->get('/', 'HomeController::index');
 $routes->get('/login', 'LoginController::index');
 $routes->post('/login', 'LoginController::authenticate');
+$routes->get('/changepassword', 'LoginController::index');
 
-$routes->get('/changepassword', 'Login::index');
+
+// User Management
+$routes->get('/usermanagement', 'UserManagementController::index');
+$routes->get('/usermanagement/manageuser', 'UserManagementController::index');
 
 service('auth')->routes($routes);
 

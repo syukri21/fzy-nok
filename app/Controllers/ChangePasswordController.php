@@ -5,7 +5,7 @@ namespace App\Controllers;
 class ChangePasswordController extends BaseController
 {
     public function index(){
-        return view('changepassword/index');
+        return view('ChangePassword/index');
     }
 
 }

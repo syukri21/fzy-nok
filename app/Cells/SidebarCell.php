@@ -23,7 +23,8 @@ class SidebarCell extends Cell
             'menus' => [
                 'user' => [
                     'name' => 'Kelola User',
-                    'icon_style' => 'menu-icon mdi mdi-account-multiple'
+                    'icon_style' => 'menu-icon mdi mdi-account-multiple',
+                    'url' => 'usermanagement/manageuser'
                 ],
             ]
         ],
@@ -32,11 +33,13 @@ class SidebarCell extends Cell
             'menus' => [
                 'master_data' => [
                     'name' => 'Master Data',
-                    'icon_style' => 'menu-icon mdi mdi-database'
+                    'icon_style' => 'menu-icon mdi mdi-database',
+                    'url' => 'masterdata/managemasterdata'
                 ],
                 'bill_of_material' => [
                     'name' => 'Bill Of Material',
-                    'icon_style' => 'menu-icon mdi  mdi-file-document-box'
+                    'icon_style' => 'menu-icon mdi  mdi-file-document-box',
+                    'url' => 'masterdata/managebom'
                 ]
             ],
         ],
@@ -45,7 +48,8 @@ class SidebarCell extends Cell
             'menus' => [
                 'change_password' => [
                     'name' => 'Ubah Password',
-                    'icon_style' => 'menu-icon mdi mdi-key-variant'
+                    'icon_style' => 'menu-icon mdi mdi-key-variant',
+                    'url' => 'changeoassword'
                 ],
             ],
         ],

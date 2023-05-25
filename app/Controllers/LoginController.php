@@ -9,15 +9,12 @@ use Config\Services;
 
 class LoginController extends BaseLoginController
 {
-    public static function handleLogin($a)
+    public static function handleLogin($user)
     {
-        if (auth()->loggedIn()) {
-            $session = Services::session();
-            $user = auth()->user();
-            $session->set('user.first_name', $user->getFirstName());
-            $session->set('user.last_name', $user->getLastName());
-            $session->set('user.email', $user->getEmail());
-        }
+        $session = Services::session();
+        $session->set('user.first_name', $user->getFirstName());
+        $session->set('user.last_name', $user->getLastName());
+        $session->set('user.email', $user->getEmail());
     }
 
     public function index(): string
@@ -35,8 +32,11 @@ class LoginController extends BaseLoginController
         if (auth()->loggedIn()) {
             auth()->logout();
         }
+
         $action = $this->loginAction();
-        Events::trigger('login', auth()->user());
+        if (auth()->loggedIn()) {
+            Events::trigger('login', auth()->user());
+        }
         return $action;
     }
 }
