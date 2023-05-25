@@ -29,10 +29,10 @@ class AlertMessageCell extends Cell
 
     public function isOpen(): bool
     {
-        if ($this->error !== null){
+        if ($this->error !== null) {
             return true;
         }
-        if ($this->errors !== null && sizeof($this->errors) > 0){
+        if ($this->errors !== null && sizeof($this->errors) > 0) {
             return true;
         }
         return false;

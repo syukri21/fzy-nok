@@ -4,6 +4,7 @@ namespace App\Commands;
 
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
+use Exception;
 
 class TestLogin extends BaseCommand
 {
@@ -60,7 +61,7 @@ class TestLogin extends BaseCommand
         $user = $params[0];
         $password = $params[1];
         $credentials = [
-            'email'    => $user,
+            'email' => $user,
             'password' => $password,
         ];
 
@@ -69,12 +70,12 @@ class TestLogin extends BaseCommand
         try {
             CLI::write("try login");
             $loginAttempt = auth()->attempt($credentials);
-            if (! $loginAttempt->isOK()) {
+            if (!$loginAttempt->isOK()) {
                 CLI::write("failed credential error");
                 return;
             }
             session_destroy();
-        }catch (\Exception $e){
+        } catch (Exception $e) {
         }
 
         CLI::write("success");

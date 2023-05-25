@@ -1,4 +1,4 @@
-<?=  $this->extend("layout/main") ?>
+<?= $this->extend("layout/main") ?>
 
 <?= $this->section('content') ?>
 
@@ -6,7 +6,7 @@
         <div class="content-wrapper d-flex align-items-center auth px-0">
             <div class="row w-100 mx-0">
                 <div class="col-lg-5 mx-auto">
-                    <?= view_cell('AlertMessageCell', ['type'=>'danger', 'error'=>session()->getFlashdata("error"), 'errors'=>session()->getFlashdata("errors")]) ?>
+                    <?= view_cell('AlertMessageCell', ['type' => 'danger', 'error' => session()->getFlashdata("error"), 'errors' => session()->getFlashdata("errors")]) ?>
                     <div class="auth-form-light text-left py-5 px-4 px-sm-5">
                         <div class="brand-logo">
                             <img src="https://www.nok.co.jp/common/images/logo.svg" alt="logo">

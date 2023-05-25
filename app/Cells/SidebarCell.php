@@ -10,13 +10,6 @@ class SidebarCell extends Cell
 {
 
     protected Session $cache;
-
-    public function __construct()
-    {
-        $this->cache = Services::session();
-        $this->getFilteredMenus();
-    }
-
     protected array $menus = [
         'user_management' => [
             'name' => 'User Management',
@@ -54,8 +47,13 @@ class SidebarCell extends Cell
             ],
         ],
     ];
-
     protected array $exclude_menus = [];
+
+    public function __construct()
+    {
+        $this->cache = Services::session();
+        $this->getFilteredMenus();
+    }
 
     /**
      * Get menus that are not in the exclude_menus array.
