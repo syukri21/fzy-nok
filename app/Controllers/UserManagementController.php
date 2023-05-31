@@ -35,9 +35,24 @@ class UserManagementController extends BaseController
         try {
             $provider = auth()->getProvider();
             if ($provider->insertWithEmployeeId(new UserEntity($data))) return redirect()->to('/usermanagement/manageuser');
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             log_message('error', $e->getMessage());
         }
-        return redirect()->back()->with('error',lang('Auth.notEnoughPrivilege'));
+        return redirect()->back()->with('error', lang('Auth.notEnoughPrivilege'));
+    }
+
+    public function delete(): RedirectResponse
+    {
+        $data = $this->request->getGet(['employeeId']);
+        try {
+            if (!array_key_exists('employeeId', $data)) {
+                return redirect()->back()->with('error', 'ID Karyawan tidak ditemukan');
+            }
+            (new UserModel())->deleteByEmployeeId($data['employeeId']);
+            return redirect()->to('/usermanagement/manageuser');
+        } catch (\Exception $e) {
+            log_message('error', $e->getMessage());
+        }
+        return redirect()->back()->with('error', lang('Auth.notEnoughPrivilege'));
     }
 }

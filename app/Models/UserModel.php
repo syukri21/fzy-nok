@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Entities\UserEntity;
+use CodeIgniter\Database\ResultInterface;
 use CodeIgniter\Shield\Authorization\AuthorizationException;
 use CodeIgniter\Shield\Models\UserModel as ShieldUserModel;
+use Config\Database;
 
 /**
  *
@@ -77,12 +79,31 @@ class UserModel extends ShieldUserModel
     /**
      * @param int $limit
      * @param int $offset
-     * @return array
+     * @return array|ResultInterface|false|string
      */
-    public function findAll(int $limit = 0, int $offset = 0): array
+    public function findAll(int $limit = 0, int $offset = 0)
     {
         if (!auth()->user()->can('users.read')) throw new AuthorizationException();
-        return parent::findAll($limit, $offset);
+        $db = Database::connect();
+        $builder = $db->table('users');
+        $query = $builder->select('users.*');
+        $query = $query->where('users.deleted_at', null);
+        $isSuperAdmin = auth()->user()->inGroup('superadmin');
+        if (!$isSuperAdmin) {
+            $query = $query->where("auth_groups_users.group IS null OR auth_groups_users.group != 'superadmin' ");
+        }
+        $query = $query->join('auth_groups_users', "auth_groups_users.user_id = users.id", "left")->get($limit, $offset);
+        $data = [];
+        foreach ($query->getResult(UserEntity::class) as $row) {
+            array_push($data, $row);
+        }
+        return $data;
     }
 
+    public function deleteByEmployeeId(string $employeeId)
+    {
+
+        if (!auth()->user()->can('users.delete')) throw new AuthorizationException();
+        $this->where(['employee_id' => $employeeId])->delete();
+    }
 }
