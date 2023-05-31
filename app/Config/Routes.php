@@ -38,6 +38,9 @@ $routes->get('/changepassword', 'LoginController::index');
 // User Management
 $routes->get('/usermanagement', 'UserManagementController::index');
 $routes->get('/usermanagement/manageuser', 'UserManagementController::index');
+$routes->post('/usermanagement/manageuser', 'UserManagementController::create');
+$routes->get('/usermanagement/manageuser/add', 'UserManagementController::add');
+
 
 service('auth')->routes($routes);
 

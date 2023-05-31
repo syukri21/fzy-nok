@@ -9,6 +9,8 @@
 
     <div class="main-panel">
         <div class="content-wrapper">
+            <?= view_cell('AlertMessageCell', ['type' => 'danger', 'error' => session()->getFlashdata("error"), 'errors' => session()->getFlashdata("errors")]) ?>
+
             <?= $this->renderSection('content') ?>
         </div>
         <!-- content-wrapper ends -->

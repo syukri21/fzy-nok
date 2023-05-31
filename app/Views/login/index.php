@@ -34,14 +34,6 @@
                 </div>
             </div>
         </div>
-        <script lang="javascript">
-            window.addEventListener('load', function () {
-                var some_id = $('#username_field');
-                some_id.prop('type', 'text');
-                some_id.removeAttr('autocomplete');
-                console.log("go")
-            })
-        </script>
         <!-- content-wrapper ends -->
     </div>
     <!-- page-body-wrapper ends -->

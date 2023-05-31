@@ -4,6 +4,7 @@
         <p class="card-description">
 
         </p>
+        <a type="button" class="btn btn-primary" href="<?= base_url().'usermanagement/manageuser/add' ?>">BUAT</a>
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
@@ -26,6 +27,7 @@
                 </tr>
                 </thead>
                 <tbody>
+                <?php foreach ($users as $user) ?>
                 <tr>
                     <td class="py-1">
                         <img src="../../images/faces/face1.jpg" alt="image"/>
