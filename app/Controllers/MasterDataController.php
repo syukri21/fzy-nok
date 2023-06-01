@@ -74,4 +74,24 @@ class MasterDataController extends BaseController
         }
         return redirect()->back()->with('error', lang('Auth.notEnoughPrivilege'));
     }
+
+
+    /**
+     * TODO add feature MasterData Update
+     * @return void
+     *
+     */
+    public function update()
+    {
+
+    }
+
+    /**
+     * TODO add feature MasterData Update
+     * @return void
+     */
+    public function delete()
+    {
+
+    }
 }

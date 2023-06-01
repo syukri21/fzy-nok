@@ -141,7 +141,5 @@ class UserModel extends ShieldUserModel
         $user->setPassword($data['confirmation_code']);
         $user->setEmail($data['email']);
         $this->save($user);
-
-
     }
 }
