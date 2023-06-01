@@ -16,7 +16,8 @@
                 Form pengelolaan master data.
             </p>
             <div>
-                <a type="button" class="btn btn-primary" href="<?= base_url() . 'masterdata/managemasterdata/add' ?>">Tambah Master Data</a>
+                <a type="button" class="btn btn-primary" href="<?= base_url() . 'masterdata/managemasterdata/add' ?>">Tambah
+                    Master Data</a>
             </div>
         </div>
         <div class="table-responsive">
@@ -26,6 +27,7 @@
                     <th>ID</th>
                     <th>Nama</th>
                     <th>Tipe</th>
+                    <th>Berat</th>
                     <th>Dimensi</th>
                     <th>Created At</th>
                     <th>Action</th>
@@ -36,6 +38,9 @@
                 /** @var array $data */
                 foreach ($data as $key => $item) : ?>
                     <tr>
+                        <td>
+                            <?= esc($item->id) ?>
+                        </td>
                         <td>
                             <?= esc($item->name) ?>
                         </td>
