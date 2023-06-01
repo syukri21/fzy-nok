@@ -29,7 +29,7 @@ class AddMasterData extends Migration
                 'null' => true,
             ],
             'dimension' => [
-                'type' => 'BIGINT',
+                'type' => 'TEXT',
                 'null' => true,
             ],
             'image' => [
