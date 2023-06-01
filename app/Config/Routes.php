@@ -45,6 +45,12 @@ $routes->get('/usermanagement/manageuser/delete', 'UserManagementController::del
 $routes->get('/usermanagement/manageuser/add', 'UserManagementController::add');
 $routes->get('/usermanagement/manageuser/edit', 'UserManagementController::edit');
 
+// MasterData -> masterdata
+$routes->get('/masterdata', 'MasterDataController::index');
+$routes->get('/masterdata/managemasterdata', 'MasterDataController::index');
+$routes->get('/masterdata/managebom', 'BillOfMaterialController::index');
+
+
 
 
 service('auth')->routes($routes);
