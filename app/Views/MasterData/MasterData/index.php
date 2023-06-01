@@ -16,7 +16,7 @@
                 Form pengelolaan master data.
             </p>
             <div>
-                <a type="button" class="btn btn-primary" href="<?= base_url() . 'masterdata/masterdata/add' ?>">Tambah Master Data</a>
+                <a type="button" class="btn btn-primary" href="<?= base_url() . 'masterdata/managemasterdata/add' ?>">Tambah Master Data</a>
             </div>
         </div>
         <div class="table-responsive">

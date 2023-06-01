@@ -48,6 +48,9 @@ $routes->get('/usermanagement/manageuser/edit', 'UserManagementController::edit'
 // MasterData -> masterdata
 $routes->get('/masterdata', 'MasterDataController::index');
 $routes->get('/masterdata/managemasterdata', 'MasterDataController::index');
+$routes->post('/masterdata/managemasterdata', 'MasterDataController::create');
+$routes->get('/masterdata/managemasterdata/add', 'MasterDataController::add');
+
 $routes->get('/masterdata/managebom', 'BillOfMaterialController::index');
 
 

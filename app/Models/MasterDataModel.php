@@ -2,17 +2,21 @@
 
 namespace App\Models;
 
+use App\Entities\MasterData;
 use CodeIgniter\Model;
+use CodeIgniter\Shield\Authorization\AuthorizationException;
+use ReflectionException;
 
 class MasterDataModel extends Model
 {
+    protected $returnType    = MasterData::class;
     protected $DBGroup          = 'default';
     protected $table            = 'masterdatas';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
-    protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
+
     protected $allowedFields    = [
         'id',
         'type',
@@ -23,7 +27,7 @@ class MasterDataModel extends Model
     ];
 
     // Dates
-    protected $useTimestamps = false;
+    protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
@@ -45,4 +49,19 @@ class MasterDataModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+
+    /**
+     * @param array $data
+     * @return bool
+     * @throws ReflectionException
+     */
+    public function create(array $data): bool
+    {
+        if (!auth()->user()->can('masterdatas.create')) throw new AuthorizationException();
+        $masterdata = new MasterData();
+        $masterdata->fill($data);
+        return $this->save($masterdata);
+    }
+
 }
