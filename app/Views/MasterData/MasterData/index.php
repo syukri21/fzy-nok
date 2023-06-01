@@ -26,10 +26,49 @@
                     <th>ID</th>
                     <th>Nama</th>
                     <th>Tipe</th>
-                    <th>Foto</th>
+                    <th>Dimensi</th>
+                    <th>Created At</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
+                <?php
+                /** @var array $data */
+                foreach ($data as $key => $item) : ?>
+                    <tr>
+                        <td>
+                            <?= esc($item->name) ?>
+                        </td>
+                        <td>
+                            <?= esc($item->type) ?>
+                        </td>
+                        <td>
+                            <?= esc($item->weight) . ' KG' ?>
+                        </td>
+                        <td>
+                            <?= esc($item->dimension) ?>
+                        </td>
+                        <td>
+                            <?= esc($item->created_at) ?>
+                        </td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-icons btn-inverse-light dropdown-toggle menu-icon mdi mdi-dots-vertical"
+                                        type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <li><a class="dropdown-item"
+                                           href="<?= base_url() . 'masterdata/managemasterdata/add?id=' . esc($item->username) ?>">Edit</a>
+                                    </li>
+                                    <li><a class="dropdown-item"
+                                           href="<?= base_url() . 'masterdata/managemasterdata/delete?id=' . esc($item->username) ?>">Delete</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                <?php endforeach ?>
                 </tbody>
             </table>
 

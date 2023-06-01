@@ -15,7 +15,8 @@ class MasterDataController extends BaseController
      */
     public function index()
     {
-        return view('MasterData/MasterData/index');
+        $data = (new MasterDataModel())->findAll(10);
+        return view('MasterData/MasterData/index', ['data'=>$data]);
     }
 
     /**
