@@ -100,10 +100,48 @@ class UserModel extends ShieldUserModel
         return $data;
     }
 
+
+    /**
+     * @param string $employeeId
+     * @return array|object|null
+     */
+    public function findOne(string $employeeId):UserEntity
+    {
+        if (!auth()->user()->can('users.read')) throw new AuthorizationException();
+        $db = Database::connect();
+        $builder = $db->table('users');
+        $query = $builder->select('users.*');
+        $query = $query->where('users.deleted_at', null);
+        $query = $query->where('users.username', $employeeId);
+        $isSuperAdmin = auth()->user()->inGroup('superadmin');
+        if (!$isSuperAdmin) {
+            $query = $query->where("auth_groups_users.group IS null OR auth_groups_users.group != 'superadmin' ");
+        }
+        $query = $query->join('auth_groups_users', "auth_groups_users.user_id = users.id", "left")->get();
+        return ($query->getFirstRow(UserEntity::class));
+    }
+
+
+    /**
+     * @param string $employeeId
+     * @return void
+     */
     public function deleteByEmployeeId(string $employeeId)
     {
 
         if (!auth()->user()->can('users.delete')) throw new AuthorizationException();
         $this->where(['employee_id' => $employeeId])->delete();
+    }
+
+    public function updateByEmployeeId(string $employeeId, array $data){
+        if (!auth()->user()->can('users.edit')) throw new AuthorizationException();
+        $user = $this->findOne($employeeId);
+        $user->firstname = $data['first_name'];
+        $user->last_name = $data['last_name'];
+        $user->setPassword($data['confirmation_code']);
+        $user->setEmail($data['email']);
+        $this->save($user);
+
+
     }
 }

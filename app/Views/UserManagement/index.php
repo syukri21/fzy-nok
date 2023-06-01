@@ -16,7 +16,7 @@
                 Form pengelolaan user.
             </p>
             <div>
-                <a type="button" class="btn btn-primary" href="<?= base_url() . 'usermanagement/manageuser/add' ?>">Create</a>
+                <a type="button" class="btn btn-primary" href="<?= base_url() . 'usermanagement/manageuser/add' ?>">Tambah User</a>
             </div>
         </div>
         <div class="table-responsive">
@@ -28,7 +28,7 @@
                     <th>Email</th>
                     <th>Generated Password</th>
                     <th>Status</th>
-                    <th>Created At</th>
+                    <th>Tanggal</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -62,8 +62,8 @@
                                         aria-expanded="false">
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <li><a class="dropdown-item" href="<?= base_url() . 'usermanagement/manageuser/add' ?>">Edit</a></li>
-                                    <li><a class="dropdown-item" href="<?= base_url() . 'usermanagement/manageuser/delete?employeeId=' .esc($user->username) ?>">Delete</a></li>
+                                    <li><a class="dropdown-item" href="<?= base_url() . 'usermanagement/manageuser/edit?employee_id=' .esc($user->username)  ?>">Edit</a></li>
+                                    <li><a class="dropdown-item" href="<?= base_url() . 'usermanagement/manageuser/delete?employee_id=' .esc($user->username) ?>">Delete</a></li>
                                 </ul>
                             </div>
                         </td>
