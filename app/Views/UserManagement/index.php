@@ -13,7 +13,7 @@
         <h4 class="card-title">Kelola User</h4>
         <div class="w-100 d-flex justify-content-between align-items-end mb-4">
             <p class="card-description w-50">
-                Form pengelolaan user.
+                Tabel pengelolaan user.
             </p>
             <div>
                 <a type="button" class="btn btn-primary" href="<?= base_url() . 'usermanagement/manageuser/add' ?>">Tambah User</a>

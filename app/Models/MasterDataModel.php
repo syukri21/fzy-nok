@@ -23,7 +23,8 @@ class MasterDataModel extends Model
         'name',
         'weight',
         'dimension',
-        'image'
+        'image',
+        'masterdata_type'
     ];
 
     // Dates
@@ -61,7 +62,8 @@ class MasterDataModel extends Model
         if (!auth()->user()->can('masterdatas.create')) throw new AuthorizationException();
         $masterdata = new MasterData();
         $masterdata->fill($data);
-        return $this->save($masterdata);
+        $masterdata->setType($data['type']);
+        return $this->insert($masterdata);
     }
 
 }

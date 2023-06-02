@@ -17,4 +17,23 @@ class MasterData extends Entity
         'active' => 'int_bool',
     ];
 
+    private string $type;
+
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->attributes['masterdata_type'];
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setType(string $type): void
+    {
+        $this->attributes['masterdata_type'] = $type;
+    }
+
+
 }

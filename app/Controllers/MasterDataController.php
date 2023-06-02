@@ -36,8 +36,8 @@ class MasterDataController extends BaseController
             'type' => [
                 'title' => 'Tipe',
                 'type' => 'text',
-                'name' => 'text',
-                'id' => 'tipe',
+                'name' => 'type',
+                'id' => 'type',
                 'class' => 'form-control',
             ],
             'weight' => [
@@ -61,7 +61,7 @@ class MasterDataController extends BaseController
 
 
     /**
-     * @return RedirectResponse
+     * @return RedirectResponse|string
      */
     public function create()
     {
