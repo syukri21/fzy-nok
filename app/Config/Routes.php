@@ -46,10 +46,14 @@ $routes->get('/usermanagement/manageuser/add', 'UserManagementController::add');
 $routes->get('/usermanagement/manageuser/edit', 'UserManagementController::edit');
 
 // MasterData -> masterdata
+// view
 $routes->get('/masterdata', 'MasterDataController::index');
 $routes->get('/masterdata/managemasterdata', 'MasterDataController::index');
-$routes->post('/masterdata/managemasterdata', 'MasterDataController::create');
 $routes->get('/masterdata/managemasterdata/add', 'MasterDataController::add');
+$routes->post('/masterdata/managemasterdata/update', 'MasterDataController::update');
+$routes->get('/masterdata/managemasterdata/edit', 'MasterDataController::edit');
+// action
+$routes->post('/masterdata/managemasterdata', 'MasterDataController::create');
 $routes->get('/masterdata/managemasterdata/delete', 'MasterDataController::delete');
 
 $routes->get('/masterdata/managebom', 'BillOfMaterialController::index');

@@ -12,7 +12,11 @@
                 <div class="form-group row mb-0 d-flex align-items-center" <?= $form['type'] === 'hidden' ? 'hidden': '' ?>  >
                     <label  <?= $form['type'] === 'hidden' ? 'hidden': '' ?>  class="col-sm-2 mb-0 col-form-label" for="<?= $form['id'] ?>>"><?= $form['title'] ?></label>
                     <div class="col-sm-10">
-                        <?= form_input($form) ?>
+                        <?php if ($form['type'] == 'dropdown'): ?>
+                            <?php echo form_dropdown($form['name'], MasterDataType, 'BAHAN', 'class=' . $form['class']); ?>
+                        <?php else: ?>
+                            <?= form_input($form) ?>
+                        <?php endif ?>
                     </div>
                 </div>
             <?php endforeach ?>

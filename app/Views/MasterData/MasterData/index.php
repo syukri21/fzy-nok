@@ -12,15 +12,17 @@
 
     <div class="card-body">
         <h4 class="card-title">Kelola Master Data</h4>
-        <div class="btn-group btn-group-sm mb-4" role="group" aria-label="Basic example">
-            <button type="button" class="btn btn-outline-primary">Bahan</button>
-            <button type="button" class="btn btn-outline-primary">Alat</button>
-            <button type="button" class="btn btn-outline-primary">Mesin</button>
-        </div>
+        <p class="card-description w-50">
+            Tabel master data.
+        </p>
         <div class="w-100 d-flex justify-content-between align-items-end mb-4">
-            <p class="card-description w-50">
-                Tabel master data.
-            </p>
+
+            <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-outline-primary active">All</button>
+                <button type="button" class="btn btn-outline-primary">Bahan</button>
+                <button type="button" class="btn btn-outline-primary">Alat</button>
+                <button type="button" class="btn btn-outline-primary">Mesin</button>
+            </div>
             <div>
                 <a type="button" class="btn btn-primary" href="<?= base_url() . 'masterdata/managemasterdata/add' ?>">Tambah
                     Master Data</a>
@@ -70,7 +72,7 @@
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <li><a class="dropdown-item"
-                                           href="<?= base_url() . 'masterdata/managemasterdata/add?id=' . esc($item->id) ?>">Edit</a>
+                                           href="<?= base_url() . 'masterdata/managemasterdata/edit?id=' . esc($item->id) ?>">Edit</a>
                                     </li>
                                     <li><a class="dropdown-item"
                                            href="<?= base_url() . 'masterdata/managemasterdata/delete?id=' . esc($item->id) ?>">Delete</a>

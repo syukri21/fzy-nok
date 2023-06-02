@@ -4,8 +4,15 @@ namespace App\Entities;
 
 use CodeIgniter\Entity\Entity;
 
+/**
+ * @property int|string|null $id
+ * @property string|null $name
+ * @property int|null $weight
+ * @property int|string|null $dimension
+ */
 class MasterData extends Entity
 {
+    private ?string $type;
 
     protected $datamap = [
         'type' => 'masterdata_type',
@@ -16,7 +23,6 @@ class MasterData extends Entity
         'active' => 'int_bool',
     ];
 
-    private string $type;
 
     /**
      * @return string

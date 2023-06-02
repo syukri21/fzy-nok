@@ -75,7 +75,26 @@ class MasterDataModel extends Model
     public function delete($id = null, bool $purge = false)
     {
         $this->validateAuthorization('delete');
-        return parent::delete(["masterdata_id" =>$id], $purge);
+        return parent::delete(["masterdata_id" => $id], $purge);
+    }
+
+    /**
+     * @param $id
+     * @return array|object
+     */
+    public function findOne($id)
+    {
+        $this->validateAuthorization('read');
+        return $this->where("id", $id)->first();
+    }
+
+    public function update($id = null, $data = null): bool
+    {
+        $this->validateAuthorization('update');
+        $masterdata = new MasterData();
+        $masterdata->fill($data);
+        $masterdata->setType($data['type']);
+        return parent::update($id, $masterdata);
     }
 
     /**
@@ -86,4 +105,15 @@ class MasterDataModel extends Model
     {
         if (!auth()->user()->can('masterdatas.' . $action)) throw new AuthorizationException();
     }
+
+    /**
+     * @return string[]
+     */
+    public function getAllowedFields(): array
+    {
+        return $this->allowedFields;
+    }
+
+
+
 }
