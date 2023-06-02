@@ -9,7 +9,7 @@ class AddMasterData extends Migration
     public function up()
     {
         $this->forge->addField([
-            'masterdata_id' => [
+            'id' => [
                 'type' => 'INT',
                 'constraint' => 5,
                 'unsigned' => true,
@@ -40,7 +40,7 @@ class AddMasterData extends Migration
             'updated_at' => ['type' => 'datetime', 'null' => true],
             'deleted_at' => ['type' => 'datetime', 'null' => true],
         ]);
-        $this->forge->addKey('masterdata_id', true);
+        $this->forge->addKey('id', true);
         $this->forge->createTable('masterdatas');
     }
 

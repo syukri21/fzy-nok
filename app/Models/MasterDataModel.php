@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Entities\MasterData;
+use CodeIgniter\Database\BaseResult;
 use CodeIgniter\Model;
 use CodeIgniter\Shield\Authorization\AuthorizationException;
 use ReflectionException;
@@ -59,11 +60,30 @@ class MasterDataModel extends Model
      */
     public function create(array $data): bool
     {
-        if (!auth()->user()->can('masterdatas.create')) throw new AuthorizationException();
+        $this->validateAuthorization('create');
         $masterdata = new MasterData();
         $masterdata->fill($data);
         $masterdata->setType($data['type']);
         return $this->insert($masterdata);
     }
 
+    /**
+     * @param $id
+     * @param bool $purge
+     * @return bool|BaseResult
+     */
+    public function delete($id = null, bool $purge = false)
+    {
+        $this->validateAuthorization('delete');
+        return parent::delete(["masterdata_id" =>$id], $purge);
+    }
+
+    /**
+     * @param string $action
+     * @return void
+     */
+    public function validateAuthorization(string $action)
+    {
+        if (!auth()->user()->can('masterdatas.' . $action)) throw new AuthorizationException();
+    }
 }

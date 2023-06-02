@@ -75,7 +75,6 @@ class MasterDataController extends BaseController
         return redirect()->back()->with('error', lang('Auth.notEnoughPrivilege'));
     }
 
-
     /**
      * TODO add feature MasterData Update
      * @return void
@@ -87,11 +86,19 @@ class MasterDataController extends BaseController
     }
 
     /**
-     * TODO add feature MasterData Update
-     * @return void
+     * @return RedirectResponse
      */
-    public function delete()
+    public function delete(): RedirectResponse
     {
+        $data = $this->request->getGet(['id']);
+        try {
+            $masterDataModel = new MasterDataModel();
+            if ($masterDataModel->delete($data['id'])) return redirect()->to($this->path);
+        } catch (\Exception $e) {
+            log_message('error', $e);
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+        return redirect()->back()->with('error', 'delete failed');
 
     }
 }

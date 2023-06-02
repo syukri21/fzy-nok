@@ -70,10 +70,10 @@
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <li><a class="dropdown-item"
-                                           href="<?= base_url() . 'masterdata/managemasterdata/add?id=' . esc($item->username) ?>">Edit</a>
+                                           href="<?= base_url() . 'masterdata/managemasterdata/add?id=' . esc($item->id) ?>">Edit</a>
                                     </li>
                                     <li><a class="dropdown-item"
-                                           href="<?= base_url() . 'masterdata/managemasterdata/delete?id=' . esc($item->username) ?>">Delete</a>
+                                           href="<?= base_url() . 'masterdata/managemasterdata/delete?id=' . esc($item->id) ?>">Delete</a>
                                     </li>
                                 </ul>
                             </div>
