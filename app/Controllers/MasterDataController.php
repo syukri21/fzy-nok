@@ -82,13 +82,12 @@ class MasterDataController extends BaseController
         $forms = [
             'show_id' => [
                 'title' => 'ID',
-                'disable' => true,
+                'disabled' => true,
                 'type' => 'text',
                 'name' => 'show_id',
                 'id' => 'show_id',
                 'class' => 'form-control',
                 'value' => $masterdata->id,
-
             ],
             'name' => [
                 'title' => 'Nama',
@@ -126,7 +125,6 @@ class MasterDataController extends BaseController
             ],
             'id' => [
                 'title' => 'ID',
-                'disable' => true,
                 'type' => 'hidden',
                 'name' => 'id',
                 'id' => 'id',
@@ -152,19 +150,20 @@ class MasterDataController extends BaseController
      */
     public function create()
     {
+        $masterdataModel = new MasterDataModel();
         $data = $this->request->getPost(['name', 'weight', 'type', 'dimension']);
+        $errMsg = "";
         try {
-            $masterdataModel = new MasterDataModel();
-            $uploadedPath = $this->doUpload();
-            $data['image'] = $uploadedPath;
+            if($uploadedPath = $this->doUpload()) $data['image'] = $uploadedPath;
             if ($masterdataModel->create($data)) return redirect()->to($this->path);
         } catch (FileException $e) {
-            log_message('error file exceot', $e);
-            return view('fuck');
+            log_message('error file upload', $e);
+            $errMsg = "Gagal upload gambar";
         } catch (\Exception $e) {
             log_message('error', $e);
+            $errMsg = lang('Auth.notEnoughPrivilege');
         }
-        return redirect()->back()->with('error', lang('Auth.notEnoughPrivilege'));
+        return redirect()->back()->with('error', $errMsg);
     }
 
     /**
@@ -174,15 +173,19 @@ class MasterDataController extends BaseController
     {
         $masterDataModel = new MasterDataModel();
         $data = $this->request->getPost($masterDataModel->getAllowedFields());
+        $errMsg = "";
         try {
-            $uploadedPath = $this->doUpload();
-            $data['image'] = $uploadedPath;
+            if($uploadedPath = $this->doUpload()) $data['image'] = $uploadedPath;
             if ($masterDataModel->update($data['id'], $data)) return redirect()->to($this->path);
+        } catch (FileException $e) {
+            log_message('error file upload', $e);
+            $errMsg = "Gagal upload gambar";
         } catch (\Exception $e) {
             log_message('error', $e);
-            return redirect()->back()->with('error', $e->getMessage());
+            $errMsg = lang('Auth.notEnoughPrivilege');
         }
-        return redirect()->back()->with('error', 'delete failed');
+
+        return redirect()->back()->with('error', $errMsg);
     }
 
     /**
@@ -205,7 +208,7 @@ class MasterDataController extends BaseController
     /**
      * @return string uploaded path
      */
-    public function doUpload(): string
+    public function doUpload(): ?string
     {
         $this->validate([
             'masterdataimagefile' => [
@@ -217,6 +220,10 @@ class MasterDataController extends BaseController
             ],
         ]);
         $file = $this->request->getFile('masterdataimagefile');
+        if ($file->getSize() == 0){
+            return null;
+        }
+
         if (!$path = $file->store('masterdata/')) {
             throw new FileException();
         }
