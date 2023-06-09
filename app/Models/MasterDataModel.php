@@ -128,7 +128,7 @@ class MasterDataModel extends Model
         if ($masterDataType != "ALL") {
             $query = $query->where(['masterdata_type' => $masterDataType]);
         }
-        $query = $query->get($limit, $offset);
+        $query = $query->orderBy('id', 'DESC')->get($limit, $offset);
         return $query->getResult(MasterData::class);
     }
 

@@ -15,7 +15,6 @@
             Tabel master data.
         </p>
         <div class="w-100 d-flex justify-content-between align-items-end mb-4">
-
             <div class="btn-group btn-group-sm" role="group" id="masterdata-type-group"
                  aria-label="Masterdata Type Group">
                 <a href="?type=ALL" type="button" class="btn btn-outline-primary ">All</a>
@@ -89,6 +88,15 @@
                 </tbody>
             </table>
 
+            <div class="d-flex justify-content-end mt-2" >
+                <nav aria-label="Pagination table">
+                    <ul class="pagination">
+                        <li class="page-item"><a class="page-link text-center changeQueryParam"  data-value="-1" style="width: 100px" href="#">Previous</a></li>
+                        <li class="page-item"><a class="page-link text-center changeQueryParam" data-value="1" style="width: 100px" href="#">Next</a></li>
+                    </ul>
+                </nav>
+            </div>
+
         </div>
     </div>
 </div>
@@ -98,6 +106,7 @@
 <script>
     window.addEventListener('load', function () {
         setActiveLink();
+        initChangeQueryParam();
     })
 
     function setActiveLink() {
@@ -117,6 +126,34 @@
         let base64Image = $(el).attr("src")
         $("#imageModalStaticBackdrop img").attr("src", base64Image)
     }
+
+    function initChangeQueryParam(){
+        $(".changeQueryParam").click(function (event){
+            event.preventDefault(); // Prevent the default link behavior
+            let currentURL = window.location.href;
+            let url = new URL(currentURL);
+            // Update or add the desired query parameter
+            let page = url.searchParams.get('page')
+            if (page === null) {
+                page = 1
+            }
+
+            let stringData = $(this).attr('data-value')
+
+            let data = parseInt(stringData)
+            page = parseInt(page) + data
+
+
+            if (page === 0){
+                page = 1
+            }
+            url.searchParams.set('page', page);
+            console.log(url.href)
+
+            window.location.href = url.href;
+        })
+    }
+
 </script>
 
 <?= $this->endSection() ?>

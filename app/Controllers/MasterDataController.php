@@ -15,8 +15,11 @@ class MasterDataController extends BaseController
      */
     public function index(): string
     {
+        $limit = 10;
         $type = $this->request->getGet('type') ?? 'ALL';
-        $data = (new MasterDataModel())->findAll(10,0, $type);
+        $page = $this->request->getGet('page') ?? 1;
+        $offset = ($page - 1) * $limit;
+        $data = (new MasterDataModel())->findAll($limit,$offset, $type);
         return view('MasterData/MasterData/index', ['data'=>$data]);
     }
 
