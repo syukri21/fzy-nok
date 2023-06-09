@@ -130,6 +130,15 @@ class MasterDataController extends BaseController
                 'class' => 'form-control',
                 'value' => $masterdata->id,
             ],
+            'masterdataimagefile' => [
+                'title' => 'Gambar',
+                'type' => 'file',
+                'name' => 'masterdataimagefile',
+                'id' => 'masterdataimagefile',
+                'class' => 'form-control p-2',
+                'value' => $masterdata->getImageBase64(),
+                'onchange' => 'editMasterData(this)'
+            ]
         ];
         helper(['form', 'enum']);
         return view('MasterData/MasterData/edit', ['forms' => $forms]);
@@ -163,6 +172,8 @@ class MasterDataController extends BaseController
         $masterDataModel = new MasterDataModel();
         $data = $this->request->getPost($masterDataModel->getAllowedFields());
         try {
+            $uploadedPath = $this->doUpload();
+            $data['image'] = $uploadedPath;
             if ($masterDataModel->update($data['id'], $data)) return redirect()->to($this->path);
         } catch (\Exception $e) {
             log_message('error', $e);
@@ -203,7 +214,6 @@ class MasterDataController extends BaseController
             ],
         ]);
         $file = $this->request->getFile('masterdataimagefile');
-        $ext =  $file->guessExtension() ?? ".jpg";
         if (!$path = $file->store('masterdata/')) {
             throw new FileException();
         }

@@ -6,7 +6,7 @@
         <p class="card-description mb-4">
             Form ini digunakan untuk mengubah master data.
         </p>
-        <form class="forms-sample" action="<?= base_url() ?>masterdata/managemasterdata/update" method="POST" autocomplete="off">
+        <form class="forms-sample" action="<?= base_url() ?>masterdata/managemasterdata/update" method="POST" autocomplete="off" enctype="multipart/form-data">
             <?php /** @var FORM $forms */
             foreach ($forms as $form): ?>
                 <div class="form-group row mb-0 d-flex align-items-center" <?= $form['type'] === 'hidden' ? 'hidden' : '' ?> >
@@ -17,6 +17,11 @@
                     <div class="col-sm-10">
                         <?php if ($form['type'] == 'dropdown'): ?>
                             <?php echo form_dropdown($form['name'], MasterDataType, $form['value'], 'class=' . $form['class']); ?>
+                        <?php elseif ($form['type'] == 'file'): ?>
+                        <div class="d-block" >
+                            <img id="editmasterdataimage" style="height: 200px" class="p-2"  src="<?=esc($form['value'])?>" alt="#">
+                            <?= form_input($form) ?>
+                        </div>
                         <?php else: ?>
                             <?= form_input($form) ?>
                         <?php endif ?>
@@ -30,4 +35,23 @@
         </form>
     </div>
 </div>
+
+<script>
+    function editMasterData(el) {
+        if (el.files.length === 0){
+            return
+        }
+        let file = el.files[0]
+        let reader = new FileReader();
+        reader.onload = function(e) {
+            let base64Value = e.target.result;
+            $("#editmasterdataimage").attr("src", base64Value)
+        };
+        reader.readAsDataURL(file);
+    }
+
+</script>
+
 <?= $this->endSection() ?>
+
+
