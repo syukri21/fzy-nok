@@ -60,7 +60,7 @@ class MasterDataController extends BaseController
                 'type' => 'file',
                 'name' => 'masterdataimagefile',
                 'id' => 'masterdataimagefile',
-                'class' => 'form-file',
+                'class' => 'form-control p-2',
             ]
         ];
         return view('MasterData/MasterData/add', ['forms' => $forms]);

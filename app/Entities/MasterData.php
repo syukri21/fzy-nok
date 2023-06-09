@@ -24,7 +24,6 @@ class MasterData extends Entity
         'active' => 'int_bool',
     ];
 
-
     /**
      * @return string
      */

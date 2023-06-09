@@ -9,7 +9,6 @@
 </style>
 
 <div class="card">
-
     <div class="card-body">
         <h4 class="card-title">Kelola Master Data</h4>
         <p class="card-description w-50">
@@ -67,7 +66,7 @@
                             <?= esc($item->getCreatedAt()) ?>
                         </td>
                         <td>
-                            <img src="<?=$item->getImageBase64()?>" class="rounded mx-auto d-block"  alt="#">
+                            <img data-bs-toggle="modal" onclick="onImageClick(this)" data-bs-target="#imageModalStaticBackdrop" src="<?=$item->getImageBase64()?>" class="rounded mx-auto d-block"  alt="#">
                         </td>
                         <td>
                             <div class="dropdown">
@@ -94,6 +93,8 @@
     </div>
 </div>
 
+<?= view_cell('ModalImageCell') ?>
+
 <script>
     window.addEventListener('load', function () {
         setActiveLink();
@@ -112,6 +113,10 @@
         $(masterdataLinks[0]).addClass('active')
     }
 
+    function onImageClick(el){
+        let base64Image = $(el).attr("src")
+        $("#imageModalStaticBackdrop img").attr("src", base64Image)
+    }
 </script>
 
 <?= $this->endSection() ?>
