@@ -154,8 +154,11 @@ class MasterDataController extends BaseController
         $data = $this->request->getPost(['name', 'weight', 'type', 'dimension']);
         $errMsg = "";
         try {
-            if($uploadedPath = $this->doUpload()) $data['image'] = $uploadedPath;
-            if ($masterdataModel->create($data)) return redirect()->to($this->path);
+            if ($uploadedPath = $this->doUpload()) $data['image'] = $uploadedPath;
+            if ($masterdataModel->create($data)) return redirect()->to($this->path)->with('liveToast', [
+                "type" => "success",
+                "message" => "Success!"
+            ]);
         } catch (FileException $e) {
             log_message('error file upload', $e);
             $errMsg = "Gagal upload gambar";
@@ -172,11 +175,14 @@ class MasterDataController extends BaseController
     public function update()
     {
         $masterDataModel = new MasterDataModel();
-        $data = $this->request->getPost($masterDataModel->getAllowedFields());
+        $data = $this->request->getPost(['id', 'type', 'name', 'weight', 'dimension', 'masterdata_type']);
         $errMsg = "";
         try {
             if($uploadedPath = $this->doUpload()) $data['image'] = $uploadedPath;
-            if ($masterDataModel->update($data['id'], $data)) return redirect()->to($this->path);
+            if ($masterDataModel->update($data['id'], $data)) return redirect()->to($this->path)->with("liveToast", [
+                "type"=>"success",
+                "message"=>"Success Edit Master Data !!!"
+            ]);
         } catch (FileException $e) {
             log_message('error file upload', $e);
             $errMsg = "Gagal upload gambar";

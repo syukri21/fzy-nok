@@ -10,7 +10,6 @@
     <div class="main-panel">
         <div class="content-wrapper">
             <?= view_cell('AlertMessageCell', ['type' => 'danger', 'error' => session()->getFlashdata("error"), 'errors' => session()->getFlashdata("errors")]) ?>
-
             <?= $this->renderSection('content') ?>
         </div>
         <!-- content-wrapper ends -->
@@ -25,5 +24,8 @@
     <!-- main-panel ends -->
 </div>
 <!-- page-body-wrapper ends -->
+
+<?= view_cell('GlobalToastCell', session()->get("liveToast")??[]) ?>
+
 <?php $this->endSection() ?>
 
