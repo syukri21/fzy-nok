@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\MasterDataModel;
+use CodeIgniter\Files\Exceptions\FileException;
 use CodeIgniter\HTTP\RedirectResponse;
 
 class MasterDataController extends BaseController
@@ -53,8 +54,14 @@ class MasterDataController extends BaseController
                 'name' => 'dimension',
                 'id' => 'dimension',
                 'class' => 'form-control',
+            ],
+            'masterdataimagefile' => [
+                'title' => 'Gambar',
+                'type' => 'file',
+                'name' => 'masterdataimagefile',
+                'id' => 'masterdataimagefile',
+                'class' => 'form-file',
             ]
-
         ];
         return view('MasterData/MasterData/add', ['forms' => $forms]);
     }
@@ -136,7 +143,12 @@ class MasterDataController extends BaseController
         $data = $this->request->getPost(['name', 'weight', 'type', 'dimension']);
         try {
             $masterdataModel = new MasterDataModel();
+            $uploadedPath = $this->doUpload();
+            $data['image'] = $uploadedPath;
             if ($masterdataModel->create($data)) return redirect()->to($this->path);
+        } catch (FileException $e) {
+            log_message('error file exceot', $e);
+            return view('fuck');
         } catch (\Exception $e) {
             log_message('error', $e);
         }
@@ -174,5 +186,27 @@ class MasterDataController extends BaseController
         }
         return redirect()->back()->with('error', 'delete failed');
 
+    }
+
+    /**
+     * @return string uploaded path
+     */
+    public function doUpload(): string
+    {
+        $this->validate([
+            'masterdataimagefile' => [
+                'uploaded[masterdataimagefile]',
+                'max_size[masterdataimagefile,100]',
+                'mime_in[masterdataimagefile,image/png,image/jpg,image/gif]',
+                'ext_in[masterdataimagefile,png,jpg,gif]',
+                'max_dims[masterdataimagefile,1024,768]',
+            ],
+        ]);
+        $file = $this->request->getFile('masterdataimagefile');
+        $ext =  $file->guessExtension() ?? ".jpg";
+        if (!$path = $file->store('masterdata/')) {
+            throw new FileException();
+        }
+        return $path;
     }
 }

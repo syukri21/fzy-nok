@@ -39,6 +39,7 @@
                     <th>Berat</th>
                     <th>Dimensi</th>
                     <th>Created At</th>
+                    <th>Image</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -63,7 +64,10 @@
                             <?= esc($item->dimension) ?>
                         </td>
                         <td>
-                            <?= esc($item->created_at) ?>
+                            <?= esc($item->getCreatedAt()) ?>
+                        </td>
+                        <td>
+                            <img src="<?=$item->getImageBase64()?>" class="rounded mx-auto d-block"  alt="#">
                         </td>
                         <td>
                             <div class="dropdown">

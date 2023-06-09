@@ -6,7 +6,7 @@
         <p class="card-description mb-4">
             Form ini digunakan untuk membuat master data.
         </p>
-        <form class="forms-sample" action="<?= base_url() ?>masterdata/managemasterdata" method="POST" autocomplete="off">
+        <form class="forms-sample" action="<?= base_url() ?>masterdata/managemasterdata" method="POST" autocomplete="off" enctype="multipart/form-data">
             <?php /** @var FORM $forms */
             foreach ($forms as $form): ?>
                 <div class="form-group row mb-0 d-flex align-items-center" <?= $form['type'] === 'hidden' ? 'hidden': '' ?>  >
