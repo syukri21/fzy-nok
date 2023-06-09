@@ -115,5 +115,35 @@ class MasterDataModel extends Model
     }
 
 
+    /**
+     * @param int $limit
+     * @param int $offset
+     * @param string $type
+     * @return array
+     */
+    public function findAll(int $limit = 0, int $offset = 0, string $type = 'ALL'): array
+    {
+        $masterDataType = $this->transformType($type);
+        $query = $this->builder();
+        if ($masterDataType != "ALL") {
+            $query = $query->where(['masterdata_type' => $masterDataType]);
+        }
+        $query = $query->get($limit, $offset);
+        return $query->getResult(MasterData::class);
+    }
+
+
+    /**
+     * @param string $type
+     * @return string
+     */
+    private function transformType(string $type = 'ALL'): string
+    {
+        if ($type == 'ALL') return $type;
+        if (!array_key_exists($type, MasterDataType)) {
+            $type = 'ALL';
+        }
+        return $type;
+    }
 
 }

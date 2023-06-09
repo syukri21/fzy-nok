@@ -14,7 +14,8 @@ class MasterDataController extends BaseController
      */
     public function index(): string
     {
-        $data = (new MasterDataModel())->findAll(10);
+        $type = $this->request->getGet('type') ?? 'ALL';
+        $data = (new MasterDataModel())->findAll(10,0, $type);
         return view('MasterData/MasterData/index', ['data'=>$data]);
     }
 

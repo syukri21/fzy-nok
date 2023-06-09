@@ -17,11 +17,12 @@
         </p>
         <div class="w-100 d-flex justify-content-between align-items-end mb-4">
 
-            <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-outline-primary active">All</button>
-                <button type="button" class="btn btn-outline-primary">Bahan</button>
-                <button type="button" class="btn btn-outline-primary">Alat</button>
-                <button type="button" class="btn btn-outline-primary">Mesin</button>
+            <div class="btn-group btn-group-sm" role="group" id="masterdata-type-group"
+                 aria-label="Masterdata Type Group">
+                <a href="?type=ALL" type="button" class="btn btn-outline-primary ">All</a>
+                <a href="?type=BAHAN" type="button" class="btn btn-outline-primary">Bahan</a>
+                <a href="?type=ALAT" type="button" class="btn btn-outline-primary">Alat</a>
+                <a href="?type=MESIN" type="button" class="btn btn-outline-primary">Mesin</a>
             </div>
             <div>
                 <a type="button" class="btn btn-primary" href="<?= base_url() . 'masterdata/managemasterdata/add' ?>">Tambah
@@ -89,5 +90,24 @@
     </div>
 </div>
 
+<script>
+    window.addEventListener('load', function () {
+        setActiveLink();
+    })
+
+    function setActiveLink() {
+        let masterdataLinks = $("#masterdata-type-group>a")
+        for (const masterdataLink of masterdataLinks) {
+            let link = $(masterdataLink)
+            let value = link.text().toUpperCase()
+            if (window.location.href.includes(value)) {
+                link.addClass('active')
+                return
+            }
+        }
+        $(masterdataLinks[0]).addClass('active')
+    }
+
+</script>
 
 <?= $this->endSection() ?>
