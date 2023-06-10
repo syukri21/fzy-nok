@@ -161,7 +161,7 @@ class MasterDataController extends BaseController
             ]);
         } catch (FileException $e) {
             log_message('error file upload', $e);
-            $errMsg = "Gagal upload gambar";
+            $errMsg = "Gagal upload gambar format tidak sesuai.";
         } catch (\Exception $e) {
             log_message('error', $e);
             $errMsg = lang('Auth.notEnoughPrivilege');
@@ -184,8 +184,8 @@ class MasterDataController extends BaseController
                 "message"=>"Success Edit Master Data !!!"
             ]);
         } catch (FileException $e) {
-            log_message('error file upload', $e);
-            $errMsg = "Gagal upload gambar";
+            log_message('error', $e);
+            $errMsg = "Gagal upload gambar format tidak sesuai.";
         } catch (\Exception $e) {
             log_message('error', $e);
             $errMsg = lang('Auth.notEnoughPrivilege');
@@ -216,15 +216,18 @@ class MasterDataController extends BaseController
      */
     public function doUpload(): ?string
     {
-        $this->validate([
+        $validateRules = [
             'masterdataimagefile' => [
-                'uploaded[masterdataimagefile]',
-                'max_size[masterdataimagefile,100]',
-                'mime_in[masterdataimagefile,image/png,image/jpg,image/gif]',
-                'ext_in[masterdataimagefile,png,jpg,gif]',
-                'max_dims[masterdataimagefile,1024,768]',
-            ],
-        ]);
+                'rules' => [
+                    'uploaded[masterdataimagefile]',
+                    'max_size[masterdataimagefile,500]',
+                    'mime_in[masterdataimagefile,image/png,image/jpg,image/gif,image/jpeg]',
+                    'ext_in[masterdataimagefile,png,jpg,jpeg,gif]',
+                    'max_dims[masterdataimagefile,1024,768]',
+                ],
+            ]
+        ];
+        if (!$this->validate($validateRules)) throw new FileException();
         $file = $this->request->getFile('masterdataimagefile');
         if ($file->getSize() == 0){
             return null;

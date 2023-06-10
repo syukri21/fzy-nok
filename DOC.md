@@ -89,8 +89,9 @@ classDiagram
     }
 
 
-    MasterProduct --* MasterData
-
+    MasterDataRequirement --*  MasterProduct
+    MasterData --* MasterDataRequirement
+    
     UserRole "1" -- "0..*" User
     
     User <|-- PPIC
