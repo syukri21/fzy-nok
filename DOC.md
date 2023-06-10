@@ -61,15 +61,19 @@ classDiagram
         - price: int64
         - dueDate: date
         - description: string
-        - requirements : List~AggMasterData~
+        - requirements : List~MasterDataRequirement~
         - image: Image
     }
-
-    class AggMasterData {
-        - masterDataId: int
-        - quantity: int
+    
+    class MasterDataRequirement {
+        - id: int
+        - masterdataId: int
+        - masterproductId: int
+        - masterdata: MasterData
+        - masterProduct: MasterProduct
+        - masterdataQty: int 
     }
-
+    
     class OrderProduct {
         - orderId: int
         - productCode: string
@@ -85,8 +89,7 @@ classDiagram
     }
 
 
-    AggMasterData --* MasterProduct
-    MasterData --o AggMasterData
+    MasterProduct --* MasterData
 
     UserRole "1" -- "0..*" User
     
@@ -102,6 +105,8 @@ classDiagram
     Manager "1" -- "0..*" ProductionResult : Read, Update
     Operator "1" -- "0..*" ProductionResult : Read, Create, Update, Delete
     Admin "1" -- "0..*" MasterData: Create, Read, Update, Delete
+    Admin "1" -- "0..*" MasterProduct: Create, Read, Update, Delete
+    
     MasterProduct "1" -- "0..*" OrderProduct
     OrderProduct "1" -- "0..*" ProductionResult
 ```
