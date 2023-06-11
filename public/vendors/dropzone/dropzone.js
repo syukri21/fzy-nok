@@ -648,7 +648,7 @@ var Dropzone = /*#__PURE__*/function (_Emitter) {
           var trgRatio = width / height;
 
           if (info.srcWidth > width || info.srcHeight > height) {
-            // Image is bigger and needs rescaling
+            // ImageTrait is bigger and needs rescaling
             if (resizeMethod === 'crop') {
               if (srcRatio > trgRatio) {
                 info.srcHeight = file.height;
@@ -1995,7 +1995,7 @@ var Dropzone = /*#__PURE__*/function (_Emitter) {
     value: function createThumbnailFromUrl(file, width, height, resizeMethod, fixOrientation, callback, crossOrigin) {
       var _this14 = this;
 
-      // Not using `new Image` here because of a bug in latest Chrome versions.
+      // Not using `new ImageTrait` here because of a bug in latest Chrome versions.
       // See https://github.com/enyo/dropzone/pull/226
       var img = document.createElement("img");
 

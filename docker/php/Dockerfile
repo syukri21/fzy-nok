@@ -1,4 +1,4 @@
-# Image and version
+# ImageTrait and version
 FROM php:8.0-fpm
 
 # Install dependencies

@@ -76,6 +76,90 @@ class BillOfMaterialController extends BaseController
         return view('MasterData/BillOfMaterial/add', ['forms' => $forms]);
     }
 
+    /**
+     * @return RedirectResponse|string
+     */
+    public function edit()
+    {
+        $data = $this->request->getGet(['id']);
+        if (!array_key_exists('id', $data)) return redirect()->back()->with('error', 'ID Karyawan tidak ditemukan');
+        $masterProduct = new MasterProductModel();
+        $data = $masterProduct->findOne($data['id']);
+        helper('form');
+        $forms = [
+            'show_id' => [
+                'title' => 'ID',
+                'disabled' => true,
+                'type' => 'text',
+                'name' => 'show_id',
+                'id' => 'show_id',
+                'class' => 'form-control',
+                'value' => $data->id,
+            ],
+            'id' => [
+                'title' => 'ID',
+                'type' => 'hidden',
+                'name' => 'id',
+                'id' => 'id',
+                'class' => 'form-control',
+                'value' => $data->id,
+            ],
+            'name' => [
+                'title' => 'Nama',
+                'type' => 'text',
+                'name' => 'name',
+                'id' => 'name',
+                'class' => 'form-control',
+                'value' => $data->name
+            ],
+            'code' => [
+                'title' => 'Kode',
+                'type' => 'text',
+                'name' => 'code',
+                'id' => 'code',
+                'class' => 'form-control',
+                'value' => $data->code,
+            ],
+            'price' => [
+                'title' => 'Harga',
+                'type' => 'number',
+                'name' => 'price',
+                'id' => 'price',
+                'class' => 'form-control',
+                'value' => $data->price,
+            ],
+            'due_date' => [
+                'title' => 'Deadline',
+                'type' => 'text',
+                'name' => 'due_date',
+                'id' => 'due_date',
+                'class' => 'form-control datepicker',
+                'value' => $data->due_date->format('m/d/Y'),
+                'date' => true,
+            ],
+            'description' => [
+                'title' => 'Deskripsi',
+                'type' => 'text',
+                'name' => 'description',
+                'id' => 'description',
+                'class' => 'form-control my-2',
+                'value' => $data->description,
+                'style' => 'min-height:100px;',
+                'textarea' => true,
+            ],
+            'image' => [
+                'title' => 'Gambar',
+                'type' => 'file',
+                'name' => 'image',
+                'id' => 'image',
+                'class' => 'form-control p-2',
+                'value' => $data->getImageBase64(),
+                'accept' => 'image/*'
+            ]
+        ];
+        return view('MasterData/BillOfMaterial/edit', ['forms' => $forms]);
+    }
+
 
     /**
      * @return RedirectResponse|false|string
@@ -85,8 +169,8 @@ class BillOfMaterialController extends BaseController
         $data = $this->request->getPost(['name', 'code', 'price', 'due_date', 'description', 'image']);
         try {
             $masterProductModel = new MasterProductModel();
-            $this->validateUpload();
-            $id = $masterProductModel->withUpload($this->request->getFile('image'))->insert($data);
+            if ($imagePath = $this->doUpload()) $data['image'] = $imagePath;
+            $id = $masterProductModel->insert($data);
             if (is_int($id)) {
                 return $this->redirectResponse(SUCCESS_RESPONSE, "Membuat");
             }
@@ -105,6 +189,28 @@ class BillOfMaterialController extends BaseController
         return redirect()->back()->with('error', $err ?? 'Internal Error');
     }
 
+
+    /**
+     * @return RedirectResponse|string
+     */
+    public function update()
+    {
+        $masterDataModel = new MasterProductModel();
+        $data = $this->request->getPost(['id', 'name', 'code', 'price', 'due_date', 'description', 'image']);
+        try {
+            if ($imagePath = $this->doUpload()) $data['image'] = $imagePath;
+            if ($masterDataModel->update($data['id'], $data)) return $this->redirectResponse(SUCCESS_RESPONSE, "Mengubah");
+            $errMsg = $masterDataModel->hasError();
+        } catch (FileException $e) {
+            log_message('error', $e);
+            $errMsg = $this->hasError() ?? "Upload gagal !!!";
+        } catch (\Exception $e) {
+            log_message('error', $e);
+            $errMsg = lang('Auth.notEnoughPrivilege');
+        }
+
+        return redirect()->back()->with('error', $errMsg);
+    }
 
     /**
      * @return RedirectResponse
@@ -140,6 +246,18 @@ class BillOfMaterialController extends BaseController
         if (!$this->validate($validateRules)) {
             throw new FileException();
         };
+    }
+
+
+    public function doUpload(): ?string
+    {
+        $this->validateUpload();
+        $file = $this->request->getFile('image');
+        if ($file == null) return null;
+        if ($file->getSize() == 0) return null;
+        $this->validateUpload();
+        return $file->store("masterproducts/");
+
     }
 
     /**

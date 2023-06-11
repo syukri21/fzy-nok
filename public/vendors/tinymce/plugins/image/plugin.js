@@ -899,7 +899,7 @@
           progress(e.loaded / e.total * 100);
         };
         xhr.onerror = function () {
-          failure('Image upload failed due to a XHR Transport error. Code: ' + xhr.status);
+          failure('ImageTrait upload failed due to a XHR Transport error. Code: ' + xhr.status);
         };
         xhr.onload = function () {
           if (xhr.status < 200 || xhr.status >= 300) {
@@ -1100,7 +1100,7 @@
         return {
           name: 'images',
           type: 'listbox',
-          label: 'Image list',
+          label: 'ImageTrait list',
           items: items
         };
       });
@@ -1113,7 +1113,7 @@
       var imageTitle = {
         name: 'title',
         type: 'input',
-        label: 'Image title'
+        label: 'ImageTrait title'
       };
       var imageDimensions = {
         name: 'dimensions',
@@ -1125,7 +1125,7 @@
         items: [{
             name: 'isDecorative',
             type: 'checkbox',
-            label: 'Image is decorative'
+            label: 'ImageTrait is decorative'
           }]
       };
       var classList = info.classList.map(function (items) {
@@ -1499,7 +1499,7 @@
       return function (info) {
         var state = createState(info);
         return {
-          title: 'Insert/Edit Image',
+          title: 'Insert/Edit ImageTrait',
           size: 'normal',
           body: makeDialogBody(info),
           buttons: [
@@ -1641,7 +1641,7 @@
       });
       editor.ui.registry.addMenuItem('image', {
         icon: 'image',
-        text: 'Image...',
+        text: 'ImageTrait...',
         onAction: Dialog(editor).open
       });
       editor.ui.registry.addContextMenu('image', {

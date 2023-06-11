@@ -4,12 +4,10 @@ namespace App\Models;
 
 use App\Entities\MasterProduct;
 use CodeIgniter\Database\BaseResult;
-use CodeIgniter\Files\Exceptions\FileException;
 use CodeIgniter\HTTP\Files\UploadedFile;
-use CodeIgniter\Model;
 use CodeIgniter\Shield\Authorization\AuthorizationException;
 
-class MasterProductModel extends Model
+class MasterProductModel extends BaseModel
 {
     protected $DBGroup = 'default';
 
@@ -53,10 +51,12 @@ class MasterProductModel extends Model
     protected $afterFind = [];
     protected $beforeDelete = [];
     protected $afterDelete = [];
-    protected ?string $tempPath = null;
+    protected ?UploadedFile $tempUpload = null;
+
 
     /**
-     * @param $data
+     * @param null $data
+     * @param bool $returnID
      * @return BaseResult|false|int|object|string
      * @throws \ReflectionException
      */
@@ -65,7 +65,6 @@ class MasterProductModel extends Model
         $this->validateAuthorization('create');
         $masterProduct = new MasterProduct();
         $masterProduct->fill($data);
-        if ($this->tempPath != null) $masterProduct->image = $this->tempPath;
         return parent::insert($masterProduct, $returnID);
     }
 
@@ -85,6 +84,16 @@ class MasterProductModel extends Model
     }
 
     /**
+     * @param string $id
+     * @return MasterProduct|array|object
+     */
+    public function findOne(string $id)
+    {
+        $this->validateAuthorization('read');
+        return $this->where("id", $id)->asObject(MasterProduct::class)->first();
+    }
+
+    /**
      * @param $id
      * @param bool $purge
      * @return bool|BaseResult
@@ -95,18 +104,21 @@ class MasterProductModel extends Model
         return parent::delete(["id" => $id], $purge);
     }
 
-
     /**
-     * @return string|null
+     * Updates a single record of data
+     * @param $id
+     * @param $data
+     * @return bool
+     * @throws \ReflectionException
      */
-    public function hasError(): ?string
+    public function update($id = null, $data = null): bool
     {
-        if (count($this->validation->getErrors()) === 0) {
-            return null;
-        }
-        $errors = $this->validation->getErrors();
-        return $this->validation->getError(array_key_first($errors));
+        $this->validateAuthorization('update');
+        $masterProduct = new MasterProduct();
+        $masterProduct->fill($data);
+        return parent::update($id, $masterProduct);
     }
+
 
     /**
      * @param string $action
@@ -117,18 +129,4 @@ class MasterProductModel extends Model
         if (!auth()->user()->can('bom.' . $action)) throw new AuthorizationException();
     }
 
-    /**
-     * @param UploadedFile|null $file
-     * @return MasterProductModel
-     */
-    public function withUpload(?UploadedFile $file): MasterProductModel
-    {
-        if ($file == null) return $this;
-        if ($file->getSize() == 0) return $this;
-        if (!$path = $file->store('masterdata/')) {
-            throw new FileException();
-        }
-        $this->tempPath = $path;
-        return $this;
-    }
 }

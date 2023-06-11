@@ -20062,7 +20062,7 @@
           progress(e.loaded / e.total * 100);
         };
         xhr.onerror = function () {
-          failure('Image upload failed due to a XHR Transport error. Code: ' + xhr.status);
+          failure('ImageTrait upload failed due to a XHR Transport error. Code: ' + xhr.status);
         };
         xhr.onload = function () {
           if (xhr.status < 200 || xhr.status >= 300) {
@@ -20401,7 +20401,7 @@
       };
       var openNotification = function () {
         return editor.notificationManager.open({
-          text: editor.translate('Image uploading...'),
+          text: editor.translate('ImageTrait uploading...'),
           type: 'info',
           timeout: -1,
           progressBar: true

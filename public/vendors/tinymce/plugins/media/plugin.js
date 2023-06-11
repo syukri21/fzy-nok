@@ -917,7 +917,7 @@
           name: 'poster',
           type: 'urlinput',
           filetype: 'image',
-          label: 'Media poster (Image URL)'
+          label: 'Media poster (ImageTrait URL)'
         });
       }
       var advancedTab = {

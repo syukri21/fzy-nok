@@ -2768,7 +2768,7 @@
 
         var scale = 1;
         /**
-         * @desc Image zoom
+         * @desc ImageTrait zoom
          * Translate the wrap and scale the image to get better user experience
          *
          * @param {String} scaleVal - Zoom decrement/increment value

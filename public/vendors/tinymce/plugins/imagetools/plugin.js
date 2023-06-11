@@ -678,7 +678,7 @@
     var friendlyHttpErrors = [
       {
         code: 404,
-        message: 'Could not find Image Proxy'
+        message: 'Could not find ImageTrait Proxy'
       },
       {
         code: 403,
@@ -686,7 +686,7 @@
       },
       {
         code: 0,
-        message: 'Incorrect Image Proxy URL'
+        message: 'Incorrect ImageTrait Proxy URL'
       }
     ];
     var friendlyServiceErrors = [
@@ -1160,14 +1160,14 @@
       return function () {
         var getLoadedSpec = function (currentState) {
           return {
-            title: 'Edit Image',
+            title: 'Edit ImageTrait',
             size: 'large',
             body: {
               type: 'panel',
               items: [{
                   type: 'imagetools',
                   name: 'imagetools',
-                  label: 'Edit Image',
+                  label: 'Edit ImageTrait',
                   currentState: currentState
                 }]
             },
@@ -1302,7 +1302,7 @@
         }
       });
       editor.ui.registry.addButton('imageoptions', {
-        tooltip: 'Image options',
+        tooltip: 'ImageTrait options',
         icon: 'image',
         onAction: cmd('mceImage')
       });

@@ -2,6 +2,8 @@
 
 namespace App\Entities;
 
+use App\Entities\Traits\CurrencyTrait;
+use App\Entities\Traits\ImageTrait;
 use CodeIgniter\Entity\Entity;
 use DateTime;
 
@@ -13,6 +15,8 @@ use DateTime;
  */
 class MasterData extends Entity
 {
+    use CurrencyTrait;
+    use ImageTrait;
     private ?string $type;
 
     protected $datamap = [
@@ -38,30 +42,6 @@ class MasterData extends Entity
     public function setType(string $type): void
     {
         $this->attributes['masterdata_type'] = $type;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getImageBase64(): string
-    {
-        helper('image_not_found');
-        $imagePath = $this->image ?? '404.jpg';
-        $imagePath = WRITEPATH . 'uploads/' . $imagePath;
-        $extension = pathinfo($this->image, PATHINFO_EXTENSION);
-
-        if (!file_exists($imagePath)) {
-            return NotFoundImage;
-        }
-
-        $imageData = file_get_contents($imagePath);
-        if ($imageData === false) {
-            return NotFoundImage;
-        }
-
-
-        return "data:image/$extension;base64," . base64_encode($imageData);
     }
 
     /**
