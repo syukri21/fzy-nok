@@ -78,11 +78,23 @@ class MasterProductModel extends Model
     public function findAll(int $limit = 0, int $offset = 0, ?array $find = null): array
     {
         $this->validateAuthorization('read');
-        $query = $this->builder();
+        $query = $this->builder()->where('deleted_at', null);
         if (!is_null($find)) $query = $query->where($find);
         $query = $query->orderBy('id', 'DESC')->get($limit, $offset);
         return $query->getResult(MasterProduct::class);
     }
+
+    /**
+     * @param $id
+     * @param bool $purge
+     * @return bool|BaseResult
+     */
+    public function delete($id = null, bool $purge = false)
+    {
+        $this->validateAuthorization("delete");
+        return parent::delete(["id" => $id], $purge);
+    }
+
 
     /**
      * @return string|null

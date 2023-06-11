@@ -5,3 +5,8 @@ const MasterDataType = [
     "BAHAN" => "BAHAN",
     "MESIN" => "MESIN"
 ];
+
+
+
+const ERROR_RESPONSE = "error";
+const SUCCESS_RESPONSE = "success";

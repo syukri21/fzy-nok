@@ -5,6 +5,7 @@ namespace App\Controllers;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\CLIRequest;
 use CodeIgniter\HTTP\IncomingRequest;
+use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
@@ -56,5 +57,21 @@ abstract class BaseController extends Controller
         // Preload any models, libraries, etc, here.
 
         // E.g.: $this->session = \Config\Services::session();
+    }
+
+
+    protected string $path = "/";
+
+    protected function redirectResponse(string $type, string $msg): RedirectResponse
+    {
+        $message = ["type" => "success", "message" => "Success!"];
+        if ($type == "success") {
+            $message['type'] = 'success';
+            $message['message'] = "Berhasil $msg data !!!";
+        } elseif ($type == "error") {
+            $message['type'] = 'error';
+            $message['message'] = "Gagal $msg data !!!";
+        }
+        return redirect()->to($this->path)->with('liveToast', $message);
     }
 }

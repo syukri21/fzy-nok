@@ -9,7 +9,7 @@ use CodeIgniter\Shield\Authorization\AuthorizationException;
 
 class BillOfMaterialController extends BaseController
 {
-    private string $path = '/masterdata/managebom';
+    protected string $path = '/masterdata/managebom';
 
     public function index(): string
     {
@@ -87,10 +87,7 @@ class BillOfMaterialController extends BaseController
             $this->validateUpload();
             $id = $masterProductModel->withUpload($this->request->getFile('image'))->insert($data);
             if (is_int($id)) {
-                return redirect()->to($this->path)->with('liveToast', [
-                    "type" => "success",
-                    "message" => "Success!"
-                ]);
+                return $this->redirectResponse(SUCCESS_RESPONSE, "Membuat");
             }
             $err = $masterProductModel->hasError();
         } catch (AuthorizationException $e) {
@@ -105,6 +102,24 @@ class BillOfMaterialController extends BaseController
         }
 
         return redirect()->back()->with('error', $err ?? 'Internal Error');
+    }
+
+
+    /**
+     * @return RedirectResponse
+     */
+    public function delete(): RedirectResponse
+    {
+        $data = $this->request->getGet(['id']);
+        $err = "Delete Failed";
+        try {
+            $masterDataModel = new MasterProductModel();
+            if ($masterDataModel->delete($data['id'])) return $this->redirectResponse(SUCCESS_RESPONSE, "Menghapus");
+        } catch (\Exception $e) {
+            log_message('error', $e);
+            $err = "Internal Error";
+        }
+        return redirect()->back()->with('error', $err);
     }
 
 
@@ -135,6 +150,5 @@ class BillOfMaterialController extends BaseController
         $options = null;
         return [$limit, $offset, $options];
     }
-
 }
 

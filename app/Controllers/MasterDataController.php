@@ -8,7 +8,7 @@ use CodeIgniter\HTTP\RedirectResponse;
 
 class MasterDataController extends BaseController
 {
-    private string $path = '/masterdata/managemasterdata';
+    protected string $path = '/masterdata/managemasterdata';
 
     /**
      * @return string
@@ -152,10 +152,7 @@ class MasterDataController extends BaseController
         $errMsg = "";
         try {
             if ($uploadedPath = $this->doUpload()) $data['image'] = $uploadedPath;
-            if ($masterdataModel->create($data)) return redirect()->to($this->path)->with('liveToast', [
-                "type" => "success",
-                "message" => "Success!"
-            ]);
+            if ($masterdataModel->create($data)) return $this->redirectResponse(SUCCESS_RESPONSE, "Membuat");
         } catch (FileException $e) {
             log_message('error file upload', $e);
             $errMsg = "Gagal upload gambar format tidak sesuai.";
@@ -176,10 +173,7 @@ class MasterDataController extends BaseController
         $errMsg = "";
         try {
             if($uploadedPath = $this->doUpload()) $data['image'] = $uploadedPath;
-            if ($masterDataModel->update($data['id'], $data)) return redirect()->to($this->path)->with("liveToast", [
-                "type"=>"success",
-                "message"=>"Success Edit Master Data !!!"
-            ]);
+            if ($masterDataModel->update($data['id'], $data)) return $this->redirectResponse(SUCCESS_RESPONSE, "Mengubah");
         } catch (FileException $e) {
             log_message('error', $e);
             $errMsg = "Gagal upload gambar format tidak sesuai.";
@@ -199,13 +193,12 @@ class MasterDataController extends BaseController
         $data = $this->request->getGet(['id']);
         try {
             $masterDataModel = new MasterDataModel();
-            if ($masterDataModel->delete($data['id'])) return redirect()->to($this->path);
+            if ($masterDataModel->delete($data['id'])) return $this->redirectResponse(SUCCESS_RESPONSE, "Menghapus");
         } catch (\Exception $e) {
             log_message('error', $e);
             return redirect()->back()->with('error', $e->getMessage());
         }
         return redirect()->back()->with('error', 'delete failed');
-
     }
 
     /**
