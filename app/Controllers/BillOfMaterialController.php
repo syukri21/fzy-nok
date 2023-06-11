@@ -70,6 +70,7 @@ class BillOfMaterialController extends BaseController
                 'name' => 'image',
                 'id' => 'image',
                 'class' => 'form-control p-2',
+                'accept' => 'image/*'
             ]
         ];
         return view('MasterData/BillOfMaterial/add', ['forms' => $forms]);
@@ -95,7 +96,7 @@ class BillOfMaterialController extends BaseController
             $err = lang('Auth.notEnoughPrivilege');
         } catch (FileException $e) {
             log_message('error', $e);
-            $err = 'Gagal upload gambar format tidak sesuai';
+            $err = $this->hasError() ?? 'Gagal upload gambar format tidak sesuai';
         } catch (\Exception $e) {
             log_message('error', $e);
             $err = "Something Went Wrong";
@@ -132,11 +133,13 @@ class BillOfMaterialController extends BaseController
                     'max_size[image,2000]',
                     'mime_in[image,image/png,image/jpg,image/gif,image/jpeg]',
                     'ext_in[image,png,jpg,jpeg,gif]',
-                    'max_dims[image,2000,800]',
+                    'max_dims[image,2000,2000]',
                 ],
             ]
         ];
-        if (!$this->validate($validateRules)) throw new FileException();
+        if (!$this->validate($validateRules)) {
+            throw new FileException();
+        };
     }
 
     /**

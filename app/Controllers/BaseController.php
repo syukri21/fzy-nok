@@ -74,4 +74,18 @@ abstract class BaseController extends Controller
         }
         return redirect()->to($this->path)->with('liveToast', $message);
     }
+
+    /**
+     * @return string|null
+     */
+    public function hasError(): ?string
+    {
+        if (count($this->validator->getErrors()) === 0) {
+            return null;
+        }
+        $errors = $this->validator->getErrors();
+        return $this->validator->getError(array_key_first($errors));
+    }
+
+
 }

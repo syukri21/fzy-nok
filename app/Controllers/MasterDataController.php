@@ -210,10 +210,10 @@ class MasterDataController extends BaseController
             'masterdataimagefile' => [
                 'rules' => [
                     'uploaded[masterdataimagefile]',
-                    'max_size[masterdataimagefile,500]',
+                    'max_size[masterdataimagefile,2000]',
                     'mime_in[masterdataimagefile,image/png,image/jpg,image/gif,image/jpeg]',
                     'ext_in[masterdataimagefile,png,jpg,jpeg,gif]',
-                    'max_dims[masterdataimagefile,1024,768]',
+                    'max_dims[masterdataimagefile,2000,2000]',
                 ],
             ]
         ];

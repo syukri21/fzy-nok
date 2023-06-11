@@ -86,6 +86,8 @@
                 </tbody>
             </table>
 
+            <?= view_cell('ButtonPaginationCell') ?>
+
         </div>
     </div>
 </div>
