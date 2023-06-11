@@ -25,6 +25,14 @@
 </div>
 <!-- page-body-wrapper ends -->
 
+<script>
+    function onImageClick(el){
+        let base64Image = $(el).attr("src")
+        $("#imageModalStaticBackdrop img").attr("src", base64Image)
+    }
+</script>
+
+<?= view_cell('ModalImageCell') ?>
 <?= view_cell('GlobalToastCell', session()->get("liveToast")??[]) ?>
 
 <?php $this->endSection() ?>

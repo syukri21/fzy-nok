@@ -12,6 +12,7 @@ use CodeIgniter\Shield\Authorization\AuthorizationException;
 class MasterProductModel extends Model
 {
     protected $DBGroup = 'default';
+
     protected $table = 'master_products';
     protected $primaryKey = 'id';
     protected $useAutoIncrement = true;
@@ -27,17 +28,11 @@ class MasterProductModel extends Model
         'description',
         'image',
     ];
-
-    // Dates
     protected $useTimestamps = true;
     protected $dateFormat = 'datetime';
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
     protected $deletedField = 'deleted_at';
-
-    // Validation
-//    protected $validationRules = [];
-
     protected $validationRules = [
         'name' => 'required|alpha_numeric|min_length[3]',
         'code' => 'required|alpha_numeric|min_length[3]',
@@ -45,7 +40,6 @@ class MasterProductModel extends Model
         'due_date' => 'required',
         'description' => 'alpha_numeric_space',
     ];
-
     protected $skipValidation = false;
     protected $cleanValidationRules = true;
 
@@ -66,15 +60,29 @@ class MasterProductModel extends Model
      * @return BaseResult|false|int|object|string
      * @throws \ReflectionException
      */
-    public function create($data = null)
+    public function insert($data = null, bool $returnID = true)
     {
         $this->validateAuthorization('create');
         $masterProduct = new MasterProduct();
         $masterProduct->fill($data);
         if ($this->tempPath != null) $masterProduct->image = $this->tempPath;
-        return $this->insert($masterProduct);
+        return parent::insert($masterProduct, $returnID);
     }
 
+    /**
+     * @param int $limit
+     * @param int $offset
+     * @param array|null $find
+     * @return array
+     */
+    public function findAll(int $limit = 0, int $offset = 0, ?array $find = null): array
+    {
+        $this->validateAuthorization('read');
+        $query = $this->builder();
+        if (!is_null($find)) $query = $query->where($find);
+        $query = $query->orderBy('id', 'DESC')->get($limit, $offset);
+        return $query->getResult(MasterProduct::class);
+    }
 
     /**
      * @return string|null
@@ -88,8 +96,11 @@ class MasterProductModel extends Model
         return $this->validation->getError(array_key_first($errors));
     }
 
-    public
-    function validateAuthorization(string $action)
+    /**
+     * @param string $action
+     * @return void
+     */
+    public function validateAuthorization(string $action)
     {
         if (!auth()->user()->can('bom.' . $action)) throw new AuthorizationException();
     }
@@ -98,8 +109,7 @@ class MasterProductModel extends Model
      * @param UploadedFile|null $file
      * @return MasterProductModel
      */
-    public
-    function withUpload(?UploadedFile $file): MasterProductModel
+    public function withUpload(?UploadedFile $file): MasterProductModel
     {
         if ($file == null) return $this;
         if ($file->getSize() == 0) return $this;
@@ -109,5 +119,4 @@ class MasterProductModel extends Model
         $this->tempPath = $path;
         return $this;
     }
-
 }

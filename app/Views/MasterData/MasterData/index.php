@@ -101,8 +101,6 @@
     </div>
 </div>
 
-<?= view_cell('ModalImageCell') ?>
-
 <script>
     window.addEventListener('load', function () {
         setActiveLink();
@@ -120,11 +118,6 @@
             }
         }
         $(masterdataLinks[0]).addClass('active')
-    }
-
-    function onImageClick(el){
-        let base64Image = $(el).attr("src")
-        $("#imageModalStaticBackdrop img").attr("src", base64Image)
     }
 
     function initChangeQueryParam(){

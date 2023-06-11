@@ -15,12 +15,9 @@ class MasterDataController extends BaseController
      */
     public function index(): string
     {
-        $limit = 10;
-        $type = $this->request->getGet('type') ?? 'ALL';
-        $page = $this->request->getGet('page') ?? 1;
-        $offset = ($page - 1) * $limit;
-        $data = (new MasterDataModel())->findAll($limit,$offset, $type);
-        return view('MasterData/MasterData/index', ['data'=>$data]);
+        [$limit, $offset, $type] = $this->getPageInfo();
+        $data = (new MasterDataModel())->findAll($limit, $offset, $type);
+        return view('MasterData/MasterData/index', ['data' => $data]);
     }
 
     /**
@@ -229,7 +226,7 @@ class MasterDataController extends BaseController
         ];
         if (!$this->validate($validateRules)) throw new FileException();
         $file = $this->request->getFile('masterdataimagefile');
-        if ($file->getSize() == 0){
+        if ($file->getSize() == 0) {
             return null;
         }
 
@@ -237,5 +234,17 @@ class MasterDataController extends BaseController
             throw new FileException();
         }
         return $path;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPageInfo(): array
+    {
+        $limit = 10;
+        $type = $this->request->getGet('type') ?? 'ALL';
+        $page = $this->request->getGet('page') ?? 1;
+        $offset = ($page - 1) * $limit;
+        return [$limit, $offset, $type];
     }
 }

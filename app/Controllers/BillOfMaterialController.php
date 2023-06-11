@@ -11,9 +11,12 @@ class BillOfMaterialController extends BaseController
 {
     private string $path = '/masterdata/managebom';
 
-    public function index()
+    public function index(): string
     {
-        return view('MasterData/BillOfMaterial/index');
+        [$limit, $offset, $findOptions] = $this->getPageOptions();
+        $masterProductModel = new MasterProductModel();
+        $data = $masterProductModel->findAll($limit, $offset, $findOptions);
+        return view('MasterData/BillOfMaterial/index', ['data' => $data]);
     }
 
     /**
@@ -82,12 +85,14 @@ class BillOfMaterialController extends BaseController
         try {
             $masterProductModel = new MasterProductModel();
             $this->validateUpload();
-            $masterProductModel->withUpload($this->request->getFile('image'))->create($data);
+            $id = $masterProductModel->withUpload($this->request->getFile('image'))->insert($data);
+            if (is_int($id)) {
+                return redirect()->to($this->path)->with('liveToast', [
+                    "type" => "success",
+                    "message" => "Success!"
+                ]);
+            }
             $err = $masterProductModel->hasError();
-            if ($err == null) return redirect()->to($this->path)->with('liveToast', [
-                "type" => "success",
-                "message" => "Success!"
-            ]);
         } catch (AuthorizationException $e) {
             log_message('error', $e);
             $err = lang('Auth.notEnoughPrivilege');
@@ -118,5 +123,18 @@ class BillOfMaterialController extends BaseController
         ];
         if (!$this->validate($validateRules)) throw new FileException();
     }
+
+    /**
+     * @return array
+     */
+    public function getPageOptions(): array
+    {
+        $limit = 10;
+        $page = $this->request->getGet('page') ?? 1;
+        $offset = ($page - 1) * $limit;
+        $options = null;
+        return [$limit, $offset, $options];
+    }
+
 }
 

@@ -35,7 +35,54 @@
                 </tr>
                 </thead>
                 <tbody>
-
+                <?php
+                /** @var array $data */
+                foreach ($data as $key => $item) : ?>
+                    <tr>
+                        <td>
+                            <?= esc($item->id) ?>
+                        </td>
+                        <td>
+                            <?= esc($item->name) ?>
+                        </td>
+                        <td>
+                            <?= esc($item->code) ?>
+                        </td>
+                        <td>
+                            <?= esc($item->getPriceRupiah())?>
+                        </td>
+                        <td>
+                            <img data-bs-toggle="modal" onclick="onImageClick(this)"
+                                 data-bs-target="#imageModalStaticBackdrop" src="<?= $item->getImageBase64() ?>"
+                                 class="rounded mx-0 d-block" alt="#">
+                        </td>
+                        <td>
+                            <?= esc($item->description) ?>
+                        </td>
+                        <td>
+                            <?= esc($item->created_at->humanize()) ?>
+                        </td>
+                        <td>
+                            <?= esc($item->due_date->humanize()) ?>
+                        </td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-icons btn-inverse-light dropdown-toggle menu-icon mdi mdi-dots-vertical"
+                                        type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <li><a class="dropdown-item"
+                                           href="<?= base_url() . 'masterdata/managemasterdata/edit?id=' . esc($item->id) ?>">Edit</a>
+                                    </li>
+                                    <li><a class="dropdown-item"
+                                           href="<?= base_url() . 'masterdata/managemasterdata/delete?id=' . esc($item->id) ?>">Delete</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                <?php endforeach ?>
                 </tbody>
             </table>
 
