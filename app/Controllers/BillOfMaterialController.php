@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\MasterDataModel;
 use App\Models\MasterProductModel;
 use CodeIgniter\Files\Exceptions\FileException;
 use CodeIgniter\HTTP\RedirectResponse;
@@ -25,6 +26,10 @@ class BillOfMaterialController extends BaseController
     public function add(): string
     {
         helper('form');
+
+        $masterData = new MasterDataModel();
+        $options = $masterData->findAllOptions();
+
         $forms = [
             'name' => [
                 'title' => 'Nama',
@@ -73,7 +78,7 @@ class BillOfMaterialController extends BaseController
                 'accept' => 'image/*'
             ]
         ];
-        return view('MasterData/BillOfMaterial/add', ['forms' => $forms]);
+        return view('MasterData/BillOfMaterial/add', ['forms' => $forms, 'options' => $options]);
     }
 
     /**
@@ -81,10 +86,16 @@ class BillOfMaterialController extends BaseController
      */
     public function edit()
     {
+
         $data = $this->request->getGet(['id']);
         if (!array_key_exists('id', $data)) return redirect()->back()->with('error', 'ID Karyawan tidak ditemukan');
         $masterProduct = new MasterProductModel();
         $data = $masterProduct->findOne($data['id']);
+
+
+        $masterData = new MasterDataModel();
+        $options = $masterData->findAllOptions();
+
         helper('form');
         $forms = [
             'show_id' => [
@@ -157,7 +168,7 @@ class BillOfMaterialController extends BaseController
                 'accept' => 'image/*'
             ]
         ];
-        return view('MasterData/BillOfMaterial/edit', ['forms' => $forms]);
+        return view('MasterData/BillOfMaterial/edit', ['forms' => $forms, 'options' => $options]);
     }
 
 
@@ -166,10 +177,12 @@ class BillOfMaterialController extends BaseController
      */
     public function create()
     {
-        $data = $this->request->getPost(['name', 'code', 'price', 'due_date', 'description', 'image']);
+        $data = $this->request->getPost(['name', 'code', 'price', 'due_date', 'description', 'image', 'requirements']);
         try {
             $masterProductModel = new MasterProductModel();
             if ($imagePath = $this->doUpload()) $data['image'] = $imagePath;
+            if (strlen($data['requirements']) != 0) $data['requirements'] = json_decode($data['requirements'], true);
+
             $id = $masterProductModel->insert($data);
             if (is_int($id)) {
                 return $this->redirectResponse(SUCCESS_RESPONSE, "Membuat");

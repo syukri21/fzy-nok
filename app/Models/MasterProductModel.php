@@ -65,7 +65,10 @@ class MasterProductModel extends BaseModel
         $this->validateAuthorization('create');
         $masterProduct = new MasterProduct();
         $masterProduct->fill($data);
-        return parent::insert($masterProduct, $returnID);
+        $resultID = parent::insert($masterProduct, $returnID);
+        $masterProductRequirement = new MasterProductRequirementModel();
+        $masterProductRequirement->createBatch($resultID, $data['requirements']);
+        return $resultID;
     }
 
     /**

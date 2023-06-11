@@ -45,6 +45,7 @@
 <script src="/js/hoverable-collapse.js"></script>
 <script src="/js/settings.js"></script>
 <script src="/js/todolist.js"></script>
+
 <!-- endinject -->
 <!-- Custom js for this page-->
 <script src="/js/jquery.cookie.js" type="text/javascript"></script>

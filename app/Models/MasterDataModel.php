@@ -4,11 +4,10 @@ namespace App\Models;
 
 use App\Entities\MasterData;
 use CodeIgniter\Database\BaseResult;
-use CodeIgniter\Model;
 use CodeIgniter\Shield\Authorization\AuthorizationException;
 use ReflectionException;
 
-class MasterDataModel extends Model
+class MasterDataModel extends BaseModel
 {
     protected $returnType    = MasterData::class;
     protected $DBGroup          = 'default';
@@ -130,6 +129,22 @@ class MasterDataModel extends Model
         }
         $query = $query->orderBy('id', 'DESC')->get($limit, $offset);
         return $query->getResult(MasterData::class);
+    }
+
+    /**
+     * Fetches all options value
+     * @param string $type
+     * @return false|string
+     */
+    public function findAllOptions(string $type = 'ALL')
+    {
+        $masterDataType = $this->transformType($type);
+        $query = $this->builder()->select(['id', 'name', 'masterdata_type']);
+        if ($masterDataType != "ALL") {
+            $query = $query->where(['masterdata_type' => $masterDataType]);
+        }
+        $query = $query->orderBy('id', 'DESC')->get();
+        return json_encode($query->getResult());
     }
 
 
