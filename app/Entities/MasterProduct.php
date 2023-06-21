@@ -24,4 +24,6 @@ class MasterProduct extends Entity
     protected $datamap = [];
     protected $dates = ['created_at', 'updated_at', 'deleted_at', 'due_date'];
     protected $casts = [];
+
+
 }

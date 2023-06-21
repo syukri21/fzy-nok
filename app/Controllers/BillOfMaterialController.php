@@ -182,7 +182,6 @@ class BillOfMaterialController extends BaseController
             $masterProductModel = new MasterProductModel();
             if ($imagePath = $this->doUpload()) $data['image'] = $imagePath;
             if (strlen($data['requirements']) != 0) $data['requirements'] = json_decode($data['requirements'], true);
-
             $id = $masterProductModel->insert($data);
             if (is_int($id)) {
                 return $this->redirectResponse(SUCCESS_RESPONSE, "Membuat");
