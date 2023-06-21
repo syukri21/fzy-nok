@@ -83,7 +83,26 @@ class MasterProductModel extends BaseModel
         $query = $this->builder()->where('deleted_at', null);
         if (!is_null($find)) $query = $query->where($find);
         $query = $query->orderBy('id', 'DESC')->get($limit, $offset);
-        return $query->getResult(MasterProduct::class);
+        $result = $query->getResult(MasterProduct::class);
+
+        $ids = [];
+        foreach ($result as $item) {
+            $ids[] = $item->id;
+        }
+
+        if (count($ids) > 0) {
+            $masterProductRequirement = new MasterProductRequirementModel();
+            $requirements = $masterProductRequirement->findByMasterProductIds($ids);
+
+            foreach ($result as $item) {
+                $data = $requirements[$item->id] ?? null;
+                if ($data) {
+                    $item->setRequirements($data);
+                }
+            }
+        }
+
+        return $result;
     }
 
     /**

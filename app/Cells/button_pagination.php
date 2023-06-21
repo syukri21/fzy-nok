@@ -1,10 +1,10 @@
-<div class="d-flex justify-content-end mt-2">
+<div class="d-flex justify-content-end mt-4">
     <nav aria-label="Pagination table">
         <ul class="pagination">
-            <li class="page-item"><a class="page-link text-center changeQueryParam" data-value="-1" style="width: 100px"
-                                     href="">Previous</a></li>
-            <li class="page-item"><a class="page-link text-center changeQueryParam" data-value="1" style="width: 100px"
-                                     href="">Next</a></li>
+            <li class="page-item"><a class="page-link text-center changeQueryParam" data-value="-1" style="width: 200px"
+                                     href="">Sebelumnya</a></li>
+            <li class="page-item"><a class="page-link text-center changeQueryParam" data-value="1" style="width: 200px"
+                                     href="">Selanjutnya</a></li>
         </ul>
     </nav>
 </div>
