@@ -4,7 +4,6 @@ namespace App\Entities;
 
 use App\Entities\Traits\CurrencyTrait;
 use App\Entities\Traits\ImageTrait;
-use App\Models\MasterProductRequirementModel;
 use CodeIgniter\Entity\Entity;
 
 /**
@@ -25,7 +24,6 @@ class MasterProduct extends Entity
     protected $datamap = [];
     protected $dates = ['created_at', 'updated_at', 'deleted_at', 'due_date'];
     protected $casts = [];
-
     protected $requirements = [];
 
     /**
@@ -44,12 +42,15 @@ class MasterProduct extends Entity
         $this->requirements = $requirements;
     }
 
-
     public function getRequirementsImageBase64(): array
     {
         $bas64images = [];
         foreach ($this->requirements as $item) {
-            $bas64images[] = $this->getImageBase64FromPath($item->image);
+            if (!is_null($item->image)) {
+                $bas64images[] = $this->getImageBase64FromPath($item->image);
+            } else {
+                $bas64images[] = $this->getImageBase64FromPath();
+            }
         }
         return $bas64images;
     }

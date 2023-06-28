@@ -55,7 +55,7 @@
                             <td>
                                 <img data-bs-toggle="modal" onclick="onImageClick(this)"
                                      data-bs-target="#imageModalStaticBackdrop" src="<?= $item->getImageBase64() ?>"
-                                     class="rounded mx-0 d-block" alt="#">
+                                     class="rounded mx-0 d-block img-fluid" alt="#">
                             </td>
                             <td>
                                 <?= esc($item->created_at->humanize()) ?>
@@ -93,9 +93,7 @@
                     <?php endforeach ?>
                     </tbody>
                 </table>
-
                 <?= view_cell('ButtonPaginationCell') ?>
-
 
                 <!-- Item Modal -->
                 <div class="modal fade" id="bomdetailModal" tabindex="-1" aria-labelledby="bomdetailModalLabel"
@@ -135,7 +133,8 @@
                                             <img data-bs-toggle="modal" id="bomDetailImageModal"
                                                  onclick="onImageClick(this)"
                                                  data-bs-target="#imageModalStaticBackdrop"
-                                                 src="" class="rounded mx-0 d-block img-fluid" alt="#">
+                                                 height="100px"
+                                                 src="" class="rounded mx-0 d-block img" alt="#">
                                         </div>
                                     </div>
                                     <div class="mb-3 row">
@@ -152,7 +151,6 @@
                                     </ul>
                                 </div>
                             </div>
-
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                             </div>
@@ -167,8 +165,6 @@
                         const options = {day: 'numeric', month: 'long', year: 'numeric'};
                         return date.toLocaleDateString('id-ID', options)
                     }
-
-
                     window.addEventListener("load", function () {
                         let modal = $('#bomdetailModal');
                         let list = $('#requirementList');
@@ -210,6 +206,7 @@
             </div>
         </div>
     </div>
+</div>
 
 
-    <?= $this->endSection() ?>
+<?= $this->endSection() ?>

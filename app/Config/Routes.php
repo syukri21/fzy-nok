@@ -66,6 +66,9 @@ $routes->post('/masterdata/managebom', 'BillOfMaterialController::create');
 $routes->get('/masterdata/managebom/delete', 'BillOfMaterialController::delete');
 
 
+// API
+$routes->delete('/masterdata/api/material', 'BillOfMaterialController::deleteMaterial');
+$routes->post('/masterdata/api/material', 'BillOfMaterialController::insertMaterial');
 
 
 service('auth')->routes($routes);

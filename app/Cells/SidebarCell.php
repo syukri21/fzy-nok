@@ -10,6 +10,7 @@ class SidebarCell extends Cell
 {
 
     protected Session $cache;
+
     protected array $menus = [
         'user_management' => [
             'name' => 'User Management',
@@ -20,6 +21,26 @@ class SidebarCell extends Cell
                     'url' => 'usermanagement/manageuser'
                 ],
             ]
+        ],
+        'production' => [
+            'name' => 'Produksi',
+            'menus' => [
+                'plan' => [
+                    'name' => 'Rencana Produksi',
+                    'icon_style' => 'menu-icon mdi mdi-file-check',
+                    'url' => 'production/plan'
+                ],
+                'running' => [
+                    'name' => 'Produksi ',
+                    'icon_style' => 'menu-icon mdi mdi-wrench',
+                    'url' => 'production/running'
+                ],
+                'result' => [
+                    'name' => 'Hasil Produksi',
+                    'icon_style' => 'menu-icon mdi  mdi-chart-areaspline',
+                    'url' => 'production/result'
+                ]
+            ],
         ],
         'master_data' => [
             'name' => 'Master Data',

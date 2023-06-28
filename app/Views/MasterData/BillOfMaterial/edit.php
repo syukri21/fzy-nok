@@ -6,9 +6,9 @@
         <p class="card-description mb-4">
             Form ini digunakan untuk mengubah bll of materai data.
         </p>
-        <form class="forms-sample" action="<?= base_url() ?>masterdata/managebom/update" method="POST"
+        <form class="forms-sample" id="form" action="<?= base_url() ?>masterdata/managebom/update" method="POST"
               autocomplete="off" enctype="multipart/form-data">
-            <?php /** @var FORM $forms */
+            <?php /** @var array $forms */
             foreach ($forms as $form): ?>
                 <div class="form-group row mb-0 d-flex align-items-center" <?= $form['type'] === 'hidden' ? 'hidden' : '' ?> >
                     <label <?= $form['type'] === 'hidden' ? 'hidden' : '' ?>
@@ -20,7 +20,7 @@
                             <?php echo form_dropdown($form['name'], MasterDataType, $form['value'], 'class=' . $form['class']); ?>
                         <?php elseif ($form['type'] == 'file'): ?>
                             <div class="d-block">
-                                <img id="editmasterdataimage" style="height: 200px" class="p-2"
+                                <img id="editmasterdataimage" style="height: 200px" class="p-2 img-fluid"
                                      src="<?= esc($form['value']) ?>" alt="#">
                                 <?= form_input($form) ?>
                             </div>
@@ -38,11 +38,22 @@
                         <?php endif ?>
                     </div>
                 </div>
+
             <?php endforeach ?>
+
+            <?=
+            /**
+             * @var string $options
+             * @var array $materials
+             */
+            view_cell('MaterialListEditCell', ["options" => $options, "masterProductId" => $forms['id']['value'], "materials" => $materials])
+            ?>
+
             <div class="mt-5 d-flex align-items-center justify-content-end">
                 <a class="btn btn-outline-danger me-4" href="<?= base_url() . 'masterdata/managebom' ?>">Cancel</a>
                 <button type="submit" class="btn w-25 btn-primary me-2">Save</button>
             </div>
+
         </form>
     </div>
 </div>
@@ -60,7 +71,6 @@
         };
         reader.readAsDataURL(file);
     }
-
 
     window.addEventListener('load', function () {
         initDatePicker();

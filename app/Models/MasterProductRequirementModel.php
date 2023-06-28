@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-use App\Entities\MasterData;
 use App\Entities\MasterProductRequirement;
+use CodeIgniter\Shield\Authorization\AuthorizationException;
+use CodeIgniter\Shield\Exceptions\ValidationException;
 
 class MasterProductRequirementModel extends BaseModel
 {
     protected $DBGroup = 'default';
-    protected $table = 'agg_masterdata_masterprodcut';
+    protected $table = 'agg_masterdata_masterproduct';
     protected $primaryKey = 'id';
     protected $useAutoIncrement = true;
     protected $returnType = MasterProductRequirement::class;
@@ -51,7 +52,7 @@ class MasterProductRequirementModel extends BaseModel
         $dataSet = [];
         foreach ($set as $x => $item) {
             $newData = new MasterProductRequirement();
-            $newData->masterdata_id = (int)$item['id'];
+            $newData->masterdata_id = (int)$item['masterdata_id'];
             $newData->masterproduct_id = $productId;
             $newData->masterdata_qty = $item['quantity'];
             $dataSet[] = $newData;
@@ -61,8 +62,8 @@ class MasterProductRequirementModel extends BaseModel
 
     public function findByMasterProductIds(array $masterProductIds): array
     {
-        $result = $this->select('masterdata_id, masterdata_qty, masterproduct_id, masterdatas.id, masterdatas.name, masterdatas.image')
-            ->join('masterdatas', 'masterdatas.id = agg_masterdata_masterprodcut.masterdata_id')
+        $result = $this->select('masterdata_id, masterdata_qty, masterproduct_id, masterdatas.id, masterdatas.name, masterdatas.masterdata_type, masterdatas.image')
+            ->join('masterdatas', 'masterdatas.id = agg_masterdata_masterproduct.masterdata_id')
             ->whereIn('masterproduct_id', $masterProductIds)
             ->findAll();
 
@@ -76,21 +77,38 @@ class MasterProductRequirementModel extends BaseModel
 
     public function findByMasterProductId(string $masterProductId): array
     {
-        $result = $this->select('masterdata_id, masterdata_qty, masterproduct_id, masterdatas.id, masterdatas.name, masterdatas.image')
-            ->join('masterdatas', 'masterdatas.id = agg_masterdata_masterprodcut.masterdata_id')
+        return $this->select('agg_masterdata_masterproduct.id, masterdata_id, masterdata_qty, masterproduct_id, masterdatas.masterdata_type, masterdatas.name')
+            ->join('masterdatas', 'masterdatas.id = agg_masterdata_masterproduct.masterdata_id')
             ->where('masterproduct_id', $masterProductId)
-            ->findAll();
-
-
-        $requirements = [];
-        foreach ($result as $row) {
-            $masterDataItem = new MasterData();
-            $masterDataItem->id = $row['id'];
-            $masterDataItem->name = $row['name'];
-            $masterDataItem->dimension = $row['image'];
-            $requirements[] = $masterDataItem;
-        }
-
-        return $requirements;
+            ->asArray()->findAll();
     }
+
+
+    public function delete($id = null, bool $purge = false)
+    {
+        if (is_null($id)) throw new ValidationException();
+        $this->validateAuthorization("delete");
+        return parent::delete($id, $purge);
+    }
+
+    public function insert($data = null, bool $returnID = true)
+    {
+        $this->validateAuthorization("add");
+        if (is_null($data)) throw new ValidationException();
+        $masterProductRequirement = new MasterProductRequirement();
+        $masterProductRequirement->masterdata_id = $data->masterdata_id;
+        $masterProductRequirement->masterdata_qty = $data->qty;
+        $masterProductRequirement->masterproduct_id = $data->masterproduct_id;
+        return parent::insert($masterProductRequirement, $returnID);
+    }
+
+    /**
+     * @param string $action
+     * @return void
+     */
+    public function validateAuthorization(string $action)
+    {
+        if (!auth()->user()->can('bom.' . $action)) throw new AuthorizationException();
+    }
+
 }

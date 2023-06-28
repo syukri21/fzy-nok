@@ -14,11 +14,11 @@ class AddColumnQtyToAggMasterdataMasterProduct extends Migration
                 'DEFAULT' => 0,
             ],
         ];
-        $this->forge->addColumn('agg_masterdata_masterprodcut', $fields);
+        $this->forge->addColumn('agg_masterdata_masterproduct', $fields);
     }
 
     public function down()
     {
-        $this->forge->dropColumn('agg_masterdata_masterprodcut', 'masterdata_qty');
+        $this->forge->dropColumn('agg_masterdata_masterproduct', 'masterdata_qty');
     }
 }

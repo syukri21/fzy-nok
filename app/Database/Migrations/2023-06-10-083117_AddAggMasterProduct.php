@@ -27,15 +27,15 @@ class AddAggMasterProduct extends Migration
             ]
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->createTable('agg_masterdata_masterprodcut');
+        $this->forge->createTable('agg_masterdata_masterproduct');
         $this->forge->addForeignKey('id', 'masterdatas', 'masterdata_id', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('id', 'master_product', 'masterproduct_id', 'CASCADE', 'CASCADE');
     }
 
     public function down()
     {
-        $this->forge->dropForeignKey('agg_masterdata_masterprodcut', 'masterdata_id');
-        $this->forge->dropForeignKey('agg_masterdata_masterprodcut', 'masterproduct_id');
-        $this->forge->dropTable('agg_masterdata_masterprodcut');
+        $this->forge->dropForeignKey('agg_masterdata_masterproduct', 'masterdata_id');
+        $this->forge->dropForeignKey('agg_masterdata_masterproduct', 'masterproduct_id');
+        $this->forge->dropTable('agg_masterdata_masterproduct');
     }
 }
