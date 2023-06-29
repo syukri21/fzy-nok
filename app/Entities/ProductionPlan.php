@@ -6,10 +6,17 @@ use App\Models\UserModel;
 use CodeIgniter\Entity\Entity;
 
 /**
+/**
  * @property int|string|null $id
- * @property int|null $masterdata_id
- * @property int|null $masterproduct_id
- * @property int|null $masterdata_qty
+ * @property string|null $production_ticket
+ * @property int|null $quantity
+ * @property string|object|null $order_date
+ * @property string|object|null $due_date
+ * @property string|object|null $done_date
+ * @property int|null $ppic_id
+ * @property int|null $manager_id
+ * @property int|null $master_products_id
+ * @property string|null $status
  */
 class ProductionPlan extends Entity
 {

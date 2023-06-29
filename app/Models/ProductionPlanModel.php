@@ -69,6 +69,17 @@ class ProductionPlanModel extends BaseModel
         return $this->onProgress()->paginate($perPage, "progress");
     }
 
+    /**
+     * @param $id
+     * @return array|ProductionPlan|null
+     */
+    public function find($id = null)
+    {
+        $this->validateAuthorization("read");
+        return parent::find($id);
+    }
+
+
     public function todo(): ProductionPlanModel
     {
 

@@ -77,7 +77,7 @@ class MasterProductRequirementModel extends BaseModel
 
     public function findByMasterProductId(string $masterProductId): array
     {
-        return $this->select('agg_masterdata_masterproduct.id, masterdata_id, masterdata_qty, masterproduct_id, masterdatas.masterdata_type, masterdatas.name')
+        return $this->select('agg_masterdata_masterproduct.id, masterdata_id, masterdata_qty, masterproduct_id, masterdatas.masterdata_type, masterdatas.name,  masterdatas.image')
             ->join('masterdatas', 'masterdatas.id = agg_masterdata_masterproduct.masterdata_id')
             ->where('masterproduct_id', $masterProductId)
             ->asArray()->findAll();

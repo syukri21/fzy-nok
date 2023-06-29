@@ -2,7 +2,6 @@
 
 $this->extend("layout/dashboard/main") ?>
 <?= $this->section('content') ?>
-
     <style>
         .table-compact {
             border-collapse: collapse;
@@ -10,8 +9,13 @@ $this->extend("layout/dashboard/main") ?>
 
         .table-compact th,
         .table-compact td {
+            cursor: pointer;
             padding: 15px 10px;
             border: 1px solid #dee2e6;
+        }
+
+        .card {
+            box-shadow: none!important;
         }
     </style>
 
@@ -23,13 +27,12 @@ $this->extend("layout/dashboard/main") ?>
         </button>
     </div>
 
-
     <div class="row g-4">
         <div class="col">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title text-gray">TODO</h5>
-                    <table class="table table-compact table-borderless table-hover">
+                    <table class="table table-compact table-borderless table-hover table-hover">
                         <thead>
                         <tr>
                             <th scope="col">Tiket</th>
@@ -40,7 +43,8 @@ $this->extend("layout/dashboard/main") ?>
                         <tbody>
                         <?php /** @var ProductionPlan $todo */
                         foreach ($todo['data'] as $key => $data) : ?>
-                            <tr>
+                            <tr data-id="<?= esc($data->id) ?>" data-bs-toggle="modal"
+                                data-bs-target="#modalDetailProductionPlan">
                                 <td class="text-primary"><?= esc($data->production_ticket) ?></td>
                                 <td><?= esc($data->ppic_first_name) ?></td>
                                 <td class="text-end"><?= esc($data->due_date->humanize()) ?></td>
@@ -58,7 +62,7 @@ $this->extend("layout/dashboard/main") ?>
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title text-info">ON PROGRESS</h5>
-                    <table class="table table-compact table-borderless">
+                    <table class="table table-compact table-borderless table-hover">
                         <thead>
                         <tr>
                             <th scope="col">Tiket</th>
@@ -69,7 +73,9 @@ $this->extend("layout/dashboard/main") ?>
                         <tbody>
                         <?php /** @var ProductionPlan $onProgress */
                         foreach ($onProgress['data'] as $key => $data) : ?>
-                            <tr>
+                            <tr data-id="<?= esc($data->id) ?>" data-bs-toggle="modal"
+                                data-bs-target="#modalDetailProductionPlan"
+                            >
                                 <td class="text-primary"><?= esc($data->production_ticket) ?></td>
                                 <td><?= esc($data->manager_first_name) ?></td>
                                 <td class="text-end"><?= esc($data->due_date->humanize()) ?></td>
@@ -87,7 +93,7 @@ $this->extend("layout/dashboard/main") ?>
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title text-success">DONE</h5>
-                    <table class="table table-compact  table-borderless">
+                    <table class="table table-compact table-borderless table-hover">
                         <thead>
                         <tr>
                             <th scope="col">Tiket</th>
@@ -98,7 +104,8 @@ $this->extend("layout/dashboard/main") ?>
                         <tbody>
                         <?php /** @var ProductionPlan $done */
                         foreach ($done['data'] as $key => $data) : ?>
-                            <tr>
+                            <tr data-id="<?= esc($data->id) ?>" data-bs-toggle="modal"
+                                data-bs-target="#modalDetailProductionPlan">
                                 <td class="text-primary"><?= esc($data->production_ticket) ?></td>
                                 <td class="text-center"><?= esc($data->quantity) ?></td>
                                 <td class="text-end"><?= esc($data->done_date->format("d M Y")) ?></td>
@@ -114,6 +121,199 @@ $this->extend("layout/dashboard/main") ?>
         </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade mt" id="modalDetailProductionPlan" data-bs-backdrop="static" data-bs-keyboard="false"
+         tabindex="-1" aria-labelledby="modalDetailProductionPlanLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen  modal-dialog-scrollable" style="margin-top: 0">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalDetailProductionPlanLabel">Pesanan Produksi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body"
+                     id="modalDetailProductionPlan-content">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+
+        function loadingContent() {
+            return $(`
+                 <!-- Loading Indicator HTML -->
+            <div id="loadingIndicator" class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            `)
+
+        }
+
+        function modalContent() {
+            return $(`
+  <div class="container">
+        <div class="row g-3">
+            <!-- Production Plan -->
+            <div class="col-12">
+                <div class="card ">
+                    <div class="card-header">Rencana Production</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>ID:</strong> <span id="productionPlanId"></span></p>
+                                <p><strong>Production Ticket:</strong> <span id="productionTicket"></span></p>
+                                <p><strong>Quantity:</strong> <span id="quantity"></span></p>
+                                <p><strong>Status:</strong> <span id="status"></span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Order Date:</strong> <span id="orderDate"></span></p>
+                                <p><strong>Due Date:</strong> <span id="dueDate"></span></p>
+                                <p><strong>Done Date:</strong> <span id="doneDate"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PPIC -->
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">PPIC</div>
+                    <div class="card-body">
+                        <p><strong>First Name:</strong> <span id="ppicFirstName"></span></p>
+                        <p><strong>Last Name:</strong> <span id="ppicLastName"></span></p>
+                        <p><strong>Employee ID:</strong> <span id="ppicEmployeeId"></span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6">
+                <!-- Manager -->
+                <div class="card ">
+                    <div class="card-header">Manager</div>
+                    <div class="card-body">
+                        <p><strong>First Name:</strong> <span id="managerFirstName"></span></p>
+                        <p><strong>Last Name:</strong> <span id="managerLastName"></span></p>
+                        <p><strong>Employee ID:</strong> <span id="managerEmployeeId"></span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <!-- Product -->
+                <div class="card col">
+                    <div class="card-header">Produk</div>
+                    <div class="card-body">
+                        <p><strong>Name:</strong> <span id="productName"></span></p>
+                        <p><strong>Code:</strong> <span id="productCode"></span></p>
+                        <p><strong>Price:</strong> <span id="productPrice"></span></p>
+                        <p><strong>Description:</strong> <span id="productDescription"></span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-auto">
+                <!-- Requirements -->
+                <div class="card col">
+                    <div class="card-header">Materials</div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Masterdata Qty</th>
+                                <th>Masterdata Type</th>
+                                <th>Name</th>
+                                <th>Image</th>
+                            </tr>
+                            </thead>
+                            <tbody id="requirementsTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+            `)
+        }
+
+        function renderModalContent(data) {
+
+
+            // Production Plan
+            $('#productionPlanId').text(data.productionPlan.id);
+            $('#productionTicket').text(data.productionPlan.production_ticket);
+            $('#quantity').text(data.productionPlan.quantity);
+            $('#orderDate').text(data.productionPlan.order_date.date.split(" ")[0]);
+            $('#dueDate').text(data.productionPlan.due_date.date.split(" ")[0]);
+            $('#doneDate').text(data.productionPlan.done_date.date.split(" ")[0]);
+            $('#status').text(data.productionPlan.status);
+
+            // PPIC
+            $('#ppicFirstName').text(data.ppic.first_name);
+            $('#ppicLastName').text(data.ppic.last_name);
+            $('#ppicEmployeeId').text(data.ppic.employee_id);
+
+            // Manager
+            $('#managerFirstName').text(data.manager.first_name);
+            $('#managerLastName').text(data.manager.last_name);
+            $('#managerEmployeeId').text(data.manager.employee_id);
+
+            // Product
+            $('#productName').text(data.product.name);
+            $('#productCode').text(data.product.code);
+            $('#productPrice').text(data.product.price);
+            $('#productDescription').text(data.product.description);
+
+            // Requirements
+            const requirementsTableBody = $('#requirementsTableBody');
+            data.requirements.forEach(function (requirement) {
+                const row = `
+                        <tr>
+                          <td>${requirement.masterdata_qty}</td>
+                          <td>${requirement.masterdata_type}</td>
+                          <td>${requirement.name}</td>
+                          <td>${requirement.image}</td>
+                        </tr>
+                      `;
+                requirementsTableBody.append(row);
+            });
+        }
+
+        function clearModalContent() {
+            $("#modalDetailProductionPlan-content").empty();
+        }
+
+        function getProductionDetail(id) {
+            clearModalContent();
+            $("#modalDetailProductionPlan-content").append(loadingContent())
+            $.ajax({
+                url: '/api/production/plan?id=' + id,
+                dataType: 'json',
+                success: function (responseData) {
+                    clearModalContent();
+                    $("#modalDetailProductionPlan-content").append(modalContent())
+                    renderModalContent(responseData.data)
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                    showToast("danger", "Gagal Menampilkan Detail")
+                }
+            });
+        }
+
+
+        window.addEventListener('DOMContentLoaded', function () {
+            $('#modalDetailProductionPlan').on('show.bs.modal', function (event) {
+                const button = $(event.relatedTarget);
+                const id = button.data('id');
+                clearModalContent(); // Clear previous content
+                getProductionDetail(id)
+            });
+        })
+    </script>
 
 <?= $this->endSection() ?>
 <?php

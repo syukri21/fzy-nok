@@ -78,6 +78,9 @@ $routes->get('/production/plan/add', 'ProductionPlanController::add');
 $routes->post('/production/plan/update', 'ProductionPlanController::update');
 $routes->get('/production/plan/edit', 'ProductionPlanController::edit');
 
+// Production Plan API
+$routes->get('/api/production/plan', 'ProductionPlanController::get');
+
 service('auth')->routes($routes);
 
 
