@@ -13,51 +13,16 @@ class SuperAdminSeeder extends Seeder
         $user = new User([
             'username' => 'superadmin',
             'employee_id' => 'superadmin',
-            'password' => 'adminadmin1!',
-            'email' => 'admin@admin.com',
-            'first_name' => 'Fuzi',
-            'last_name' => 'Widiastuti'
+            'password' => 'superadmin',
+            'email' => 'superadmin@nok.com',
+            'first_name' => 'Super',
+            'last_name' => 'Admin'
         ]);
 
         $userProvider = auth()->getProvider();
         $userProvider->save($user);
-        $user = $userProvider->findById($userProvider->getÍInsertID());
+        $user = $userProvider->findById($userProvider->getInsertID());
         $user->activate();
         $user->addGroup('superadmin');
     }
 }
-
-
-function haveProblem()
-{
-
-}
-
-function trySolveProblem($live)
-{
-
-}
-
-function stillWith($you)
-{
-
-}
-
-function problemIsDone()
-{
-
-}
-
-function celebrateTogetherWith($you)
-{
-
-}
-
-while (live.haveProblem()) {
-    Me.stillWith(you).trySolveProblem(live);
-    if (live.problemIsDone()){
-        Me.celebrateTogetherWith(you);
-    }
-}
-
-
