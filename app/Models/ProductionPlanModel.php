@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Entities\ProductionPlan;
+use CodeIgniter\Shield\Authorization\AuthorizationException;
 use Faker\Factory;
 
 class ProductionPlanModel extends BaseModel
@@ -24,7 +25,6 @@ class ProductionPlanModel extends BaseModel
         'manager_id',
         'master_products_id',
         'status',
-        'operators'
     ];
 
     // Dates
@@ -38,6 +38,63 @@ class ProductionPlanModel extends BaseModel
     protected $validationRules = [];
     protected $validationMessages = [];
 
+
+    /**
+     * @param int $perPage
+     * @return array
+     */
+    public function findAllTodo(int $perPage = 20): array
+    {
+        $this->validateAuthorization("read");
+        return $this->todo()->paginate($perPage, "todo");
+    }
+
+    /**
+     * @param int $perPage
+     * @return array
+     */
+    public function findAllDone(int $perPage = 20): array
+    {
+        $this->validateAuthorization("read");
+        return $this->done()->paginate($perPage, "done");
+    }
+
+    /**
+     * @param int $perPage
+     * @return array
+     */
+    public function findAllOnProgress(int $perPage = 20): array
+    {
+        $this->validateAuthorization("read");
+        return $this->onProgress()->paginate($perPage, "progress");
+    }
+
+    public function todo(): ProductionPlanModel
+    {
+
+        $base = $this->findAllBase();
+        $base->where("production_plans.status", TODO);
+        return $this;
+    }
+
+    public function done(): ProductionPlanModel
+    {
+        $base = $this->findAllBase();
+        $base->where("production_plans.status", DONE);
+        return $this;
+    }
+
+    public function onProgress(): ProductionPlanModel
+    {
+        $base = $this->findAllBase();
+        $base->where("production_plans.status", ONPROGRESS);
+        return $this;
+    }
+
+    public function validateAuthorization(string $action)
+    {
+        if (!auth()->user()->can('production_plans.' . $action)) throw new AuthorizationException();
+    }
 
     /**
      * @param int $count
@@ -63,5 +120,18 @@ class ProductionPlanModel extends BaseModel
         }
 
         return $data;
+    }
+
+    /**
+     * @return \CodeIgniter\Database\BaseBuilder|null
+     */
+    public function findAllBase(): ?\CodeIgniter\Database\BaseBuilder
+    {
+        return $this->builder()
+            ->select("ppic.employee_id as ppic_employee_id, ppic.first_name as ppic_first_name")
+            ->select("manager.employee_id as manager_employee_id, manager.first_name as manager_first_name")
+            ->select("production_plans.id as id, quantity, production_ticket, ppic_id, due_date, done_date")
+            ->join("users as ppic", "production_plans.ppic_id = ppic.id", "left")
+            ->join("users as manager", "production_plans.manager_id = manager.id", "left");
     }
 }

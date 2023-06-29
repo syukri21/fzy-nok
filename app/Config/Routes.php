@@ -71,6 +71,13 @@ $routes->delete('/masterdata/api/material', 'BillOfMaterialController::deleteMat
 $routes->post('/masterdata/api/material', 'BillOfMaterialController::insertMaterial');
 
 
+// Production Plan
+$routes->get('/production/plan', 'ProductionPlanController::index');
+$routes->get('/production/plan', 'ProductionPlanController::index');
+$routes->get('/production/plan/add', 'ProductionPlanController::add');
+$routes->post('/production/plan/update', 'ProductionPlanController::update');
+$routes->get('/production/plan/edit', 'ProductionPlanController::edit');
+
 service('auth')->routes($routes);
 
 

@@ -7,9 +7,9 @@ use CodeIgniter\Entity\Entity;
 
 /**
  * @property int|string|null $id
- * @property int|null $masterdata_id
- * @property int|null $masterproduct_id
- * @property int|null $masterdata_qty
+ * @property string|null $production_ticket
+ * @property int|null $ppic_id
+ * @property int|null $manager_id
  */
 class MasterProductRequirement extends Entity
 {

@@ -68,7 +68,6 @@ class AuthGroups extends ShieldAuthGroups
         'users.edit' => 'Can edit existing non-admin users',
         'users.delete' => 'Can delete existing non-admin users',
         'users.read' => 'Can read existing non-admin users',
-        'beta.access' => 'Can access beta-level features',
     ];
 
     /**
@@ -84,6 +83,7 @@ class AuthGroups extends ShieldAuthGroups
             'users.*',
             'masterdatas.*',
             'bom.*',
+            'production_plans.*',
         ],
         'admin' => [
             'users.create',
@@ -92,8 +92,11 @@ class AuthGroups extends ShieldAuthGroups
             'users.read',
             'masterdatas.*',
             'bom.*',
+            'production_plans.*'
         ],
-        'operator' => [],
+        'operator' => [
+            "production_plans.read"
+        ],
         'ppic' => [],
         'manager' => [],
     ];

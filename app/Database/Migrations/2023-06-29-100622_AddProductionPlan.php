@@ -33,6 +33,7 @@ class AddProductionPlan extends Migration
             'deleted_at' => ['type' => 'datetime', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
+        $this->forge->addKey('status', false);
         $this->forge->addForeignKey('ppic_id', 'users', 'id');
         $this->forge->addForeignKey('manager_id', 'users', 'id');
         $this->forge->addForeignKey('master_products_id', 'master_products', 'id');
@@ -44,7 +45,6 @@ class AddProductionPlan extends Migration
         $this->forge->dropForeignKey('production_plans', 'ppic_id');
         $this->forge->dropForeignKey('production_plans', 'manager_id');
         $this->forge->dropForeignKey('production_plans', 'master_products_id');
-
         $this->forge->dropTable('production_plans');
     }
 }
