@@ -69,7 +69,7 @@ class BillOfMaterialController extends BaseController
      */
     public function create()
     {
-        $data = $this->request->getPost(['name', 'code', 'price', 'due_date', 'description', 'image', 'requirements']);
+        $data = $this->request->getPost(['name', 'code', 'price', 'description', 'image', 'requirements']);
         try {
             if ($imagePath = $this->doUpload()) $data['image'] = $imagePath;
             if (strlen($data['requirements']) != 0) $data['requirements'] = json_decode($data['requirements'], true);
@@ -97,7 +97,7 @@ class BillOfMaterialController extends BaseController
      */
     public function update()
     {
-        $data = $this->request->getPost(['id', 'name', 'code', 'price', 'due_date', 'description', 'image']);
+        $data = $this->request->getPost(['id', 'name', 'code', 'price', 'description', 'image']);
         try {
             if ($imagePath = $this->doUpload()) {
                 $data['image'] = $imagePath;
@@ -238,14 +238,6 @@ class BillOfMaterialController extends BaseController
                 'id' => 'price',
                 'class' => 'form-control',
             ],
-            'due_date' => [
-                'title' => 'Deadline',
-                'type' => 'text',
-                'name' => 'due_date',
-                'id' => 'due_date',
-                'class' => 'form-control datepicker',
-                'date' => true,
-            ],
             'description' => [
                 'title' => 'Deskripsi',
                 'type' => 'text',
@@ -313,15 +305,6 @@ class BillOfMaterialController extends BaseController
                 'id' => 'price',
                 'class' => 'form-control',
                 'value' => $data->price,
-            ],
-            'due_date' => [
-                'title' => 'Deadline',
-                'type' => 'text',
-                'name' => 'due_date',
-                'id' => 'due_date',
-                'class' => 'form-control datepicker',
-                'value' => $data->due_date->format('m/d/Y'),
-                'date' => true,
             ],
             'description' => [
                 'title' => 'Deskripsi',

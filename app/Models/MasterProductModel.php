@@ -22,7 +22,6 @@ class MasterProductModel extends BaseModel
         'name',
         'code',
         'price',
-        'due_date',
         'description',
         'image',
     ];
@@ -35,7 +34,6 @@ class MasterProductModel extends BaseModel
         'name' => 'required|alpha_numeric|min_length[3]',
         'code' => 'required|alpha_numeric|min_length[3]',
         'price' => 'required|greater_than[0]',
-        'due_date' => 'required',
     ];
     protected $skipValidation = false;
     protected $cleanValidationRules = true;

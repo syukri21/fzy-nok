@@ -31,7 +31,6 @@
                         <th>Harga</th>
                         <th>Gambar</th>
                         <th>Dibuat pada</th>
-                        <th>Batas waktu</th>
                         <th>Aksi</th>
                     </tr>
                     </thead>
@@ -59,9 +58,6 @@
                             </td>
                             <td>
                                 <?= esc($item->created_at->humanize()) ?>
-                            </td>
-                            <td>
-                                <?= esc($item->due_date->humanize()) ?>
                             </td>
                             <td>
                                 <div class="dropdown">
@@ -142,10 +138,6 @@
                                             pada</label>
                                         <div class="form-control col p-2 " id="bomdetailModal_createdAt"></div>
                                     </div>
-                                    <div class="mb-3 row">
-                                        <label for="bomdetailModal_dueDate" class="form-label col-3">Batas Waktu</label>
-                                        <div class="form-control col p-2 " id="bomdetailModal_dueDate"></div>
-                                    </div>
                                     <h6 class="card-title mt-5">Material</h6>
                                     <ul id="requirementList">
                                     </ul>
@@ -193,7 +185,6 @@
                             $('#bomdetailModal_code').text(itemData.code);
                             $('#bomdetailModal_price').text(itemData.price);
                             $('#bomdetailModal_createdAt').text(humanizeDate(itemData.created_at.date));
-                            $('#bomdetailModal_dueDate').text(humanizeDate(itemData.due_date.date));
                             $('#bomdetailModal_desc').text(itemData.description);
 
                         });

@@ -11,7 +11,6 @@ use CodeIgniter\Entity\Entity;
  * @property string|null $name
  * @property string|null $code
  * @property int|null $price
- * @property string|null $dueDate
  * @property string|null $description
  * @property array<MasterProductRequirement::class>|null $requirements
  * @property string|null $image
@@ -22,7 +21,7 @@ class MasterProduct extends Entity
     use CurrencyTrait;
 
     protected $datamap = [];
-    protected $dates = ['created_at', 'updated_at', 'deleted_at', 'due_date'];
+    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
     protected $casts = [];
     protected $requirements = [];
 
