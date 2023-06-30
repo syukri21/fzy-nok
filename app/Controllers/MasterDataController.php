@@ -154,7 +154,7 @@ class MasterDataController extends BaseController
             if ($uploadedPath = $this->doUpload()) $data['image'] = $uploadedPath;
             if ($masterdataModel->create($data)) return $this->redirectResponse(SUCCESS_RESPONSE, "Membuat");
         } catch (FileException $e) {
-            log_message('error file upload', $e);
+            log_message('error', $e);
             $errMsg = "Gagal upload gambar format tidak sesuai.";
         } catch (\Exception $e) {
             log_message('error', $e);

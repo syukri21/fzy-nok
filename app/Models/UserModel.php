@@ -53,7 +53,7 @@ class UserModel extends ShieldUserModel
     {
         if (!auth()->user()->can('users.create')) throw new AuthorizationException();
         $number = $this->getNextEmployeeIdLastNumber();
-        $entity->setUsername( $number);
+        $entity->setUsername($number);
         $entity->generateRandomPassword();
         return $this->insert($entity);
     }
@@ -120,7 +120,6 @@ class UserModel extends ShieldUserModel
         $query = $query->join('auth_groups_users', "auth_groups_users.user_id = users.id", "left")->get();
         return ($query->getFirstRow(UserEntity::class));
     }
-
 
     /**
      * @param string $employeeId
