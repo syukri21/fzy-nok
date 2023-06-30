@@ -158,7 +158,7 @@ $this->extend("layout/dashboard/main") ?>
             <!-- Production Plan -->
             <div class="col-12">
                 <div class="card ">
-                    <div class="card-header">Rencana Production</div>
+                    <div class="card-header bg-white">Rencana Production</div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
@@ -180,7 +180,7 @@ $this->extend("layout/dashboard/main") ?>
             <!-- PPIC -->
             <div class="col-6">
                 <div class="card">
-                    <div class="card-header">PPIC</div>
+                    <div class="card-header bg-white">PPIC</div>
                     <div class="card-body">
                         <p><strong>First Name:</strong> <span id="ppicFirstName"></span></p>
                         <p><strong>Last Name:</strong> <span id="ppicLastName"></span></p>
@@ -192,7 +192,7 @@ $this->extend("layout/dashboard/main") ?>
             <div class="col-6">
                 <!-- Manager -->
                 <div class="card ">
-                    <div class="card-header">Manager</div>
+                    <div class="card-header bg-white">Manager</div>
                     <div class="card-body">
                         <p><strong>First Name:</strong> <span id="managerFirstName"></span></p>
                         <p><strong>Last Name:</strong> <span id="managerLastName"></span></p>
@@ -204,7 +204,7 @@ $this->extend("layout/dashboard/main") ?>
             <div class="col">
                 <!-- Product -->
                 <div class="card col">
-                    <div class="card-header">Produk</div>
+                    <div class="card-header bg-white">Produk</div>
                     <div class="card-body">
                         <p><strong>Name:</strong> <span id="productName"></span></p>
                         <p><strong>Code:</strong> <span id="productCode"></span></p>
@@ -217,7 +217,7 @@ $this->extend("layout/dashboard/main") ?>
             <div class="col-auto">
                 <!-- Requirements -->
                 <div class="card col">
-                    <div class="card-header">Materials</div>
+                    <div class="card-header bg-white">Materials</div>
                     <div class="card-body">
                         <table class="table">
                             <thead>
