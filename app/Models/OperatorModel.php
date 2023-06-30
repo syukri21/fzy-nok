@@ -10,6 +10,7 @@ use Faker\Generator;
 
 class OperatorModel extends UserModel
 {
+
     private Generator $faker;
 
     public function __construct(?ConnectionInterface $db = null, ?ValidationInterface $validation = null)
@@ -35,6 +36,15 @@ class OperatorModel extends UserModel
             $user->activate();
             $user->addGroup('operator');
         }
+    }
+
+    public function findManyID(int $count): array
+    {
+        $resultArray = $this->builder()->select('users.id')->join('auth_groups_users group', "group.id = users.id AND group.group = 'operator' ", 'inner')->get($count)->getResultArray();
+        return array_reduce($resultArray, function ($carry, $item) {
+            $carry[] = $item['id'];
+            return $carry;
+        }, []);
     }
 
 }

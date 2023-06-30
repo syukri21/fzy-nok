@@ -17,10 +17,9 @@ class ProductionPlanSeeder extends Seeder
         parent::__construct($config, $db);
     }
 
-
     public function run()
     {
-        $fakeData = $this->productionPlanModel->generateFakeData(162);
+        $fakeData = $this->productionPlanModel->generateFakeData(30);
         try {
             $this->productionPlanModel->insertBatch($fakeData);
         } catch (\ReflectionException $e) {
