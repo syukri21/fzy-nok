@@ -38,6 +38,7 @@ class OperatorModel extends UserModel
         }
     }
 
+
     public function findManyID(int $count): array
     {
         $resultArray = $this->builder()->select('users.id')->join('auth_groups_users group', "group.id = users.id AND group.group = 'operator' ", 'inner')->get($count)->getResultArray();
@@ -47,4 +48,15 @@ class OperatorModel extends UserModel
         }, []);
     }
 
+
+    /**
+     * @param array $ids
+     * @return array
+     */
+    public function finManyById(array $ids): array
+    {
+
+        $query = $this->builder()->select("users.*")->join('auth_groups_users group', "group.id = users.id AND group.group = 'operator' ", 'inner');
+        return $query->whereIn('users.id', $ids)->get()->getResult(UserEntity::class);
+    }
 }

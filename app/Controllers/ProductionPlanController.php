@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\MasterProductModel;
 use App\Models\MasterProductRequirementModel;
+use App\Models\OperatorProductionModel;
 use App\Models\ProductionPlanModel;
 use App\Models\UserModel;
 use CodeIgniter\API\ResponseTrait;
@@ -62,13 +63,18 @@ class ProductionPlanController extends BaseController
         $requirementsModel = new MasterProductRequirementModel();
         $requirements = $requirementsModel->findByMasterProductId($productionPlan->master_products_id);
 
+        $operatorProductionModel = new OperatorProductionModel();
+        $operatorProduction = $operatorProductionModel->findOperatorProduction($productionPlan->id);
 
-        return $this->respond(["data" => [
-            "productionPlan" => $productionPlan,
-            "ppic" => $ppic,
-            "manager" => $manager,
-            "product" => $masterProduct,
-            "requirements" => $requirements
-        ]]);
+        return $this->respond([
+                "data" => [
+                    "productionPlan" => $productionPlan,
+                    "ppic" => $ppic,
+                    "manager" => $manager,
+                    "product" => $masterProduct,
+                    "requirements" => $requirements,
+                    "operatorProduction" => $operatorProduction
+                ]]
+        );
     }
 }

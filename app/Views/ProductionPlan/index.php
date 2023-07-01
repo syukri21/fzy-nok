@@ -121,7 +121,6 @@ $this->extend("layout/dashboard/main") ?>
         </div>
     </div>
 
-    <!-- Modal -->
     <div class="modal fade mt" id="modalDetailProductionPlan" data-bs-backdrop="static" data-bs-keyboard="false"
          tabindex="-1" aria-labelledby="modalDetailProductionPlanLabel" aria-hidden="true">
         <div class="modal-dialog modal-fullscreen  modal-dialog-scrollable" style="margin-top: 0">
@@ -138,110 +137,115 @@ $this->extend("layout/dashboard/main") ?>
         </div>
     </div>
 
-
     <script>
-
         function loadingContent() {
             return $(`
-                 <!-- Loading Indicator HTML -->
-            <div id="loadingIndicator" class="spinner-border" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>
+<div id="loadingIndicator" class="spinner-border" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div>
             `)
-
         }
 
         function modalContent() {
             return $(`
-  <div class="container">
-        <div class="row g-3">
-            <!-- Production Plan -->
-            <div class="col-12">
-                <div class="card ">
-                    <div class="card-header bg-white">Rencana Production</div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p><strong>ID:</strong> <span id="productionPlanId"></span></p>
-                                <p><strong>Production Ticket:</strong> <span id="productionTicket"></span></p>
-                                <p><strong>Quantity:</strong> <span id="quantity"></span></p>
-                                <p><strong>Status:</strong> <span id="status"></span></p>
-                            </div>
-                            <div class="col-md-6">
-                                <p><strong>Order Date:</strong> <span id="orderDate"></span></p>
-                                <p><strong>Due Date:</strong> <span id="dueDate"></span></p>
-                                <p><strong>Done Date:</strong> <span id="doneDate"></span></p>
-                            </div>
+<div class="container">
+    <div class="row g-3">
+        <div class="col">
+            <!-- Product -->
+            <div class="card col">
+                <div class="card-header bg-white">Produk</div>
+                <div class="card-body">
+                    <p><strong>Name:</strong> <span id="productName"></span></p>
+                    <p><strong>Code:</strong> <span id="productCode"></span></p>
+                    <p><strong>Price:</strong> <span id="productPrice"></span></p>
+                    <p><strong>Description:</strong> <span id="productDescription"></span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Production Plan -->
+        <div class="col-8">
+            <div class="card ">
+                <div class="card-header bg-white">Rencana Production</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>ID:</strong> <span id="productionPlanId"></span></p>
+                            <p><strong>Production Ticket:</strong> <span id="productionTicket"></span></p>
+                            <p><strong>Quantity:</strong> <span id="quantity"></span></p>
+                            <p><strong>Status:</strong> <span id="status"></span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Order Date:</strong> <span id="orderDate"></span></p>
+                            <p><strong>Due Date:</strong> <span id="dueDate"></span></p>
+                            <p><strong>Done Date:</strong> <span id="doneDate"></span></p>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- PPIC -->
-            <div class="col-6">
-                <div class="card">
-                    <div class="card-header bg-white">PPIC</div>
-                    <div class="card-body">
-                        <p><strong>First Name:</strong> <span id="ppicFirstName"></span></p>
-                        <p><strong>Last Name:</strong> <span id="ppicLastName"></span></p>
-                        <p><strong>Employee ID:</strong> <span id="ppicEmployeeId"></span></p>
-                    </div>
+
+
+        <!-- PPIC -->
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header bg-white">PPIC</div>
+                <div class="card-body">
+                    <p><strong>First Name:</strong> <span id="ppicFirstName"></span></p>
+                    <p><strong>Last Name:</strong> <span id="ppicLastName"></span></p>
+                    <p><strong>Employee ID:</strong> <span id="ppicEmployeeId"></span></p>
                 </div>
-            </div>
-
-            <div class="col-6">
-                <!-- Manager -->
-                <div class="card ">
-                    <div class="card-header bg-white">Manager</div>
-                    <div class="card-body">
-                        <p><strong>First Name:</strong> <span id="managerFirstName"></span></p>
-                        <p><strong>Last Name:</strong> <span id="managerLastName"></span></p>
-                        <p><strong>Employee ID:</strong> <span id="managerEmployeeId"></span></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-                <!-- Product -->
-                <div class="card col">
-                    <div class="card-header bg-white">Produk</div>
-                    <div class="card-body">
-                        <p><strong>Name:</strong> <span id="productName"></span></p>
-                        <p><strong>Code:</strong> <span id="productCode"></span></p>
-                        <p><strong>Price:</strong> <span id="productPrice"></span></p>
-                        <p><strong>Description:</strong> <span id="productDescription"></span></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-auto">
-                <!-- Requirements -->
-                <div class="card col">
-                    <div class="card-header bg-white">Materials</div>
-                    <div class="card-body">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>Masterdata Qty</th>
-                                <th>Masterdata Type</th>
-                                <th>Name</th>
-                                <th>Image</th>
-                            </tr>
-                            </thead>
-                            <tbody id="requirementsTableBody"></tbody>
-                        </table>
-                    </div>
-                </div>
-
             </div>
         </div>
+
+        <div class="col-6">
+            <!-- Manager -->
+            <div class="card ">
+                <div class="card-header bg-white">Manager</div>
+                <div class="card-body">
+                    <p><strong>First Name:</strong> <span id="managerFirstName"></span></p>
+                    <p><strong>Last Name:</strong> <span id="managerLastName"></span></p>
+                    <p><strong>Employee ID:</strong> <span id="managerEmployeeId"></span></p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col">
+            <!-- Requirements -->
+            <div class="card">
+                <div class="card-header bg-white">Materials</div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Masterdata Qty</th>
+                            <th>Masterdata Type</th>
+                            <th>Name</th>
+                            <th>Image</th>
+                        </tr>
+                        </thead>
+                        <tbody id="requirementsTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-12">
+            <!-- Requirements -->
+            <div class="row" id="operator-production" >
+            </div>
+        </div>
+
+
     </div>
+</div>
             `)
         }
 
         function renderModalContent(data) {
-
-
             // Production Plan
             $('#productionPlanId').text(data.productionPlan.id);
             $('#productionTicket').text(data.productionPlan.production_ticket);
@@ -268,9 +272,10 @@ $this->extend("layout/dashboard/main") ?>
             $('#productDescription').text(data.product.description);
 
             // Requirements
-            const requirementsTableBody = $('#requirementsTableBody');
-            data.requirements.forEach(function (requirement) {
-                const row = `
+            if (data.requirements.length > 0) {
+                const requirementsTableBody = $('#requirementsTableBody');
+                data.requirements.forEach(function (requirement) {
+                    const row = `
                         <tr>
                           <td>${requirement.masterdata_qty}</td>
                           <td>${requirement.masterdata_type}</td>
@@ -278,8 +283,12 @@ $this->extend("layout/dashboard/main") ?>
                           <td>${requirement.image}</td>
                         </tr>
                       `;
-                requirementsTableBody.append(row);
-            });
+                    requirementsTableBody.append(row);
+                });
+            }
+
+            const operatorProduction = $('#operator-production');
+            displayOperatorProduction(data.operatorProduction, operatorProduction)
         }
 
         function clearModalContent() {
@@ -304,6 +313,33 @@ $this->extend("layout/dashboard/main") ?>
             });
         }
 
+        function displayOperatorProduction(data, container) {
+            // Loop through the operator production data
+            for (var i = 0; i < data.length; i++) {
+                var shift = data[i];
+
+                // Create a card for each shift
+                var card = $('<div>').addClass('card col-6 shift-card');
+                $('<div>').addClass('card-header bg-white').text(shift.data.name).appendTo(card);
+                var cardBody = $('<div>').addClass('card-body').appendTo(card);
+
+                // Display shift name, start time, and end time
+                $('<p>').addClass('card-text').text('Start Time: ' + shift.data.start_time).appendTo(cardBody);
+                $('<p>').addClass('card-text').text('End Time: ' + shift.data.end_time).appendTo(cardBody);
+
+                // Display operators in the shift
+                var operatorsList = $('<ul>').addClass('list-group');
+                for (var j = 0; j < shift.operators.length; j++) {
+                    var operator = shift.operators[j];
+                    var operatorName = operator.first_name + ' ' + operator.last_name;
+                    $('<li>').addClass('list-group-item').text(operatorName).appendTo(operatorsList);
+                }
+                operatorsList.appendTo(cardBody);
+
+                // Append the shift card to the main container
+                card.appendTo(container);
+            }
+        }
 
         window.addEventListener('DOMContentLoaded', function () {
             $('#modalDetailProductionPlan').on('show.bs.modal', function (event) {
