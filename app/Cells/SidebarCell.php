@@ -155,12 +155,6 @@ class SidebarCell extends Cell
         'production' => [
             'name' => 'Produksi',
             'menus' => [
-                'plan' => [
-                    'name' => 'Rencana Produksi',
-                    'icon_style' => 'menu-icon mdi mdi-file-check',
-                    'url' => 'production/plan',
-                    'actions' => ['read']
-                ],
                 'running' => [
                     'name' => 'Produksi ',
                     'icon_style' => 'menu-icon mdi mdi-wrench',
