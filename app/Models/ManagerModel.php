@@ -8,7 +8,7 @@ use CodeIgniter\Validation\ValidationInterface;
 use Faker\Factory;
 use Faker\Generator;
 
-class OperatorModel extends UserModel
+class ManagerModel extends UserModel
 {
     private Generator $faker;
 
@@ -18,7 +18,7 @@ class OperatorModel extends UserModel
         $this->faker = Factory::create("id_ID");
     }
 
-    public function generateFaker(int $total)
+    public function generateFaker(int $total = 5)
     {
         for ($i = 0; $i < $total; $i++) {
             $userEntity = new UserEntity();
@@ -29,33 +29,11 @@ class OperatorModel extends UserModel
             ]);
             $number = $this->getNextEmployeeIdLastNumber();
             $userEntity->setUsername($number);
-            $userEntity->setPassword("password");
+            $userEntity->setPassword("manager_password");
             $userId = $this->insert($userEntity);
             $user = $this->find($userId);
             $user->activate();
-            $user->addGroup('operator');
+            $user->addGroup('manager');
         }
-    }
-
-
-    public function findManyID(int $count): array
-    {
-        $resultArray = $this->builder()->select('users.id')->join('auth_groups_users group', "group.id = users.id AND group.group = 'operator' ", 'inner')->get($count)->getResultArray();
-        return array_reduce($resultArray, function ($carry, $item) {
-            $carry[] = $item['id'];
-            return $carry;
-        }, []);
-    }
-
-
-    /**
-     * @param array $ids
-     * @return array
-     */
-    public function finManyById(array $ids): array
-    {
-
-        $query = $this->builder()->select("users.*")->join('auth_groups_users group', "group.id = users.id AND group.group = 'operator' ", 'inner');
-        return $query->whereIn('users.id', $ids)->get()->getResult(UserEntity::class);
     }
 }

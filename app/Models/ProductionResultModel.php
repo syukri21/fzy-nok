@@ -59,14 +59,23 @@ class ProductionResultModel extends BaseModel
         $data = [];
 
         // get all operator employee_id
-        $queryOperatorEmployee = $this->db->query("
+        $queryOperatorManager = $this->db->query("
             SELECT u.employee_id
             FROM auth_groups_users AS agu
             LEFT JOIN nok.users u ON u.id = agu.user_id
             WHERE agu.`group` = 'operator'
         ");
-        $operatorsEmployeeIds = $queryOperatorEmployee->getResult();
+        $operatorsEmployeeIds = $queryOperatorManager->getResult();
         $operatorsEmployeeIdArrays = array_map(fn($item) => $item->employee_id, $operatorsEmployeeIds);
+
+        // get all manager employee_id
+        $queryOperatorManager = $this->db->query("
+            SELECT u.employee_id
+            FROM auth_groups_users AS agu
+            LEFT JOIN nok.users u ON u.id = agu.user_id
+            WHERE agu.`group` = 'manager'
+        ")->getResult();
+        $operatorsManagerIdsArray = array_map(fn($item) => $item->employee_id, $queryOperatorManager);
 
         // get all production_plan_id
         $queryProductionPlanIds = $this->db->query("
@@ -83,7 +92,7 @@ class ProductionResultModel extends BaseModel
                 'quantity_produced' => $faker->numberBetween(60, 100),
                 'quantity_rejected' => $faker->numberBetween(0, 30),
                 'production_date' => $faker->dateTimeBetween('+1 week', '+1 month')->format('Y-m-d H:i:s'),
-                'checked_by' => $faker->randomElement($operatorsEmployeeIdArrays),
+                'checked_by' => $faker->randomElement($operatorsManagerIdsArray),
                 'reported_by' => $faker->randomElement($operatorsEmployeeIdArrays),
             ];
         }
