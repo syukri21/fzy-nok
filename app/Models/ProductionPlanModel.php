@@ -43,7 +43,7 @@ class ProductionPlanModel extends BaseModel
      * @param int $perPage
      * @return array
      */
-    public function findAllTodo(int $perPage = 20): array
+    public function  findAllTodo(int $perPage = 20): array
     {
         $this->validateAuthorization("read");
         return $this->todo()->paginate($perPage, "todo");

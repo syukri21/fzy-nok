@@ -3,9 +3,10 @@
 namespace App\Models;
 
 use App\Entities\ProductionResult;
-use CodeIgniter\Model;
+use CodeIgniter\Shield\Authorization\AuthorizationException;
+use Faker\Factory;
 
-class ProductionResultModel extends Model
+class ProductionResultModel extends BaseModel
 {
     protected $DBGroup = 'default';
     protected $table = 'production_result';
@@ -24,7 +25,7 @@ class ProductionResultModel extends Model
     ];
 
     // Dates
-    protected $useTimestamps = false;
+    protected $useTimestamps = true;
     protected $dateFormat = 'datetime';
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
@@ -46,4 +47,49 @@ class ProductionResultModel extends Model
     protected $afterFind = [];
     protected $beforeDelete = [];
     protected $afterDelete = [];
+
+    public function validateAuthorization(string $action)
+    {
+        if (!auth()->user()->can($this->table . $action)) throw new AuthorizationException();
+    }
+
+    public function generateFakeData(int $count = 10): array
+    {
+        $faker = Factory::create("id_ID");
+        $data = [];
+
+        // get all operator employee_id
+        $queryOperatorEmployee = $this->db->query("
+            SELECT u.employee_id
+            FROM auth_groups_users AS agu
+            LEFT JOIN nok.users u ON u.id = agu.user_id
+            WHERE agu.`group` = 'operator'
+        ");
+        $operatorsEmployeeIds = $queryOperatorEmployee->getResult();
+        $operatorsEmployeeIdArrays = array_map(fn($item) => $item->employee_id, $operatorsEmployeeIds);
+
+        // get all production_plan_id
+        $queryProductionPlanIds = $this->db->query("
+            select pp.id
+            from production_plans pp
+            where pp.status
+            limit 10
+        ")->getResult();
+        $productionPlansIds = array_map(fn($item) => $item->id, $queryProductionPlanIds);
+
+        for ($i = 0; $i < $count; $i++) {
+            $data[] = [
+                'production_plan_id' => $faker->randomElement($productionPlansIds),
+                'quantity_produced' => $faker->numberBetween(60, 100),
+                'quantity_rejected' => $faker->numberBetween(0, 30),
+                'production_date' => $faker->dateTimeBetween('+1 week', '+1 month')->format('Y-m-d H:i:s'),
+                'checked_by' => $faker->randomElement($operatorsEmployeeIdArrays),
+                'reported_by' => $faker->randomElement($operatorsEmployeeIdArrays),
+            ];
+        }
+
+        return $data;
+
+    }
+
 }
