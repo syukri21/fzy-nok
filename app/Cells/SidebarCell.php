@@ -8,17 +8,19 @@ use Config\Services;
 
 class SidebarCell extends Cell
 {
-
     protected Session $cache;
 
-    protected array $menus = [
+    protected array $menus = [];
+
+    protected array $superadminMenus = [
         'user_management' => [
             'name' => 'User Management',
             'menus' => [
                 'user' => [
                     'name' => 'Kelola User',
                     'icon_style' => 'menu-icon mdi mdi-account-multiple',
-                    'url' => 'usermanagement/manageuser'
+                    'url' => 'usermanagement/manageuser',
+                    'actions' => ['read', 'create', 'update', 'delete'],
                 ],
             ]
         ],
@@ -28,17 +30,20 @@ class SidebarCell extends Cell
                 'plan' => [
                     'name' => 'Rencana Produksi',
                     'icon_style' => 'menu-icon mdi mdi-file-check',
-                    'url' => 'production/plan'
+                    'url' => 'production/plan',
+                    'actions' => ['read', 'create', 'update', 'delete'],
                 ],
                 'running' => [
                     'name' => 'Produksi ',
                     'icon_style' => 'menu-icon mdi mdi-wrench',
-                    'url' => 'production/running'
+                    'url' => 'production/running',
+                    'actions' => ['read', 'create', 'update', 'delete'],
                 ],
                 'result' => [
                     'name' => 'Hasil Produksi',
                     'icon_style' => 'menu-icon mdi  mdi-chart-areaspline',
-                    'url' => 'production/result'
+                    'url' => 'production/result',
+                    'actions' => ['read', 'create', 'update', 'delete'],
                 ]
             ],
         ],
@@ -48,12 +53,14 @@ class SidebarCell extends Cell
                 'master_data' => [
                     'name' => 'Master Data',
                     'icon_style' => 'menu-icon mdi mdi-database',
-                    'url' => 'masterdata/managemasterdata'
+                    'url' => 'masterdata/managemasterdata',
+                    'actions' => ['read', 'create', 'update', 'delete'],
                 ],
                 'bill_of_material' => [
                     'name' => 'Bill Of Material',
                     'icon_style' => 'menu-icon mdi  mdi-file-document-box',
-                    'url' => 'masterdata/managebom'
+                    'url' => 'masterdata/managebom',
+                    'actions' => ['read', 'create', 'update', 'delete'],
                 ]
             ],
         ],
@@ -63,17 +70,143 @@ class SidebarCell extends Cell
                 'change_password' => [
                     'name' => 'Ubah Password',
                     'icon_style' => 'menu-icon mdi mdi-key-variant',
-                    'url' => 'changeoassword'
+                    'url' => 'changepassword',
+                    'actions' => ['read', 'create', 'update', 'delete'],
                 ],
             ],
         ],
     ];
-    protected array $exclude_menus = [];
+
+    protected array $ppicMenus = [
+        'production' => [
+            'name' => 'Produksi',
+            'menus' => [
+                'plan' => [
+                    'name' => 'Rencana Produksi',
+                    'icon_style' => 'menu-icon mdi mdi-file-check',
+                    'url' => 'production/plan',
+                    'actions' => ['read', 'create', 'update', 'delete'],
+                ],
+                'running' => [
+                    'name' => 'Produksi ',
+                    'icon_style' => 'menu-icon mdi mdi-wrench',
+                    'url' => 'production/running',
+                    'actions' => ['read', 'update', 'delete'],
+                ],
+                'result' => [
+                    'name' => 'Hasil Produksi',
+                    'icon_style' => 'menu-icon mdi  mdi-chart-areaspline',
+                    'url' => 'production/result',
+                    'actions' => ['read'],
+                ]
+            ],
+        ],
+        'personal' => [
+            'name' => 'Personal',
+            'menus' => [
+                'change_password' => [
+                    'name' => 'Ubah Password',
+                    'icon_style' => 'menu-icon mdi mdi-key-variant',
+                    'url' => 'changepassword',
+                    'actions' => ['read', 'create', 'update', 'delete'],
+                ],
+            ],
+        ],
+    ];
+
+    protected array $managerMenus = [
+        'production' => [
+            'name' => 'Produksi',
+            'menus' => [
+                'plan' => [
+                    'name' => 'Rencana Produksi',
+                    'icon_style' => 'menu-icon mdi mdi-file-check',
+                    'url' => 'production/plan',
+                    'actions' => ['read'],
+                ],
+                'running' => [
+                    'name' => 'Produksi ',
+                    'icon_style' => 'menu-icon mdi mdi-wrench',
+                    'url' => 'production/running',
+                    'actions' => ['read', 'start', 'finish'],
+                ],
+                'result' => [
+                    'name' => 'Hasil Produksi',
+                    'icon_style' => 'menu-icon mdi  mdi-chart-areaspline',
+                    'url' => 'production/result',
+                    'actions' => ['read', 'accept'],
+                ]
+            ],
+        ],
+        'personal' => [
+            'name' => 'Personal',
+            'menus' => [
+                'change_password' => [
+                    'name' => 'Ubah Password',
+                    'icon_style' => 'menu-icon mdi mdi-key-variant',
+                    'url' => 'changepassword',
+                    'actions' => ['read', 'create', 'update', 'delete'],
+                ],
+            ],
+        ],
+    ];
+
+    protected array $operatorMenus = [
+        'production' => [
+            'name' => 'Produksi',
+            'menus' => [
+                'plan' => [
+                    'name' => 'Rencana Produksi',
+                    'icon_style' => 'menu-icon mdi mdi-file-check',
+                    'url' => 'production/plan',
+                    'actions' => ['read']
+                ],
+                'running' => [
+                    'name' => 'Produksi ',
+                    'icon_style' => 'menu-icon mdi mdi-wrench',
+                    'url' => 'production/running',
+                    'actions' => ['read']
+                ],
+                'result' => [
+                    'name' => 'Hasil Produksi',
+                    'icon_style' => 'menu-icon mdi  mdi-chart-areaspline',
+                    'url' => 'production/result',
+                    'actions' => ['read', 'create', 'update', 'delete']
+                ]
+            ],
+        ],
+        'personal' => [
+            'name' => 'Personal',
+            'menus' => [
+                'change_password' => [
+                    'name' => 'Ubah Password',
+                    'icon_style' => 'menu-icon mdi mdi-key-variant',
+                    'url' => 'changepassword'
+                ],
+            ],
+        ],
+    ];
 
     public function __construct()
     {
         $this->cache = Services::session();
-        $this->getFilteredMenus();
+    }
+
+    /**
+     * @return void
+     */
+    public function setupMenus()
+    {
+        $groups = auth()->getUser()->getGroups();
+        if (in_array('manager', $groups)) {
+            $this->menus = $this->managerMenus;
+        } elseif (in_array('ppic', $groups)) {
+            $this->menus = $this->ppicMenus;
+        } elseif (in_array('superadmin', $groups)) {
+            $this->menus = $this->superadminMenus;
+        } else {
+            $this->menus = $this->operatorMenus;
+        }
     }
 
     /**
@@ -89,26 +222,8 @@ class SidebarCell extends Cell
             return $this->cache->get($cacheKey);
         }
 
-        $filteredMenus = [];
-
-        foreach ($this->menus as $menuKey => $menu) {
-            if (array_key_exists($menuKey, $this->exclude_menus)) {
-                $excludedItems = $this->exclude_menus[$menuKey];
-                if (is_array($menu) && array_key_exists('menus', $menu)) {
-                    $excludedMenus = $menu['menus'];
-                    foreach ($excludedItems as $excludedMenu) {
-                        unset($excludedMenus[$excludedMenu]);
-                    }
-                    if (count($excludedMenus) == 0) {
-                        continue;
-                    }
-                    $menu['menus'] = $excludedMenus;
-                }
-            }
-
-            $filteredMenus[$menuKey] = $menu;
-        }
-
+        $this->setupMenus();;
+        $filteredMenus = $this->menus;
         $this->cache->set($cacheKey, $filteredMenus); // Cache for 1 hour
 
         return $filteredMenus;
