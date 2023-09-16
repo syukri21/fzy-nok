@@ -10,7 +10,6 @@ use Faker\Factory;
 
 class OperatorProductionModel extends Model
 {
-
     protected $DBGroup = 'default';
     protected $table = 'agg__production_plans__operator';
     protected $returnType = OperatorProduction::class;

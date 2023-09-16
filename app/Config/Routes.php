@@ -73,13 +73,17 @@ $routes->post('/masterdata/api/material', 'BillOfMaterialController::insertMater
 
 // Production Plan
 $routes->get('/production/plan', 'ProductionPlanController::index');
-$routes->get('/production/plan', 'ProductionPlanController::index');
 $routes->get('/production/plan/add', 'ProductionPlanController::add');
 $routes->post('/production/plan/update', 'ProductionPlanController::update');
 $routes->get('/production/plan/edit', 'ProductionPlanController::edit');
 
 // Production Plan API
 $routes->get('/api/production/plan', 'ProductionPlanController::get');
+
+
+// Production Running
+$routes->get('/production/running', 'ProductionRunningController::index');
+
 
 service('auth')->routes($routes);
 
