@@ -60,7 +60,7 @@ classDiagram
         - code: string
         - price: int64
         - description: string
-        - requirements : List~MasterDataRequirement~
+        - requirements: List~MasterDataRequirement~
         - image: Image
     }
 
@@ -90,29 +90,31 @@ classDiagram
         - id: int
         - productionPlanId: id
         - quantityProduced: int
+        - quantityRejected: int
         - productionDate: Date
+        - evidence_image: String
+        - createdAt: Date
+        - updatedAt: Date
+        - deletedAt: Date
+        - reported_by: int
+        - checked_by: int
     }
 
-
-    MasterDataRequirement --*  MasterProduct
+    MasterDataRequirement --* MasterProduct
     MasterData --* MasterDataRequirement
-
     UserRole "1" -- "0..*" User
-
     User <|-- PPIC
     User <|-- Admin
     User <|-- Manager
     User <|-- Operator
-
-    PPIC "1" --* "0..*" ProductionPlan : Create, Read, Update, Delete
+    PPIC "1" --* "0..*" ProductionPlan: Create, Read, Update, Delete
     Operator --* ProductionPlan
-    PPIC "1" -- "0..*" ProductionResult : Read
-    Manager "1" -- "0..*" ProductionPlan : Create, Read, Update, Delete
-    Manager "1" -- "0..*" ProductionResult : Read, Update
-    Operator "1" -- "0..*" ProductionResult : Read, Create, Update, Delete
+    PPIC "1" -- "0..*" ProductionResult: Read
+    Manager "1" -- "0..*" ProductionPlan: Create, Read, Update, Delete
+    Manager "1" -- "0..*" ProductionResult: Read, Update
+    Operator "1" -- "0..*" ProductionResult: Read, Create, Update, Delete
     Admin "1" -- "0..*" MasterData: Create, Read, Update, Delete
     Admin "1" -- "0..*" MasterProduct: Create, Read, Update, Delete
-
     MasterProduct "1" -- "0..*" ProductionPlan
     ProductionPlan "1" -- "0..*" ProductionResult
 ```
