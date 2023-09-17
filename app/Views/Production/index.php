@@ -30,8 +30,10 @@ $this->extend("layout/dashboard/main") ?>
 
 <?php /** @var stdClass $production */ ?>
     <div>
-        <h3>Detail Tiket Produksi </h3>
-        <h3 class="badge bg-success"><?= $production->status ?></h3>
+        <div class="d-flex">
+            <h3>Detail Tiket Produksi </h3>
+            <h3 class="badge bg-success ms-3"><?= $production->status ?></h3>
+        </div>
         <div class="card mt-4">
             <div class="card-body">
                 <h5 class="card-title">Informasi Umum</h5>
