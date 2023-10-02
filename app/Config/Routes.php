@@ -3,6 +3,8 @@
 namespace Config;
 
 // Create a new instance of our RouteCollection class.
+use App\Controllers\LogoutController;
+
 $routes = Services::routes();
 
 /*
@@ -32,6 +34,7 @@ $routes->set404Override();
 $routes->get('/', 'HomeController::index');
 $routes->get('/login', 'LoginController::index');
 $routes->post('/login', 'LoginController::authenticate');
+$routes->get('/logout', 'LogoutController::index');
 $routes->get('/changepassword', 'LoginController::index');
 
 
