@@ -13,5 +13,8 @@ class ProductionResult extends Entity
         'quantity_produced' => 'int',
         'quantity_rejected' => 'time',
         'production_date' => 'datetime',
+        'evidence' => 'array',
+        'checked_by' => 'string',
+        'reported_by' => 'string'
     ];
 }
