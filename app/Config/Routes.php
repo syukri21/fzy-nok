@@ -4,6 +4,7 @@ namespace Config;
 
 // Create a new instance of our RouteCollection class.
 use App\Controllers\LogoutController;
+use App\Controllers\ProductionResultController;
 
 $routes = Services::routes();
 
@@ -87,6 +88,11 @@ $routes->get('/api/production/plan', 'ProductionPlanController::get');
 // Production Running
 $routes->get('/production/running', 'ProductionRunningController::index');
 
+// Production Results
+$routes->get('/production/result', 'ProductionResultController::index');
+$routes->post('/production/result/add', 'ProductionResultController::add');
+$routes->post('/production/result/update', 'ProductionResultController::update');
+$routes->get('/production/result/delete', 'ProductionResultController::delete');
 
 service('auth')->routes($routes);
 
