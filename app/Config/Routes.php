@@ -3,8 +3,6 @@
 namespace Config;
 
 // Create a new instance of our RouteCollection class.
-use App\Controllers\LogoutController;
-use App\Controllers\ProductionResultController;
 
 $routes = Services::routes();
 
@@ -88,9 +86,12 @@ $routes->get('/api/production/plan', 'ProductionPlanController::get');
 // Production Running
 $routes->get('/production/running', 'ProductionRunningController::index');
 
-// Production Results
+// Production Results View
 $routes->get('/production/result', 'ProductionResultController::index');
-$routes->post('/production/result/add', 'ProductionResultController::add');
+$routes->get('/production/result/add', 'ProductionResultController::add');
+$routes->get('/production/result/edit', 'ProductionResultController::edit');
+
+$routes->post('/production/result/add', 'ProductionResultController::create');
 $routes->post('/production/result/update', 'ProductionResultController::update');
 $routes->get('/production/result/delete', 'ProductionResultController::delete');
 
