@@ -27,6 +27,11 @@
                                     <i class="mdi mdi-calendar-clock"></i>
                                 </span>
                             </div>
+                        <?php elseif ($form['type'] == 'file'): ?>
+                            <div class="d-block" >
+                                <img id="<?= $form['id'] ?>-image" style="height: 200px" class="p-2" hidden alt="#">
+                                <?= form_input($form) ?>
+                            </div>
                         <?php else: ?>
                             <?= form_input($form) ?>
                         <?php endif ?>
@@ -41,5 +46,23 @@
         </form>
     </div>
 </div>
+
+<script>
+    function onChangeImage(el){
+        if (el.files.length === 0){
+            $("#evidence-image").attr("hidden", true)
+            return
+        }
+        let file = el.files[0]
+        let reader = new FileReader();
+        reader.onload = function(e) {
+            let base64Value = e.target.result;
+            let $evidence = $("#evidence-image");
+            $evidence.attr("src", base64Value)
+            $evidence.removeAttr("hidden", true)
+        };
+        reader.readAsDataURL(file);
+    }
+</script>
 
 <?= $this->endSection() ?>

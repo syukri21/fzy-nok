@@ -55,6 +55,7 @@ class ProductionResultController extends BaseController
                 'name' => 'evidence',
                 'id' => 'evidence',
                 'class' => 'form-control p-2',
+                'onchange' => "onChangeImage(this)"
             ]
         ];
         return view('ProductionResult/add', ['forms' => $forms]);
