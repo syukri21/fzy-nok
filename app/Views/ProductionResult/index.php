@@ -1,4 +1,6 @@
-<?php /** @var string $production_id */ ?>
+<?php /** @var string $production_id */
+/** @var string $production_ticket */
+?>
 <?php $this->extend("layout/dashboard/main") ?>
 <?= $this->section('content') ?>
 <style>
@@ -32,7 +34,10 @@
 <div class="card p-4">
     <div class="mb-3 d-flex justify-content-between">
         <div>
-            <h3 class="title">Hasil Produksi</h3>
+            <div class="d-flex">
+                <h3 class="title me-3">Hasil Produksi</h3>
+                <strong><span class="badge bg-primary"><?= $production_ticket ?></span></strong>
+            </div>
             <p>Ini merupakan list daftar hasil produksi</p>
         </div>
         <div>
@@ -53,6 +58,7 @@
             <th>Jumlah Ditolak</th>
             <th>Diperiksa Oleh</th>
             <th>Dilaporkan Oleh</th>
+            <th>Bukti</th>
         </tr>
         </thead>
         <tbody>
@@ -63,8 +69,13 @@
                 <td><?= $datum->production_date->humanize() ?></td>
                 <td><?= $datum->quantity_produced ?></td>
                 <td><?= $datum->quantity_rejected ?></td>
-                <td><?= $datum->checked_by ?></td>
-                <td><?= $datum->reported_by ?></td>
+                <td><span class="text-black fw-bold">(<?= $datum->checker_first_name ?>)</span><?= $datum->checked_by ?>
+                </td>
+                <td><span class="text-black fw-bold"><?= $datum->reporter_first_name ?></span> <span
+                            class="fw-light">(<?= $datum->reported_by ?>)</span></td>
+                <td><img data-bs-toggle="modal" onclick="onImageClick(this)"
+                         data-bs-target="#imageModalStaticBackdrop"
+                         src="<?= base_url() . "/uploads/" . $datum->evidence(0) ?>" alt=""></td>
             </tr>
         <?php endforeach; ?>
         </tbody>

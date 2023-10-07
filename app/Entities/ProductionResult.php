@@ -13,8 +13,21 @@ class ProductionResult extends Entity
         'quantity_produced' => 'int',
         'quantity_rejected' => 'time',
         'production_date' => 'datetime',
-        'evidence' => 'array',
+        'evidence' => 'string',
         'checked_by' => 'string',
         'reported_by' => 'string'
     ];
+
+    public function evidence(int $index)
+    {
+        $evidence_json = $this->evidences();
+        return $evidence_json[$index];
+    }
+
+    public function evidences()
+    {
+        return json_decode($this->attributes['evidence']);
+    }
+
+
 }

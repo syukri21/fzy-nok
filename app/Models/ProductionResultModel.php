@@ -22,6 +22,7 @@ class ProductionResultModel extends BaseModel
         'production_date',
         'checked_by',
         'reported_by',
+        'evidence'
     ];
 
     // Dates
@@ -100,5 +101,19 @@ class ProductionResultModel extends BaseModel
         return $data;
 
     }
+
+    public function findAllOperatorProductionResult(int $production_id, $limit, $offset): array
+    {
+        $user = auth()->getUser();
+        $id = $user->id;
+        $username = $user->username;
+        $result = $this->select("production_result.*, checker.first_name as checker_first_name, reporter.first_name as reporter_first_name")
+            ->join("users checker", "checker.username = production_result.checked_by", "left")
+            ->join("users reporter", "reporter.username = production_result.reported_by", "left")
+            ->where('production_plan_id', $production_id)
+            ->where('reported_by', $username)->findAll($limit, $offset);
+        return $result;
+    }
+
 
 }
