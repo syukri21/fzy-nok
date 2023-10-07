@@ -40,7 +40,7 @@
             <?php endforeach ?>
 
             <div class="mt-5 w-100 d-flex align-items-center justify-content-end">
-                <a class="btn btn-outline-danger me-4" href="<?= base_url() . 'masterdata/managebom' ?>">Cancel</a>
+                <a class="btn btn-outline-danger me-4" href="javascript:history.back()">Cancel</a>
                 <button type="submit" class="btn w-25 btn-primary me-2">Save</button>
             </div>
         </form>

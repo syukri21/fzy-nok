@@ -10,9 +10,11 @@ class ProductionResultController extends BaseController
 {
     public function index()
     {
+        $user = auth()->getUser();
+        $id = $user->id;
+        $username = $user->username;
         $data = $this->request->getGet(['production-id', 'limit', 'offset']);
-        if (!empty($data['production-id'])) {
-            $id = auth()->getUser()->id;
+        if (empty($data['production-id'])) {
             $operatorModel = new OperatorModel();
             $production = $operatorModel->findRunningProductionByOperatorId($id);
             $production_id = $production->id;
@@ -25,8 +27,8 @@ class ProductionResultController extends BaseController
         $offset = 0;
         if (!empty($data["limit"])) $limit = intval($data['limit']);
         if (!empty($data["offset"])) $offset = intval($data['offset']);
-        $data = $productionResultModel->where('production_plan_id', $production_id)->findAll($limit, $offset);
-        return view('ProductionResult/index', ['data' => $data]);
+        $data = $productionResultModel->where('production_plan_id', $production_id)->where('reported_by', $username)->findAll($limit, $offset);
+        return view('ProductionResult/index', ['data' => $data, 'production_id' => $production_id]);
     }
 
     public function add(): string
@@ -36,18 +38,18 @@ class ProductionResultController extends BaseController
 
         helper('form');
         $forms = [
-            'qty_produced' => [
+            'quantity_produced' => [
                 'title' => 'Barang Diterima',
                 'type' => 'number',
-                'name' => 'qty_produced',
-                'id' => 'qty_produced',
+                'name' => 'quantity_produced',
+                'id' => 'quantity_produced',
                 'class' => 'form-control',
             ],
-            'qty_rejected' => [
+            'quantity_rejected' => [
                 'title' => 'Barang Reject',
                 'type' => 'number',
-                'name' => 'qty_rejected',
-                'id' => 'qty_rejected',
+                'name' => 'quantity_rejected',
+                'id' => 'quantity_rejected',
                 'class' => 'form-control',
             ],
             'production_date_show' => [
@@ -93,11 +95,11 @@ class ProductionResultController extends BaseController
     public function create()
     {
         $productionResultModel = new ProductionResultModel();
-        $data = $this->request->getPost(['qty_produced', 'qty_rejected', 'production_date', 'evidence', 'production_plan_id']);
+        $data = $this->request->getPost(['quantity_rejected', 'quantity_produced', 'production_date', 'evidence', 'production_plan_id']);
         $errMsg = "";
         try {
             if ($uploadedPath = $this->doUpload()) $data['evidence'] = $uploadedPath;
-            $data['checked_by'] = auth()->getUser()->username;
+            $data['reported_by'] = auth()->getUser()->username;
             if ($productionResultModel->save($data)) return $this->redirectResponse(SUCCESS_RESPONSE, "Membuat");
         } catch (FileException $e) {
             log_message('error', $e);

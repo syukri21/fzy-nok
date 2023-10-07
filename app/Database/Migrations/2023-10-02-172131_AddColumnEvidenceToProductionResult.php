@@ -17,12 +17,10 @@ class AddColumnEvidenceToProductionResult extends Migration
             ],
         ];
         $this->forge->addColumn($this->tableName, $fields);
-
     }
 
     public function down()
     {
         $this->forge->dropColumn($this->tableName, 'evidence');
-
     }
 }

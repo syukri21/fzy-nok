@@ -36,8 +36,12 @@
                 </div>
             </div>
             <div>
-                <a type="button" class="btn btn-primary" href="<?= base_url() . "production/result/add?production-id=" . $production->id ?>">Tambah Hasil Produksi</a>
+                <a type="button" class="btn btn-primary row p-2 d-flex align-items-center" href="<?= base_url() . "production/result/add?production-id=" . $production->id ?>">
+                    <i class="mdi mdi-plus col mdi-24px px-2"></i>
+                    <span class="col-auto text-uppercase ps-0">Tambah Hasil Produksi</span>
+                </a>
             </div>
+
         </div>
         <div class="card mt-4">
             <div class="card-body">
