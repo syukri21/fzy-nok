@@ -2,18 +2,31 @@
 
 namespace App\Controllers;
 
+use App\Models\OperatorModel;
 use App\Models\ProductionResultModel;
 use CodeIgniter\Files\Exceptions\FileException;
-use Config\Services;
 
 class ProductionResultController extends BaseController
 {
     public function index()
     {
-        $data = $this->request->getGet(['production-id']);
+        $data = $this->request->getGet(['production-id', 'limit', 'offset']);
+        if (!empty($data['production-id'])) {
+            $id = auth()->getUser()->id;
+            $operatorModel = new OperatorModel();
+            $production = $operatorModel->findRunningProductionByOperatorId($id);
+            $production_id = $production->id;
+        } else {
+            $production_id = $data['production-id'];
+        }
+
         $productionResultModel = new ProductionResultModel();
-        $productionResultModel->where('production_id', $data->production_plan_id);
-        //
+        $limit = 10;
+        $offset = 0;
+        if (!empty($data["limit"])) $limit = intval($data['limit']);
+        if (!empty($data["offset"])) $offset = intval($data['offset']);
+        $data = $productionResultModel->where('production_plan_id', $production_id)->findAll($limit, $offset);
+        return view('ProductionResult/index', ['data' => $data]);
     }
 
     public function add(): string

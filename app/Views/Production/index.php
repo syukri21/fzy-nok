@@ -1,6 +1,4 @@
-<?php
-
-$this->extend("layout/dashboard/main") ?>
+<?php $this->extend("layout/dashboard/main") ?>
 <?= $this->section('content') ?>
     <style>
         .table-compact {
@@ -38,7 +36,7 @@ $this->extend("layout/dashboard/main") ?>
                 </div>
             </div>
             <div>
-                <a type="button" class="btn btn-primary" href="<?= base_url() . "production/result/add?production_id" . $production->id ?>">Tambah Hasil Produksi</a>
+                <a type="button" class="btn btn-primary" href="<?= base_url() . "production/result/add?production-id=" . $production->id ?>">Tambah Hasil Produksi</a>
             </div>
         </div>
         <div class="card mt-4">
@@ -145,4 +143,3 @@ $this->extend("layout/dashboard/main") ?>
         </div>
     </div>
 <?= $this->endSection() ?>
-<?php
