@@ -30,9 +30,16 @@ $this->extend("layout/dashboard/main") ?>
 
 <?php /** @var stdClass $production */ ?>
     <div>
-        <div class="d-flex">
-            <h3>Detail Tiket Produksi </h3>
-            <h3 class="badge bg-success ms-3"><?= $production->status ?></h3>
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex">
+                <h3>Detail Tiket Produksi </h3>
+                <div>
+                    <h3 class="badge bg-success ms-3"><?= $production->status ?></h3>
+                </div>
+            </div>
+            <div>
+                <a type="button" class="btn btn-primary" href="<?= base_url() . "production/result/add?production_id" . $production->id ?>">Tambah Hasil Produksi</a>
+            </div>
         </div>
         <div class="card mt-4">
             <div class="card-body">

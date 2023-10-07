@@ -2,17 +2,25 @@
 
 namespace App\Controllers;
 
+use App\Models\ProductionResultModel;
 use CodeIgniter\Files\Exceptions\FileException;
+use Config\Services;
 
 class ProductionResultController extends BaseController
 {
     public function index()
     {
+        $data = $this->request->getGet(['production-id']);
+        $productionResultModel = new ProductionResultModel();
+        $productionResultModel->where('production_id', $data->production_plan_id);
         //
     }
 
     public function add(): string
     {
+
+        $data = $this->request->getGet(['production-id']);
+
         helper('form');
         $forms = [
             'qty_produced' => [
@@ -56,6 +64,14 @@ class ProductionResultController extends BaseController
                 'id' => 'evidence',
                 'class' => 'form-control p-2',
                 'onchange' => "onChangeImage(this)"
+            ],
+            'production_plan_id' => [
+                'title' => 'Production Plan Id',
+                'type' => 'hidden',
+                'name' => 'production_plan_id',
+                'id' => 'production_plan_id',
+                'hidden' => true,
+                'value' => $data['production-id']
             ]
         ];
         return view('ProductionResult/add', ['forms' => $forms]);
@@ -63,11 +79,13 @@ class ProductionResultController extends BaseController
 
     public function create()
     {
-        $data = $this->request->getPost(['qty_produced', 'qty_rejected', 'production_date', 'evidence']);
+        $productionResultModel = new ProductionResultModel();
+        $data = $this->request->getPost(['qty_produced', 'qty_rejected', 'production_date', 'evidence', 'production_plan_id']);
         $errMsg = "";
-
         try {
             if ($uploadedPath = $this->doUpload()) $data['evidence'] = $uploadedPath;
+            $data['checked_by'] = auth()->getUser()->username;
+            if ($productionResultModel->save($data)) return $this->redirectResponse(SUCCESS_RESPONSE, "Membuat");
         } catch (FileException $e) {
             log_message('error', $e);
             $errMsg = "Gagal upload evidence format tidak sesuai.";
