@@ -68,7 +68,7 @@
                 foreach ($data as $datum): ?>
                     <tr>
                         <td><?= $datum->id ?></td>
-                        <td><?= $datum->production_date->humanize() ?></td>
+                        <td><?= $datum->production_date->format('d F Y') ?></td>
                         <td><?= $datum->quantity_produced ?></td>
                         <td><?= $datum->quantity_rejected ?></td>
                         <td>
