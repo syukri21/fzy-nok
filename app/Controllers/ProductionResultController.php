@@ -94,7 +94,7 @@ class ProductionResultController extends BaseController
     /**
      * @return string
      */
-    public function edit()
+    public function edit(): string
     {
         helper('form');
 
@@ -207,6 +207,22 @@ class ProductionResultController extends BaseController
         }
 
         return redirect()->back()->with('error', $errMsg);
+    }
+
+    public function delete(): RedirectResponse
+    {
+        $request = $this->request->getGet(['id']);
+        if (empty($request['id'])) {
+            return redirect()->back()->with('error', 'ID not found.');
+        }
+        try {
+            $productionResultModel = new ProductionResultModel();
+            if ($productionResultModel->delete($request['id'])) return $this->redirectResponse(SUCCESS_RESPONSE, "Menghapus");
+        } catch (\Exception $e) {
+            log_message('error', $e);
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+        return redirect()->back()->with('error', 'delete failed');
     }
 
     public function doUpload(): ?string
