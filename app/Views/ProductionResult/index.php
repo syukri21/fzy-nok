@@ -40,6 +40,7 @@
                     <strong><span class="badge bg-primary"><?= $production_ticket ?></span></strong>
                 </div>
                 <p>Ini merupakan list daftar hasil produksi</p>
+                <p>Total Produksi : <span id="total_produksi"></span></h5>
             </div>
             <div>
                 <a class="btn btn-primary p-1 pe-4 ps-1 d-flex align-items-center"
@@ -48,12 +49,12 @@
                     <span class="col-auto text-uppercase ps-0">Tambah Hasil Produksi</span>
                 </a>
             </div>
+
         </div>
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Tanggal Produksi</th>
                     <th>Jumlah Diproduksi</th>
                     <th>Jumlah Ditolak</th>
@@ -67,9 +68,8 @@
                 <?php /** @var $data */
                 foreach ($data as $datum): ?>
                     <tr>
-                        <td><?= $datum->id ?></td>
                         <td><?= $datum->production_date->format('d F Y') ?></td>
-                        <td><?= $datum->quantity_produced ?></td>
+                        <td class="qty_produced"><?= $datum->quantity_produced ?></td>
                         <td><?= $datum->quantity_rejected ?></td>
                         <td>
                             <span class="text-black fw-bold">(<?= $datum->checker_first_name ?>)</span><?= $datum->checked_by ?>
@@ -102,7 +102,6 @@
         </div>
     </div>
 </div>
-
 <div class="modal fade mt" id="modalDetailProductionResutl" data-bs-backdrop="static" data-bs-keyboard="false"
      tabindex="-1" aria-labelledby="modalDetailProductionResutlLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen  modal-dialog-scrollable" style="margin-top: 0">
@@ -117,4 +116,16 @@
         </div>
     </div>
 </div>
+
+<script>
+    window.addEventListener('load', function () {
+        let total = 0;
+        let elementNodeListOf = document.querySelectorAll("td.qty_produced");
+        elementNodeListOf.forEach(item => {
+            total += parseInt(item.textContent)
+        })
+
+        $("#total_produksi").html(total)
+    })
+</script>
 <?= $this->endSection() ?>
