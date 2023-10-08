@@ -65,7 +65,7 @@
                             <?= esc($item->getCreatedAt()) ?>
                         </td>
                         <td>
-                            <img data-bs-toggle="modal" onclick="onImageClick(this)" data-bs-target="#imageModalStaticBackdrop" src="<?=$item->getImageBase64()?>" class="rounded mx-0 d-block"  alt="#">
+                            <img data-bs-toggle="modal" onclick="onImageClick(this)" data-bs-target="#imageModalStaticBackdrop" src="<?= $item->image ?>" class="rounded mx-0 d-block"  alt="#">
                         </td>
                         <td>
                             <div class="dropdown">

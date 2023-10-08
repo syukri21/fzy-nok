@@ -32,54 +32,75 @@
 
 
 <div class="card p-4">
-    <div class="mb-3 d-flex justify-content-between">
-        <div>
-            <div class="d-flex">
-                <h3 class="title me-3">Hasil Produksi</h3>
-                <strong><span class="badge bg-primary"><?= $production_ticket ?></span></strong>
+    <div class="card-body">
+        <div class="card-title mb-3 d-flex justify-content-between">
+            <div>
+                <div class="d-flex">
+                    <h3 class="title me-3">Hasil Produksi</h3>
+                    <strong><span class="badge bg-primary"><?= $production_ticket ?></span></strong>
+                </div>
+                <p>Ini merupakan list daftar hasil produksi</p>
             </div>
-            <p>Ini merupakan list daftar hasil produksi</p>
+            <div>
+                <a class="btn btn-primary p-1 pe-4 ps-1 d-flex align-items-center"
+                   href="<?= base_url() . "production/result/add?production-id=" . $production_id ?>">
+                    <i class="mdi mdi-plus col mdi-24px px-2"></i>
+                    <span class="col-auto text-uppercase ps-0">Tambah Hasil Produksi</span>
+                </a>
+            </div>
         </div>
-        <div>
-            <a class="btn btn-primary p-1 pe-4 ps-1 d-flex align-items-center"
-               href="<?= base_url() . "production/result/add?production-id=" . $production_id ?>">
-                <i class="mdi mdi-plus col mdi-24px px-2"></i>
-                <span class="col-auto text-uppercase ps-0">Tambah Hasil Produksi</span>
-            </a>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tanggal Produksi</th>
+                    <th>Jumlah Diproduksi</th>
+                    <th>Jumlah Ditolak</th>
+                    <th>Diperiksa Oleh</th>
+                    <th>Dilaporkan Oleh</th>
+                    <th>Bukti</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php /** @var $data */
+                foreach ($data as $datum): ?>
+                    <tr>
+                        <td><?= $datum->id ?></td>
+                        <td><?= $datum->production_date->humanize() ?></td>
+                        <td><?= $datum->quantity_produced ?></td>
+                        <td><?= $datum->quantity_rejected ?></td>
+                        <td>
+                            <span class="text-black fw-bold">(<?= $datum->checker_first_name ?>)</span><?= $datum->checked_by ?>
+                        </td>
+                        <td><span class="text-black fw-bold"><?= $datum->reporter_first_name ?></span> <span
+                                    class="fw-light">(<?= $datum->reported_by ?>)</span></td>
+                        <td><img data-bs-toggle="modal" onclick="onImageClick(this)"
+                                 data-bs-target="#imageModalStaticBackdrop"
+                                 src="<?= base_url() . "/uploads/" . $datum->evidence(0) ?>" alt=""></td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-icons btn-inverse-light menu-icon mdi mdi-dots-vertical"
+                                        type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <li><a class="dropdown-item"
+                                           href="<?= base_url() . 'production/result/edit?id=' . esc($datum->id) ?>">Edit</a>
+                                    </li>
+                                    <li><a class="dropdown-item"
+                                           href="<?= base_url() . 'production/result/delete?id=' . esc($datum->id) ?>">Delete</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
-
     </div>
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Tanggal Produksi</th>
-            <th>Jumlah Diproduksi</th>
-            <th>Jumlah Ditolak</th>
-            <th>Diperiksa Oleh</th>
-            <th>Dilaporkan Oleh</th>
-            <th>Bukti</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php /** @var $data */
-        foreach ($data as $datum): ?>
-            <tr>
-                <td><?= $datum->id ?></td>
-                <td><?= $datum->production_date->humanize() ?></td>
-                <td><?= $datum->quantity_produced ?></td>
-                <td><?= $datum->quantity_rejected ?></td>
-                <td><span class="text-black fw-bold">(<?= $datum->checker_first_name ?>)</span><?= $datum->checked_by ?>
-                </td>
-                <td><span class="text-black fw-bold"><?= $datum->reporter_first_name ?></span> <span
-                            class="fw-light">(<?= $datum->reported_by ?>)</span></td>
-                <td><img data-bs-toggle="modal" onclick="onImageClick(this)"
-                         data-bs-target="#imageModalStaticBackdrop"
-                         src="<?= base_url() . "/uploads/" . $datum->evidence(0) ?>" alt=""></td>
-            </tr>
-        <?php endforeach; ?>
-        </tbody>
-    </table>
 </div>
 
 <div class="modal fade mt" id="modalDetailProductionResutl" data-bs-backdrop="static" data-bs-keyboard="false"

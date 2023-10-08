@@ -6,25 +6,21 @@ use App\Models\OperatorModel;
 use App\Models\ProductionPlanModel;
 use App\Models\ProductionResultModel;
 use CodeIgniter\Files\Exceptions\FileException;
+use CodeIgniter\HTTP\RedirectResponse;
 
 class ProductionResultController extends BaseController
 {
     protected string $path = "/production/result";
-    public function index()
+
+    public function index(): string
     {
         $request = $this->request->getGet(['production-id', 'limit', 'offset']);
-        $production_id = $request['production-id'];
         $limit = 10;
         $offset = 0;
         if (!empty($request["limit"])) $limit = intval($request['limit']);
         if (!empty($request["offset"])) $offset = intval($request['offset']);
 
-        if (empty($production_id)) {
-            $operatorModel = new OperatorModel();
-            $production = $operatorModel->findRunningProductionByOperatorId(auth()->getUser()->id);
-            $production_id = $production->id;
-        }
-
+        $production_id = $this->getProductionId();
         $productionPlanModel = new ProductionPlanModel();
         $productionPlan = $productionPlanModel->find($production_id);
 
@@ -95,7 +91,83 @@ class ProductionResultController extends BaseController
         return view('ProductionResult/add', ['forms' => $forms]);
     }
 
-    public function create()
+    /**
+     * @return string
+     */
+    public function edit()
+    {
+        helper('form');
+
+        $id = $this->request->getGet(['id']);
+        $productionResultModel = new ProductionResultModel();
+        $data = $productionResultModel->where("id", $id)->first();
+        $forms = [
+            'quantity_produced' => [
+                'title' => 'Barang Diterima',
+                'type' => 'number',
+                'name' => 'quantity_produced',
+                'id' => 'quantity_produced',
+                'class' => 'form-control',
+                'value' => $data->quantity_produced,
+            ],
+            'quantity_rejected' => [
+                'title' => 'Barang Reject',
+                'type' => 'number',
+                'name' => 'quantity_rejected',
+                'id' => 'quantity_rejected',
+                'class' => 'form-control',
+                'value' => $data->quantity_rejected,
+            ],
+            'production_date_show' => [
+                'title' => 'Tanggal Produksi',
+                'type' => 'datetime-local',
+                'name' => 'production_date_show',
+                'id' => 'production_date_show',
+                'class' => 'form-control',
+                'date' => true,
+                'value' => $data->production_date->format('Y-m-d\TH:i'),
+                'disabled' => true,
+            ],
+            'production_date' => [
+                'title' => 'Tanggal Produksi',
+                'type' => 'hidden',
+                'name' => 'production_date',
+                'id' => 'production_date',
+                'class' => 'form-control',
+                'date' => true,
+                'value' => $data->production_date->format('Y-m-d\TH:i'),
+                'hidden' => true,
+            ],
+            'evidence' => [
+                'title' => 'Bukti Gambar',
+                'type' => 'file',
+                'name' => 'evidence',
+                'id' => 'evidence',
+                'class' => 'form-control p-2',
+                'onchange' => "onChangeImage(this)",
+                "src" => "/uploads/" . json_decode($data->evidence)[0]
+            ],
+            'production_plan_id' => [
+                'title' => 'Production Plan Id',
+                'type' => 'hidden',
+                'name' => 'production_plan_id',
+                'id' => 'production_plan_id',
+                'hidden' => true,
+                'value' => $data->production_plan_id,
+            ],
+            'id' => [
+                'title' => 'ID',
+                'type' => 'hidden',
+                'name' => 'id',
+                'id' => 'id',
+                'hidden' => true,
+                'value' => $data->id,
+            ]
+        ];
+        return view('ProductionResult/edit', ['forms' => $forms]);
+    }
+
+    public function create(): RedirectResponse
     {
         $productionResultModel = new ProductionResultModel();
         $data = $this->request->getPost(['quantity_rejected', 'quantity_produced', 'production_date', 'evidence', 'production_plan_id']);
@@ -117,6 +189,25 @@ class ProductionResultController extends BaseController
         return redirect()->back()->with('error', $errMsg);
     }
 
+    public function update(): RedirectResponse
+    {
+        $productionResultModel = new ProductionResultModel();
+        $data = $this->request->getPost(['id', 'quantity_rejected', 'quantity_produced', 'production_date', 'evidence', 'production_plan_id']);
+        $errMsg = "";
+        try {
+            if ($uploadedPath = $this->doUpload()) $data['evidence'] = json_encode([$uploadedPath]);
+            $data['reported_by'] = auth()->getUser()->username;
+            if ($productionResultModel->update($data['id'], $data)) return $this->redirectResponse(SUCCESS_RESPONSE, "Mengupdate");
+        } catch (FileException $e) {
+            log_message('error', $e);
+            $errMsg = "Gagal upload evidence format tidak sesuai.";
+        } catch (\Exception $e) {
+            log_message('error', $e);
+            $errMsg = lang('Auth.notEnoughPrivilege');
+        }
+
+        return redirect()->back()->with('error', $errMsg);
+    }
 
     public function doUpload(): ?string
     {
@@ -141,6 +232,21 @@ class ProductionResultController extends BaseController
             throw new FileException();
         }
         return $path;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProductionId()
+    {
+        $request = $this->request->getGet(['production-id']);
+        $production_id = $request['production-id'];
+        if (empty($production_id)) {
+            $operatorModel = new OperatorModel();
+            $production = $operatorModel->findRunningProductionByOperatorId(auth()->getUser()->id);
+            $production_id = $production->id;
+        }
+        return $production_id;
     }
 }
 
