@@ -40,7 +40,7 @@
                     <strong><span class="badge bg-primary"><?= $production_ticket ?></span></strong>
                 </div>
                 <p>Ini merupakan list daftar hasil produksi</p>
-                <p>Total Produksi : <span id="total_produksi"></span></h5>
+                <h5>Total Produksi : <span id="total_produksi"></span></h5>
             </div>
             <div>
                 <a class="btn btn-primary p-1 pe-4 ps-1 d-flex align-items-center"
