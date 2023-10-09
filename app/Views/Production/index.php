@@ -35,12 +35,14 @@
                     <h3 class="badge bg-success ms-3"><?= $production->status ?></h3>
                 </div>
             </div>
+            <?php if (in_array("operator", auth()->getUser()->getGroups())) : ?>
             <div>
                 <a type="button" class="btn btn-primary row p-2 d-flex align-items-center" href="<?= base_url() . "production/result/add?production-id=" . $production->id ?>">
                     <i class="mdi mdi-plus col mdi-24px px-2"></i>
                     <span class="col-auto text-uppercase ps-0">Tambah Hasil Produksi</span>
                 </a>
             </div>
+            <?php endif; ?>
 
         </div>
         <div class="card mt-4">
