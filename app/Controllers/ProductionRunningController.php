@@ -2,7 +2,9 @@
 
 namespace App\Controllers;
 
+use App\Models\ManagerModel;
 use App\Models\OperatorModel;
+use App\Models\PPICModel;
 use CodeIgniter\API\ResponseTrait;
 
 class ProductionRunningController extends BaseController
@@ -21,11 +23,13 @@ class ProductionRunningController extends BaseController
         $id = auth()->getUser()->id;
         if (in_array('operator', $groups)) {
             $operatorModel = new OperatorModel();
-            $production = $operatorModel->findRunningProductionByOperatorId($id);
+            $production = $operatorModel->findRunningProductionById($id);
         } elseif (in_array('manager', $groups)) {
-            // TODO add find runningProduction
+            $managerModel = new ManagerModel();
+            $production = $managerModel->findRunningProductionById($id);
         } elseif (in_array('ppic', $groups)) {
-            // TODO add find runningProduction
+            $model = new PPICModel();
+            $production = $model->findRunningProductionById($id);
         } else {
             // TODO add find runningProduction
         }

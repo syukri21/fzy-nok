@@ -19,7 +19,7 @@ class TestSeeder extends Seeder
     {
         $operatorModel = new OperatorModel();
         try {
-            $runningProductionByOperatorId = $operatorModel->findRunningProductionByOperatorId(264);
+            $runningProductionByOperatorId = $operatorModel->findRunningProductionById(264);
             dd($runningProductionByOperatorId);
 
         } catch (\Exception $e) {

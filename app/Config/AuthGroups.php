@@ -97,7 +97,11 @@ class AuthGroups extends ShieldAuthGroups
         'operator' => [
             "production_plans.read"
         ],
-        'ppic' => [],
-        'manager' => [],
+        'ppic' => [
+            'production_plans.*',
+        ],
+        'manager' => [
+            'production_plans.*',
+        ],
     ];
 }

@@ -19,7 +19,7 @@ class OperatorModel extends UserModel
         $this->faker = Factory::create("id_ID");
     }
 
-    public function findRunningProductionByOperatorId(int $operator_id): \stdClass
+    public function findRunningProductionById(int $operator_id): \stdClass
     {
         $runningProduction = $this->db->query("
         SELECT 

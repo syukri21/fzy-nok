@@ -259,7 +259,7 @@ class ProductionResultController extends BaseController
         $production_id = $request['production-id'];
         if (empty($production_id)) {
             $operatorModel = new OperatorModel();
-            $production = $operatorModel->findRunningProductionByOperatorId(auth()->getUser()->id);
+            $production = $operatorModel->findRunningProductionById(auth()->getUser()->id);
             $production_id = $production->id;
         }
         return $production_id;
