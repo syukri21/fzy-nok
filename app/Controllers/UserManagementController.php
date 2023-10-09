@@ -18,9 +18,14 @@ class UserManagementController extends BaseController
     public function index()
     {
         $user = new UserModel();
+        $get = $this->request->getGet(['search']);
+
+        $search = "";
+        if (!empty($get['search'])) $search = $get['search'];
+
         try {
-            $data = $user->findAll(10);
-            return view('UserManagement/index', ['users' => $data]);
+            $data = $user->findAllValue(10, $search);
+            return view('UserManagement/index', ['users' => $data, 'pager' => $user->pager]);
         } catch (AuthorizationException $e) {
             log_message('error', $e->getMessage());
         }

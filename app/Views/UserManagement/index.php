@@ -1,4 +1,5 @@
 <?php $this->extend("layout/dashboard/main") ?>
+<?php /** @var $pager */ ?>
 
 <?= $this->section('content') ?>
 
@@ -18,7 +19,15 @@
             <div>
                 <a type="button" class="btn btn-primary" href="<?= base_url() . 'usermanagement/manageuser/add' ?>">Tambah User</a>
             </div>
+
         </div>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Search ..." aria-label="search" id="search-users"
+                   aria-describedby="basic-addon2">
+            <button class="input-group-text" id="search-users-button">Search</button>
+        </div>
+
+
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
@@ -71,13 +80,28 @@
                 <?php endforeach ?>
                 </tbody>
             </table>
-
+            <div class="d-flex w-100 justify-content-end">
+                <?php echo $pager->simpleLinks('users') ?>
+            </div>
         </div>
     </div>
 </div>
 
 
+<script>
 
-
+    window.addEventListener('load', function () {
+        $("#search-users-button").on("click", function () {
+            let textContent = $("#search-users").val();
+            console.log(textContent);
+            let currentUrl = window.location.href;
+            let queryParams = {search: textContent};
+            let queryString = Object.keys(queryParams).map(function (key) {
+                return key + '=' + encodeURIComponent(queryParams[key]);
+            }).join('&');
+            window.location.href = currentUrl.split('?')[0] + '?' + queryString;
+        })
+    })
+</script>
 
 <?= $this->endSection() ?>

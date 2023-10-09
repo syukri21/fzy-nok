@@ -78,26 +78,32 @@ class UserModel extends ShieldUserModel
 
     /**
      * @param int $limit
-     * @param int $offset
      * @return array|ResultInterface|false|string
      */
-    public function findAll(int $limit = 0, int $offset = 0)
+    public function findAllValue(int $limit = 0, string $search = "")
     {
         if (!auth()->user()->can('users.read')) throw new AuthorizationException();
-        $db = Database::connect();
-        $builder = $db->table('users');
-        $query = $builder->select('users.*');
-        $query = $query->where('users.deleted_at', null);
         $isSuperAdmin = auth()->user()->inGroup('superadmin');
+        $baseBuilder = $this->builder();
+        $baseBuilder
+            ->select('users.*')
+            ->where('users.deleted_at', null);
+
         if (!$isSuperAdmin) {
-            $query = $query->where("auth_groups_users.group IS null OR auth_groups_users.group != 'superadmin' ");
+            $baseBuilder->where("auth_groups_users.group IS null OR auth_groups_users.group != 'superadmin' ");
         }
-        $query = $query->join('auth_groups_users', "auth_groups_users.user_id = users.id", "left")->get($limit, $offset);
-        $data = [];
-        foreach ($query->getResult(UserEntity::class) as $row) {
-            array_push($data, $row);
+
+        if (strlen($search) > 0) {
+            $baseBuilder->groupStart();
+            $baseBuilder->join("auth_identities", "auth_identities.user_id = users.id", "left");
+            $baseBuilder->orLike("users.username", $search);
+            $baseBuilder->orLike("users.first_name", $search);
+            $baseBuilder->orLike("users.last_name", $search);
+            $baseBuilder->orLike("auth_identities.secret", $search);
+            $baseBuilder->groupEnd();
         }
-        return $data;
+        $baseBuilder->join('auth_groups_users', "auth_groups_users.user_id = users.id", "left");
+        return $this->paginate($limit, "users");
     }
 
 
