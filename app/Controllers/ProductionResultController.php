@@ -24,8 +24,21 @@ class ProductionResultController extends BaseController
         $productionPlanModel = new ProductionPlanModel();
         $productionPlan = $productionPlanModel->find($production_id);
 
-        $productionResultModel = new ProductionResultModel();
-        $data = $productionResultModel->findAllOperatorProductionResult($production_id, $limit, $offset);
+        $groups = auth()->getUser()->getGroups();
+        if (in_array("operator", $groups)) {
+            $productionResultModel = new ProductionResultModel();
+            $data = $productionResultModel->findAllOperatorProductionResult($production_id, $limit, $offset);
+        } elseif (in_array("manager", $groups)) {
+            $productionResultModel = new ProductionResultModel();
+            $data = $productionResultModel->findAllManagerProductionResult($production_id, $limit, $offset);
+        } elseif (in_array("ppic", $groups)) {
+            $productionResultModel = new ProductionResultModel();
+            $data = $productionResultModel->findAllPPICProductionResult($production_id, $limit, $offset);
+        } else {
+            $data = [];
+        }
+
+
 
         return view('ProductionResult/index', ['data' => $data, 'production_id' => $production_id, 'production_ticket' => $productionPlan->production_ticket]);
     }

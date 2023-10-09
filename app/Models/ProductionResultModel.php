@@ -105,14 +105,35 @@ class ProductionResultModel extends BaseModel
     public function findAllOperatorProductionResult(int $production_id, $limit, $offset): array
     {
         $user = auth()->getUser();
-        $id = $user->id;
         $username = $user->username;
-        $result = $this->select("production_result.*, checker.first_name as checker_first_name, reporter.first_name as reporter_first_name")
+        return $this->select("production_result.*, checker.first_name as checker_first_name, reporter.first_name as reporter_first_name")
             ->join("users checker", "checker.username = production_result.checked_by", "left")
             ->join("users reporter", "reporter.username = production_result.reported_by", "left")
             ->where('production_plan_id', $production_id)
             ->where('reported_by', $username)->findAll($limit, $offset);
-        return $result;
+    }
+
+
+    public function findAllManagerProductionResult(int $production_id, $limit, $offset): array
+    {
+        $user = auth()->getUser();
+        return $this->select("production_result.*, checker.first_name as checker_first_name, reporter.first_name as reporter_first_name")
+            ->join("users checker", "checker.username = production_result.checked_by", "left")
+            ->join("users reporter", "reporter.username = production_result.reported_by", "left")
+            ->join("production_plans pp", "pp.id = production_result.production_plan_id", "left")
+            ->where('production_plan_id', $production_id)
+            ->where("pp.manager_id", $user->id)->findAll($limit, $offset);
+    }
+
+    public function findAllPPICProductionResult($production_id, int $limit, int $offset): array
+    {
+        $user = auth()->getUser();
+        return $this->select("production_result.*, checker.first_name as checker_first_name, reporter.first_name as reporter_first_name")
+            ->join("users checker", "checker.username = production_result.checked_by", "left")
+            ->join("users reporter", "reporter.username = production_result.reported_by", "left")
+            ->join("production_plans pp", "pp.id = production_result.production_plan_id", "left")
+            ->where('production_plan_id', $production_id)
+            ->where("pp.ppic_id", $user->id)->findAll($limit, $offset);
     }
 
 
