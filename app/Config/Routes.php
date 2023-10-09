@@ -94,6 +94,7 @@ $routes->get('/production/result/edit', 'ProductionResultController::edit');
 $routes->post('/production/result/add', 'ProductionResultController::create');
 $routes->post('/production/result/update', 'ProductionResultController::update');
 $routes->get('/production/result/delete', 'ProductionResultController::delete');
+$routes->get('/production/result/approve', 'ProductionResultController::approve');
 
 service('auth')->routes($routes);
 

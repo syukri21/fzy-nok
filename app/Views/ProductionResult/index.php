@@ -1,5 +1,7 @@
 <?php /** @var string $production_id */
 /** @var string $production_ticket */
+$groups = auth()->getUser()->getGroups();
+
 ?>
 <?php $this->extend("layout/dashboard/main") ?>
 <?= $this->section('content') ?>
@@ -88,12 +90,21 @@
                                         aria-expanded="false">
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <?php if (in_array("operator", $groups)): ?>
                                     <li><a class="dropdown-item"
                                            href="<?= base_url() . 'production/result/edit?id=' . esc($datum->id) ?>">Edit</a>
                                     </li>
                                     <li><a class="dropdown-item"
                                            href="<?= base_url() . 'production/result/delete?id=' . esc($datum->id) ?>">Delete</a>
                                     </li>
+                                    <?php elseif (in_array("manager", $groups)) : ?>
+                                        <li><a class="dropdown-item"
+                                               href="<?= base_url() . 'production/result/approve?id=' . esc($datum->id) ?>">Approve</a>
+                                        </li>
+                                        <li><a class="dropdown-item"
+                                               href="<?= base_url() . 'production/result/delete?id=' . esc($datum->id) ?>">Delete</a>
+                                        </li>
+                                    <?php endif; ?>
                                 </ul>
                             </div>
                         </td>

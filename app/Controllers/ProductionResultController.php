@@ -238,6 +238,25 @@ class ProductionResultController extends BaseController
         return redirect()->back()->with('error', 'delete failed');
     }
 
+    public function approve(): RedirectResponse
+    {
+        $request = $this->request->getGet(['id']);
+        if (empty($request['id'])) {
+            return redirect()->back()->with('error', 'ID not found.');
+        }
+
+        try {
+            $productionResultModel = new ProductionResultModel();
+            $username = auth()->getUser()->username;
+            if ($productionResultModel->update($request['id'], ["checked_by" => $username])) return $this->redirectResponse(SUCCESS_RESPONSE, "approve");
+        } catch (\Exception $e) {
+            log_message('error', $e);
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+        return redirect()->back()->with('error', 'approve failed');
+
+    }
+
     public function doUpload(): ?string
     {
         $validateRules = [
