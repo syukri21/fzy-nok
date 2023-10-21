@@ -121,7 +121,10 @@
                             <td><?= $masterdata->dimension ?></td>
                             <td>
                                 <?php if (!empty($masterdata->image)): ?>
-                                    <img src="<?= base_url($masterdata->image) ?>" alt="<?= $masterdata->name ?>"
+                                    <img data-bs-toggle="modal" onclick="onImageClick(this)"
+                                         data-bs-target="#imageModalStaticBackdrop"
+                                         src="<?= base_url('/uploads/' . $masterdata->image) ?>"
+                                         alt="<?= $masterdata->name ?>"
                                          class="img-fluid">
                                 <?php endif; ?>
                             </td>

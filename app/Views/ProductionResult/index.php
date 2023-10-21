@@ -115,6 +115,7 @@ $groups = auth()->getUser()->getGroups();
         </div>
     </div>
 </div>
+
 <div class="modal fade mt" id="modalDetailProductionResutl" data-bs-backdrop="static" data-bs-keyboard="false"
      tabindex="-1" aria-labelledby="modalDetailProductionResutlLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen  modal-dialog-scrollable" style="margin-top: 0">
