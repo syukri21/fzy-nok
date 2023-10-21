@@ -1,32 +1,45 @@
-<?php $this->extend("layout/dashboard/main") ?>
+<?php
+$this->extend("layout/dashboard/main");
+$groups = auth()->getUser()->getGroups();
+?>
 <?= $this->section('content') ?>
-    <style>
-        .table-compact {
-            border-collapse: collapse;
-        }
+<style>
+    .table-compact {
+        border-collapse: collapse;
+    }
 
-        .table-compact th,
-        .table-compact td {
-            cursor: pointer;
-            padding: 15px 10px;
-            border: 1px solid #dee2e6;
-        }
+    .table-compact th,
+    .table-compact td {
+        cursor: pointer;
+        padding: 15px 10px;
+        border: 1px solid #dee2e6;
+    }
 
-        .card {
-            box-shadow: none !important;
-        }
+    .card {
+        box-shadow: none !important;
+    }
 
-        .label {
-            width: 150px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-right: 10px;
-        }
+    .label {
+        width: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-right: 10px;
+    }
+</style>
 
-    </style>
+<?php /**
+ * @var stdClass $production
+ * @var boolean $empty
+ * */ ?>
 
-<?php /** @var stdClass $production */ ?>
+<?php if ($empty): ?>
+    <div class="card">
+        <div class="card-body d-flex align-items-center justify-content-center flex-column">
+            <img class="w-50" src="<?= base_url() . "/images/no-data.png" ?>" alt="#">
+        </div>
+    </div>
+<?php else: ?>
     <div>
         <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex">
@@ -35,7 +48,7 @@
                     <h3 class="badge bg-success ms-3"><?= $production->status ?></h3>
                 </div>
             </div>
-            <?php if (in_array("operator", auth()->getUser()->getGroups())) : ?>
+            <?php if (in_array("operator", $groups)) : ?>
             <div>
                 <a type="button" class="btn btn-primary row p-2 d-flex align-items-center" href="<?= base_url() . "production/result/add?production-id=" . $production->id ?>">
                     <i class="mdi mdi-plus col mdi-24px px-2"></i>
@@ -44,6 +57,19 @@
             </div>
             <?php endif; ?>
 
+            <?php if (in_array("manager", $groups)) : ?>
+                <form action="<?= base_url() . "production/running/done" ?>" method="post">
+                    <!-- Hidden input field for the production ID -->
+                    <input type="hidden" name="production_id" value="<?= $production->id ?>">
+
+                    <!-- Button to submit the form as a POST request -->
+                    <button type="submit" class="btn btn-success row p-2 d-flex align-items-center">
+                        <i class="mdi mdi-check col mdi-24px px-2"></i>
+                        <span class="col-auto text-uppercase ps-0">Selesaikan Produksi</span>
+                    </button>
+                </form>
+
+            <?php endif; ?>
         </div>
         <div class="card mt-4">
             <div class="card-body">
@@ -135,7 +161,7 @@
             </div>
         </div>
     </div>
-
+<?php endif; ?>
 
     <div class="modal fade mt" id="modalDetailProductionPlan" data-bs-backdrop="static" data-bs-keyboard="false"
          tabindex="-1" aria-labelledby="modalDetailProductionPlanLabel" aria-hidden="true">

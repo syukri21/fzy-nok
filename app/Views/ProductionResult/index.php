@@ -1,5 +1,8 @@
 <?php /** @var string $production_id */
-/** @var string $production_ticket */
+/**
+ * @var string $production_ticket
+ */
+
 $groups = auth()->getUser()->getGroups();
 
 ?>
@@ -30,9 +33,6 @@ $groups = auth()->getUser()->getGroups();
     }
 
 </style>
-
-
-
 <div class="card p-4">
     <div class="card-body">
         <div class="card-title mb-3 d-flex justify-content-between">
@@ -45,7 +45,7 @@ $groups = auth()->getUser()->getGroups();
                 <h5>Total Produksi : <span id="total_produksi"></span></h5>
             </div>
             <div>
-                <?php if (in_array("operator", auth()->getUser()->getGroups())) : ?>
+                <?php if (in_array("operator", $groups)) : ?>
                 <a class="btn btn-primary p-1 pe-4 ps-1 d-flex align-items-center"
                    href="<?= base_url() . "production/result/add?production-id=" . $production_id ?>">
                     <i class="mdi mdi-plus col mdi-24px px-2"></i>
@@ -53,7 +53,6 @@ $groups = auth()->getUser()->getGroups();
                 </a>
                 <?php endif; ?>
             </div>
-
         </div>
         <div class="table-responsive">
             <table class="table table-striped">
@@ -142,4 +141,5 @@ $groups = auth()->getUser()->getGroups();
         $("#total_produksi").html(total)
     })
 </script>
+
 <?= $this->endSection() ?>

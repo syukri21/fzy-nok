@@ -4,7 +4,8 @@ namespace App\Models;
 
 use App\Entities\UserEntity;
 use CodeIgniter\Database\ConnectionInterface;
-use CodeIgniter\Shield\Models\DatabaseException;
+use CodeIgniter\Database\Exceptions\DataException;
+use CodeIgniter\Shield\Authorization\AuthorizationException;
 use CodeIgniter\Validation\ValidationInterface;
 use Faker\Factory;
 use Faker\Generator;
@@ -52,7 +53,7 @@ class ManagerModel extends UserModel
     ", [$manager_id])->getResult();
 
         if (count($runningProduction) === 0) {
-            throw new DatabaseException();
+            throw new DataException();
         }
 
         $value = $runningProduction[0];
@@ -80,6 +81,28 @@ class ManagerModel extends UserModel
         return $value;
     }
 
+    /**
+     * @param int $production_id
+     * @return void
+     * @throws \ReflectionException
+     */
+    public function finishRunningProductionById(int $production_id)
+    {
+        $user = auth()->getUser();
+        if (!in_array('manager', $user->getGroups())) {
+            throw new AuthorizationException();
+        }
+
+        $productionPlanModel = new ProductionPlanModel();
+        $productionPlan = $productionPlanModel->where("id", $production_id)->first();
+
+        if ($productionPlan->status != ONPROGRESS) {
+            throw new \InvalidArgumentException();
+        }
+
+        $productionPlan->status = DONE;
+        $productionPlanModel->save($productionPlan);
+    }
 
     public function generateFaker(int $total = 5)
     {

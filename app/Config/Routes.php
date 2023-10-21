@@ -85,6 +85,8 @@ $routes->get('/api/production/plan', 'ProductionPlanController::get');
 
 // Production Running
 $routes->get('/production/running', 'ProductionRunningController::index');
+$routes->post('/production/running/done', 'ProductionRunningController::done');
+
 
 // Production Results View
 $routes->get('/production/result', 'ProductionResultController::index');
