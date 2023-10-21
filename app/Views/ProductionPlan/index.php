@@ -31,36 +31,6 @@ $this->extend("layout/dashboard/main") ?>
         <div class="col">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title text-gray">TODO</h5>
-                    <table class="table table-compact table-borderless table-hover table-hover">
-                        <thead>
-                        <tr>
-                            <th scope="col">Tiket</th>
-                            <th scope="col">PPIC</th>
-                            <th scope="col" class="text-end">Dead Line</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php /** @var ProductionPlan $todo */
-                        foreach ($todo['data'] as $key => $data) : ?>
-                            <tr data-id="<?= esc($data->id) ?>" data-bs-toggle="modal"
-                                data-bs-target="#modalDetailProductionPlan">
-                                <td class="text-primary"><?= esc($data->production_ticket) ?></td>
-                                <td><?= esc($data->ppic_first_name) ?></td>
-                                <td class="text-end"><?= esc($data->due_date->humanize()) ?></td>
-                            </tr>
-                        <?php endforeach ?>
-                        </tbody>
-                    </table>
-                    <div class="d-flex justify-content-end mt-3">
-                        <?php echo $todo['pager']->simpleLinks('todo') ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card">
-                <div class="card-body">
                     <h5 class="card-title text-info">ON PROGRESS</h5>
                     <table class="table table-compact table-borderless table-hover">
                         <thead>
@@ -84,7 +54,7 @@ $this->extend("layout/dashboard/main") ?>
                         </tbody>
                     </table>
                     <div class="d-flex justify-content-end mt-3">
-                        <?php echo $todo['pager']->simpleLinks('progress') ?>
+                        <?php echo $onProgress['pager']->simpleLinks('progress') ?>
                     </div>
                 </div>
             </div>
@@ -97,6 +67,8 @@ $this->extend("layout/dashboard/main") ?>
                         <thead>
                         <tr>
                             <th scope="col">Tiket</th>
+                            <th scope="col" class="text-start">Manager</th>
+                            <th scope="col" class="text-start">PPIC</th>
                             <th scope="col" class="text-center">Jumlah</th>
                             <th scope="col" class="text-end">Tgl Selesai</th>
                         </tr>
@@ -107,6 +79,8 @@ $this->extend("layout/dashboard/main") ?>
                             <tr data-id="<?= esc($data->id) ?>" data-bs-toggle="modal"
                                 data-bs-target="#modalDetailProductionPlan">
                                 <td class="text-primary"><?= esc($data->production_ticket) ?></td>
+                                <td class="text-start"><?= esc($data->manager_first_name) ?></td>
+                                <td class="text-start"><?= esc($data->ppic_first_name) ?></td>
                                 <td class="text-center"><?= esc($data->quantity) ?></td>
                                 <td class="text-end"><?= esc($data->done_date->format("d M Y")) ?></td>
                             </tr>
@@ -114,7 +88,7 @@ $this->extend("layout/dashboard/main") ?>
                         </tbody>
                     </table>
                     <div class="d-flex justify-content-end mt-3">
-                        <?php echo $todo['pager']->simpleLinks('done') ?>
+                        <?php echo $done['pager']->simpleLinks('done') ?>
                     </div>
                 </div>
             </div>
@@ -280,7 +254,9 @@ $this->extend("layout/dashboard/main") ?>
                           <td>${requirement.masterdata_qty}</td>
                           <td>${requirement.masterdata_type}</td>
                           <td>${requirement.name}</td>
-                          <td>${requirement.image}</td>
+                          <td>
+                            <img src="<?= base_url("/uploads/") ?>${requirement.image}" alt="#">
+                          </td>
                         </tr>
                       `;
                     requirementsTableBody.append(row);
