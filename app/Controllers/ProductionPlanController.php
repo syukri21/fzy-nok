@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\ManagerModel;
 use App\Models\MasterProductModel;
 use App\Models\MasterProductRequirementModel;
 use App\Models\OperatorProductionModel;
@@ -9,6 +10,7 @@ use App\Models\ProductionPlanModel;
 use App\Models\UserModel;
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\HTTP\ResponseInterface;
+use Faker\Factory;
 
 class ProductionPlanController extends BaseController
 {
@@ -34,6 +36,80 @@ class ProductionPlanController extends BaseController
             ]
         ];
         return view('ProductionPlan/index', $data);
+    }
+
+    public function add(): string
+    {
+        $faker = Factory::create("id_iD");
+        helper('form');
+
+        do {
+            $ticket = $faker->regexify('[A-Z]{5}[0-4]{3}');
+            $productionPlanModel = new ProductionPlanModel();
+            $isExistTicket = $productionPlanModel->isExistTicket($ticket);
+        } while ($isExistTicket);
+
+        $forms = [
+            'production_ticket' => [
+                'title' => 'Ticket Produksi',
+                'type' => 'text',
+                'name' => 'production_ticket',
+                'id' => 'production_ticket',
+                'class' => 'form-control',
+                'value' => $ticket
+            ],
+            'quantity' => [
+                'title' => 'Kuantitas',
+                'type' => 'number',
+                'name' => 'quantity',
+                'id' => 'quantity',
+                'class' => 'form-control',
+            ],
+            'order_date_show' => [
+                'title' => 'Tanggal Order',
+                'type' => 'date',
+                'name' => 'order_date_show',
+                'id' => 'order_date_show',
+                'class' => 'form-control',
+                'date' => true,
+                'value' => date('Y-m-d'),
+                'disabled' => true,
+            ],
+            'order_date' => [
+                'title' => 'Tanggal Order',
+                'type' => 'hidden',
+                'name' => 'order_date',
+                'id' => 'order_date',
+                'class' => 'form-control',
+                'date' => true,
+                'value' => date('Y-m-d'),
+                'hidden' => true,
+            ],
+            'product_id' => [
+                'title' => 'Production Plan Id',
+                'type' => 'hidden',
+                'name' => 'production_plan_id',
+                'id' => 'production_plan_id',
+                'hidden' => true,
+            ],
+            'manager_id' => [
+                'title' => 'Production Plan Id',
+                'type' => 'hidden',
+                'name' => 'production_plan_id',
+                'id' => 'production_plan_id',
+                'hidden' => true,
+            ]
+        ];
+
+        $masterProductModel = new MasterProductModel();
+        $allMasterCode = $masterProductModel->findAll();
+        $jsonAllMasterCode = json_encode($allMasterCode);
+
+        $managerModel = new ManagerModel();
+        $allManagers = $managerModel->getAllManager();
+        $jsonAllManagers = json_encode($allManagers);
+
+        return view("ProductionPlan/add", ['forms' => $forms, 'boms' => $jsonAllMasterCode, 'managers' => $jsonAllManagers]);
     }
 
     public function get(): ResponseInterface

@@ -31,7 +31,7 @@ class MasterProductModel extends BaseModel
     protected $updatedField = 'updated_at';
     protected $deletedField = 'deleted_at';
     protected $validationRules = [
-        'name' => 'required|alpha_numeric|min_length[3]',
+        'name' => 'required|min_length[3]',
         'code' => 'required|alpha_numeric|min_length[3]',
         'price' => 'required|greater_than[0]',
     ];

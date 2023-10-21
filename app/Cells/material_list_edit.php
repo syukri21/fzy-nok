@@ -83,7 +83,7 @@
                 let data = <?= /** @var string $options */ $options ?>;
                 let src = [];
 
-                for (let i = 0; i < data.length - 1; i++) {
+                for (let i = 0; i <= data.length - 1; i++) {
                     let value = data[i]
                     src.push({
                         title: `${value.name}   |  ${value["masterdata_type"]} `,

@@ -104,6 +104,15 @@ class ManagerModel extends UserModel
         $productionPlanModel->save($productionPlan);
     }
 
+
+    public function getAllManager(): array
+    {
+        $managerModel = new ManagerModel();
+        $query = $managerModel->join("auth_groups_users", "auth_groups_users.user_id = users.id", "left")->where("auth_groups_users.group", "manager");
+        return $query->findAll();
+
+    }
+
     public function generateFaker(int $total = 5)
     {
         for ($i = 0; $i < $total; $i++) {

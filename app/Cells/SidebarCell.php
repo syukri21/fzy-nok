@@ -191,7 +191,8 @@ class SidebarCell extends Cell
      */
     public function setupMenus()
     {
-        $groups = auth()->getUser()->getGroups();
+        $user = auth()->getUser();
+        $groups = $user->getGroups();
         if (in_array('manager', $groups)) {
             $this->menus = $this->managerMenus;
         } elseif (in_array('ppic', $groups)) {

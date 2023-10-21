@@ -1,6 +1,9 @@
 <?php use App\Entities\ProductionPlan;
 
-$this->extend("layout/dashboard/main") ?>
+$this->extend("layout/dashboard/main");
+$groups = auth()->getUser()->getGroups();
+
+?>
 <?= $this->section('content') ?>
     <style>
         .table-compact {
@@ -19,13 +22,16 @@ $this->extend("layout/dashboard/main") ?>
         }
     </style>
 
+<?php if (in_array("ppic", $groups)): ?>
     <div class="mb-5 d-flex justify-content-between">
         <h4 class="title">Perencanaan Produksi</h4>
-        <button class="btn btn-primary row p-2 d-flex align-items-center">
+        <a type="button" href="<?= base_url("/production/plan/add") ?>"
+           class="btn btn-primary row p-2 d-flex align-items-center">
             <i class="mdi mdi-plus col mdi-24px px-2"></i>
             <span class="col-auto text-uppercase ps-0">Tambah Rencana Produksi</span>
-        </button>
+        </a>
     </div>
+<?php endif; ?>
 
     <div class="row g-4">
         <div class="col">

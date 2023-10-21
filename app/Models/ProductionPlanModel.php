@@ -145,4 +145,10 @@ class ProductionPlanModel extends BaseModel
             ->join("users as ppic", "production_plans.ppic_id = ppic.id", "left")
             ->join("users as manager", "production_plans.manager_id = manager.id", "left");
     }
+
+    public function isExistTicket(string $ticket): bool
+    {
+        $first = $this->where("production_ticket", $ticket)->first();
+        return !empty($first);
+    }
 }
