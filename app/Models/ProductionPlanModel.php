@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Entities\ProductionPlan;
 use CodeIgniter\Shield\Authorization\AuthorizationException;
 use Faker\Factory;
+use ReflectionException;
 
 class ProductionPlanModel extends BaseModel
 {
@@ -131,6 +132,15 @@ class ProductionPlanModel extends BaseModel
         }
 
         return $data;
+    }
+
+    /**
+     * @throws ReflectionException|AuthorizationException
+     */
+    public function create(ProductionPlan $plan): bool
+    {
+        $this->validateAuthorization("create");
+        return $this->save($plan);
     }
 
     /**

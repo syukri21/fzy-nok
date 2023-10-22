@@ -6,16 +6,16 @@
         <p class="card-description mb-4">
             Form ini digunakan untuk membuat rencana produksi.
         </p>
-        <form class="forms-sample" id="form" action="<?= base_url() ?>production/result/add" method="POST"
+        <form class="forms-sample" id="form" action="<?= base_url() ?>production/plan/add" method="POST"
               autocomplete="off"
               enctype="multipart/form-data">
             <div class="form-group">
-                <label class="card-title" for="autocompleteInputBOM">Pilih Oil Seal</label>
+                <label class="card-title" for="product_id">Pilih Oil Seal</label>
                 <div class="form-group row mb-0 d-flex align-items-center">
                     <div class="col">
                         <input type="text"
                                class="form-control autocomplete-bom"
-                               name="bom" id="autocompleteInputBOM"
+                               name="bom" id="product_id"
                                placeholder="Search Bill of Material ...">
                     </div>
                     <div class="col-2">
@@ -30,12 +30,12 @@
             </div>
 
             <div class="form-group">
-                <label class="card-title" for="autocompleteInputManager">Pilih Manager</label>
+                <label class="card-title" for="manager_id">Pilih Manager</label>
                 <div class="form-group row mb-0 d-flex align-items-center">
                     <div class="col">
                         <input type="text"
                                class="form-control autocomplete-manager"
-                               name="manager" id="autocompleteInputManager"
+                               name="manager" id="manager_id"
                                placeholder="Search Manager">
                     </div>
                     <div class="col-2">
@@ -106,8 +106,8 @@
         if (item.length === 0) return;
         const data = item[0].data;
         $("#dataproduct").html(`
-<div class="container mt-4 px-2">
-<div class="border row g-3">
+<div class="container mt-4 p-3 border">
+<div class=" row">
   <div class="col-6">
     <p>
       <strong>
@@ -131,7 +131,11 @@
     </p>
   </div>
   <div class="col-6">
-    <img class="w-50" src="<?= base_url("uploads/") ?>${data.image}" alt="">
+  <div>
+    <div class="border w-25 p-2 m-2">
+        <img class="w-100" src="<?= base_url("uploads/") ?>${data.image}" alt="">
+    </div>
+  </div>
   </div>
 </div>
 </div>
@@ -148,8 +152,8 @@
         if (item.length === 0) return;
         const data = item[0].data;
         $("#datamanager").html(`
-<div class="container mt-4 px-2">
-<div class="border row g-3">
+<div class="container mt-4 p-3 border">
+<div class="row g-3">
   <div class="col-6">
     <p>
       <strong>

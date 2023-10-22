@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Entities\ProductionPlan;
 use App\Models\ManagerModel;
 use App\Models\MasterProductModel;
 use App\Models\MasterProductRequirementModel;
@@ -10,12 +11,12 @@ use App\Models\ProductionPlanModel;
 use App\Models\UserModel;
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\HTTP\ResponseInterface;
+use CodeIgniter\Shield\Authorization\AuthorizationException;
 use Faker\Factory;
 
 class ProductionPlanController extends BaseController
 {
     use ResponseTrait;
-
 
     /**
      * @return string
@@ -85,19 +86,13 @@ class ProductionPlanController extends BaseController
                 'value' => date('Y-m-d'),
                 'hidden' => true,
             ],
-            'product_id' => [
-                'title' => 'Production Plan Id',
-                'type' => 'hidden',
-                'name' => 'production_plan_id',
-                'id' => 'production_plan_id',
-                'hidden' => true,
-            ],
-            'manager_id' => [
-                'title' => 'Production Plan Id',
-                'type' => 'hidden',
-                'name' => 'production_plan_id',
-                'id' => 'production_plan_id',
-                'hidden' => true,
+            'due_date' => [
+                'title' => 'Tanggal Order',
+                'type' => 'date',
+                'name' => 'due_date',
+                'id' => 'due_date',
+                'class' => 'form-control',
+                'date' => true,
             ]
         ];
 
@@ -146,4 +141,36 @@ class ProductionPlanController extends BaseController
                 ]]
         );
     }
+
+    public function create()
+    {
+        $params = $this->request->getPost(["bom", "manager", "production_ticket", "quantity", "order_date", "due_date"]);
+
+        $user = auth()->getUser();
+
+        $data = new ProductionPlan();
+        $data->manager_id = $params['manager'];
+        $data->master_products_id = $params['bom'];
+        $data->production_ticket = $params['production_ticket'];
+        $data->quantity = $params['quantity'];
+        $data->order_date = $params['order_date'];
+        $data->due_date = $params['due_date'];
+        $data->ppic_id = $user->id;
+
+        try {
+            $productionPlanModel = new ProductionPlanModel();
+            $ok = $productionPlanModel->create($data);
+            if ($ok) return redirect()->to("production/plan");
+        } catch (\ReflectionException $e) {
+            log_message('error', $e->getMessage());
+            return redirect()->back()->with('error', lang('Internal Server Error'));
+        } catch (AuthorizationException $e) {
+            log_message('error', $e->getMessage());
+        }
+
+        return redirect()->back()->with('error', lang('Auth.notEnoughPrivilege'));
+
+
+    }
+
 }
