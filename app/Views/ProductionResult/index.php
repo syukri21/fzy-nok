@@ -95,16 +95,16 @@ $groups = auth()->getUser()->getGroups();
                         <td class="text-center">
                             <?php if (in_array("operator", $groups)): ?>
                                 <div class="btn-group">
-                                    <a class="btn btn-outline-primary btn-sm"
+                                    <a class="btn btn-primary btn-sm"
                                        href="<?= base_url() . 'production/result/edit?id=' . esc($datum->id) ?>">Edit</a>
-                                    <a class="btn btn-outline-primary btn-sm"
+                                    <a class="btn btn-primary btn-sm"
                                        href="<?= base_url() . 'production/result/delete?id=' . esc($datum->id) ?>">Delete</a>
                                 </div>
                             <?php elseif (in_array("manager", $groups)) : ?>
                                 <div class="btn-group">
-                                    <a class="btn btn-outline-primary btn-sm"
+                                    <a class="btn btn-primary btn-sm <?php if (!empty($datum->reported_by)) : echo 'disabled'; endif; ?>"
                                        href="<?= base_url() . 'production/result/approve?id=' . esc($datum->id) ?>">Approve</a>
-                                    <a class="btn btn-outline-primary btn-sm"
+                                    <a class="btn btn-primary btn-sm"
                                        href="<?= base_url() . 'production/result/delete?id=' . esc($datum->id) ?>">Delete</a>
                                 </div>
                             <?php endif; ?>
