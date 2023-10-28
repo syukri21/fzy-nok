@@ -6,10 +6,12 @@ use App\Entities\ProductionPlan;
 use App\Models\ManagerModel;
 use App\Models\MasterProductModel;
 use App\Models\MasterProductRequirementModel;
+use App\Models\OperatorModel;
 use App\Models\OperatorProductionModel;
 use App\Models\ProductionPlanModel;
 use App\Models\UserModel;
 use CodeIgniter\API\ResponseTrait;
+use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Shield\Authorization\AuthorizationException;
 use Faker\Factory;
@@ -26,7 +28,12 @@ class ProductionPlanController extends BaseController
 
         $productionPlanOnProgress = new ProductionPlanModel();
         $productionPlanDone = new ProductionPlanModel();
+        $productionPlanTodo = new ProductionPlanModel();
         $data = [
+            "todo" => [
+                "data" => $productionPlanTodo->findAllTodo(10),
+                "pager" => $productionPlanTodo->pager,
+            ],
             "onProgress" => [
                 "data" => $productionPlanOnProgress->findAllOnProgress(10),
                 "pager" => $productionPlanOnProgress->pager,
@@ -173,4 +180,55 @@ class ProductionPlanController extends BaseController
 
     }
 
+    public function setup()
+    {
+        $request = $this->request->getGet(["id"]);
+        if (empty($request['id'])) return redirect()->back()->with('error', lang("App.invalidArgument", ['attribute' => 'production id']));
+        $productionPlanModel = new ProductionPlanModel();
+        $data = $productionPlanModel->findProductByProductionPlan($request['id']);
+
+        $operatorModel = new OperatorModel();
+        $allOperator = $operatorModel->findAllOperator();
+        return view("ProductionPlan/setup", ['data' => $data, 'operators' => json_encode($allOperator)]);
+    }
+
+    public function start(): RedirectResponse
+    {
+        $params = $this->request->getPost(["id", "shift_a_ids", "shift_b_ids"]);
+        if (empty($params['id'])) return redirect()->back()->with('error', lang("App.invalidArgument", ['attribute' => 'id']));
+        if (empty($params['shift_a_ids'])) return redirect()->back()->with('error', lang("App.invalidArgument", ['attribute' => 'shift a']));
+        if (empty($params['shift_b_ids'])) return redirect()->back()->with('error', lang("App.invalidArgument", ['attribute' => 'shift b']));
+
+        $shift_a_ids = json_decode($params['shift_a_ids']);
+        $shift_b_ids = json_decode($params['shift_b_ids']);
+        foreach ($shift_a_ids as $shift) {
+            $shift_a[] = [
+                "operator_id" => $shift->id,
+                "production_plans_id" => $params['id'],
+                "shift" => 0
+            ];
+        }
+        foreach ($shift_b_ids as $shift_b_id) {
+            $shift_b[] = [
+                "operator_id" => $shift_b_id->id,
+                "production_plans_id" => $params['id'],
+                "shift" => 1
+            ];
+        }
+        if (empty($shift_a) || empty($shift_b)) return redirect()->back()->with('error', lang("App.invalidArgument", ['attribute' => 'shift']));
+
+        $productionPlanModel = new ProductionPlanModel();
+        try {
+            $productionPlanModel->setOperators($shift_a, $shift_b);
+
+            $productionPlan = $productionPlanModel->find($params['id']);
+            $productionPlan->status = ONPROGRESS;
+            $productionPlanModel->save($productionPlan);
+            return redirect()->to("production/plan");
+        } catch (\Exception $e) {
+            log_message("error", $e->getMessage());
+        }
+
+        return redirect()->back()->with('error', lang('Auth.notEnoughPrivilege'));
+    }
 }

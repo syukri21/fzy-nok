@@ -44,7 +44,8 @@ class ProductionRunningController extends BaseController
         }
 
         $data = [
-            "production" => $production
+            "production" => $production,
+            'empty' => false
         ];
 
         return view('Production/index', $data);

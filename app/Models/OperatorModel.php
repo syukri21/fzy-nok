@@ -108,4 +108,12 @@ class OperatorModel extends UserModel
             return $carry;
         }, []);
     }
+
+    public function findAllOperator()
+    {
+        return $this
+            ->select("users.first_name, users.last_name, users.username, users.id")
+            ->join('auth_groups_users group', "group.user_id = users.id", 'left')
+            ->where("active", 1)->where("group.group", "operator")->asArray()->find();
+    }
 }

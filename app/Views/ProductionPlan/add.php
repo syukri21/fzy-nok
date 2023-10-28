@@ -148,7 +148,7 @@
         if (id === "") {
             return;
         }
-        const item = srcManagers.filter(data => data.id.toString() === id.toString())
+        const item = srcManagers.filter(data => data.data.user_id.toString() === id.toString())
         if (item.length === 0) return;
         const data = item[0].data;
         $("#datamanager").html(`
@@ -207,7 +207,7 @@
                         let value = data[i]
                         srcManagers.push({
                             title: `${value.username} | ${value.first_name} ${value.last_name}`,
-                            id: value.id,
+                            id: value.user_id,
                             data: value,
                         });
                     }

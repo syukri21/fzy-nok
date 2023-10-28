@@ -17,8 +17,18 @@ $groups = auth()->getUser()->getGroups();
             border: 1px solid #dee2e6;
         }
 
+        .table-compact tr td {
+            cursor: pointer;
+            padding: 0px 10px;
+            border: 1px solid #dee2e6;
+        }
+
         .card {
             box-shadow: none!important;
+        }
+
+        .dropdown-toggle:after {
+            content: none !important;
         }
     </style>
 
@@ -34,15 +44,64 @@ $groups = auth()->getUser()->getGroups();
 <?php endif; ?>
 
     <div class="row g-4">
-        <div class="col">
+        <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title text-info">ON PROGRESS</h5>
-                    <table class="table table-compact table-borderless table-hover">
+                    <h5 class="card-title">Rencana Produksi</h5>
+                    <table class="table table-compact border-top border-bottom table-hover">
                         <thead>
                         <tr>
                             <th scope="col">Tiket</th>
                             <th scope="col">Manager</th>
+                            <th scope="col">PPIC</th>
+                            <th scope="col" class="text-end">Dead Line</th>
+                            <?php if (in_array("manager", $groups)): ?>
+                                <th class="text-center">Action</th>
+                            <?php endif; ?>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php /** @var ProductionPlan $todo */
+                        foreach ($todo['data'] as $key => $data) : ?>
+                            <tr>
+                                <td class="text-primary p-3" data-bs-toggle="modal" data-id="<?= esc($data->id) ?>"
+                                    data-bs-target="#modalDetailProductionPlan"><?= esc($data->production_ticket) ?></td>
+                                <td><?= esc($data->manager_first_name) ?></td>
+                                <td><?= esc($data->ppic_first_name) ?></td>
+                                <td class="text-end"><?= esc($data->due_date->humanize()) ?></td>
+                                <?php if (in_array("manager", $groups)): ?>
+                                    <td class="text-center p-2">
+                                        <div class="dropdown">
+                                            <a class="btn btn-sm btn-primary"
+                                               href="<?= base_url("/production/plan/start?id") . $data->id ?>"
+                                               type="button"
+                                               aria-expanded="false">
+                                                Start
+                                            </a>
+                                        </div>
+                                    </td>
+                                <?php endif; ?>
+
+                            </tr>
+                        <?php endforeach ?>
+                        </tbody>
+                    </table>
+                    <div class="d-flex justify-content-end mt-3">
+                        <?php echo $todo['pager']->simpleLinks('progress') ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Produksi Sedang Berlangsung</h5>
+                    <table class="table table-compact border-top border-bottom table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">Tiket</th>
+                            <th scope="col">Manager</th>
+                            <th scope="col">PPIC</th>
                             <th scope="col" class="text-end">Dead Line</th>
                         </tr>
                         </thead>
@@ -52,8 +111,9 @@ $groups = auth()->getUser()->getGroups();
                             <tr data-id="<?= esc($data->id) ?>" data-bs-toggle="modal"
                                 data-bs-target="#modalDetailProductionPlan"
                             >
-                                <td class="text-primary"><?= esc($data->production_ticket) ?></td>
+                                <td class="text-primary p-3"><?= esc($data->production_ticket) ?></td>
                                 <td><?= esc($data->manager_first_name) ?></td>
+                                <td><?= esc($data->ppic_first_name) ?></td>
                                 <td class="text-end"><?= esc($data->due_date->humanize()) ?></td>
                             </tr>
                         <?php endforeach ?>
@@ -65,11 +125,11 @@ $groups = auth()->getUser()->getGroups();
                 </div>
             </div>
         </div>
-        <div class="col">
+        <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title text-success">DONE</h5>
-                    <table class="table table-compact table-borderless table-hover">
+                    <h5 class="card-title"> Produksi Selesai</h5>
+                    <table class="table table-compact border-top border-bottom table-hover">
                         <thead>
                         <tr>
                             <th scope="col">Tiket</th>
@@ -84,7 +144,7 @@ $groups = auth()->getUser()->getGroups();
                         foreach ($done['data'] as $key => $data) : ?>
                             <tr data-id="<?= esc($data->id) ?>" data-bs-toggle="modal"
                                 data-bs-target="#modalDetailProductionPlan">
-                                <td class="text-primary"><?= esc($data->production_ticket) ?></td>
+                                <td class="text-primary p-3"><?= esc($data->production_ticket) ?></td>
                                 <td class="text-start"><?= esc($data->manager_first_name) ?></td>
                                 <td class="text-start"><?= esc($data->ppic_first_name) ?></td>
                                 <td class="text-center"><?= esc($data->quantity) ?></td>
@@ -232,7 +292,7 @@ $groups = auth()->getUser()->getGroups();
             $('#quantity').text(data.productionPlan.quantity);
             $('#orderDate').text(data.productionPlan.order_date.date.split(" ")[0]);
             $('#dueDate').text(data.productionPlan.due_date.date.split(" ")[0]);
-            $('#doneDate').text(data.productionPlan.done_date.date.split(" ")[0]);
+            if (data.productionPlan.done_date != null) $('#doneDate').text(data.productionPlan.done_date.date.split(" ")[0]);
             $('#status').text(data.productionPlan.status);
 
             // PPIC
@@ -287,6 +347,7 @@ $groups = auth()->getUser()->getGroups();
                     clearModalContent();
                     $("#modalDetailProductionPlan-content").append(modalContent())
                     renderModalContent(responseData.data)
+                    console.log(responseData)
                 },
                 error: function (xhr, status, error) {
                     console.error('Error:', error);

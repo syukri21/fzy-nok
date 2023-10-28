@@ -85,21 +85,21 @@ class ProductionPlanModel extends BaseModel
     {
 
         $base = $this->findAllBase();
-        $base->where("production_plans.status", TODO);
+        $base->where("production_plans.status", TODO)->orderBy("production_plans.due_date", "desc");;
         return $this;
     }
 
     public function done(): ProductionPlanModel
     {
         $base = $this->findAllBase();
-        $base->where("production_plans.status", DONE);
+        $base->where("production_plans.status", DONE)->orderBy("production_plans.done_date", "desc");
         return $this;
     }
 
     public function onProgress(): ProductionPlanModel
     {
         $base = $this->findAllBase();
-        $base->where("production_plans.status", ONPROGRESS);
+        $base->where("production_plans.status", ONPROGRESS)->orderBy("production_plans.order_date", "asc");
         return $this;
     }
 
@@ -160,5 +160,18 @@ class ProductionPlanModel extends BaseModel
     {
         $first = $this->where("production_ticket", $ticket)->first();
         return !empty($first);
+    }
+
+    public function findProductByProductionPlan($id)
+    {
+        return $this
+            ->join("master_products", "master_products.id = production_plans.master_products_id", "left")
+            ->where("production_plans.id", $id)->first();
+    }
+
+    public function setOperators(array $shift_a, array $shift_b)
+    {
+        $this->db->table("agg__production_plans__operator")->insertBatch($shift_a);
+        $this->db->table("agg__production_plans__operator")->insertBatch($shift_b);
     }
 }

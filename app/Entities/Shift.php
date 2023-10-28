@@ -19,8 +19,8 @@ class Shift extends Entity
         ],
         [
             "name" => "Shift B",
-            "start_time" => "10:00",
-            "end_time" => "15:00",
+            "start_time" => "15:00",
+            "end_time" => "24:00",
         ],
     ];
 
