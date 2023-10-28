@@ -74,7 +74,7 @@ $groups = auth()->getUser()->getGroups();
                     <th>Diperiksa Oleh</th>
                     <th>Dilaporkan Oleh</th>
                     <th>Bukti</th>
-                    <th>Action</th>
+                    <th class="text-center">Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -92,30 +92,22 @@ $groups = auth()->getUser()->getGroups();
                         <td><img data-bs-toggle="modal" onclick="onImageClick(this)"
                                  data-bs-target="#imageModalStaticBackdrop"
                                  src="<?= base_url() . "/uploads/" . $datum->evidence(0) ?>" alt=""></td>
-                        <td>
-                            <div class="dropdown">
-                                <button class="btn btn-icons btn-inverse-light menu-icon mdi mdi-dots-vertical"
-                                        type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                                        aria-expanded="false">
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <?php if (in_array("operator", $groups)): ?>
-                                    <li><a class="dropdown-item"
-                                           href="<?= base_url() . 'production/result/edit?id=' . esc($datum->id) ?>">Edit</a>
-                                    </li>
-                                    <li><a class="dropdown-item"
-                                           href="<?= base_url() . 'production/result/delete?id=' . esc($datum->id) ?>">Delete</a>
-                                    </li>
-                                    <?php elseif (in_array("manager", $groups)) : ?>
-                                        <li><a class="dropdown-item"
-                                               href="<?= base_url() . 'production/result/approve?id=' . esc($datum->id) ?>">Approve</a>
-                                        </li>
-                                        <li><a class="dropdown-item"
-                                               href="<?= base_url() . 'production/result/delete?id=' . esc($datum->id) ?>">Delete</a>
-                                        </li>
-                                    <?php endif; ?>
-                                </ul>
-                            </div>
+                        <td class="text-center">
+                            <?php if (in_array("operator", $groups)): ?>
+                                <div class="btn-group">
+                                    <a class="btn btn-outline-primary btn-sm"
+                                       href="<?= base_url() . 'production/result/edit?id=' . esc($datum->id) ?>">Edit</a>
+                                    <a class="btn btn-outline-primary btn-sm"
+                                       href="<?= base_url() . 'production/result/delete?id=' . esc($datum->id) ?>">Delete</a>
+                                </div>
+                            <?php elseif (in_array("manager", $groups)) : ?>
+                                <div class="btn-group">
+                                    <a class="btn btn-outline-primary btn-sm"
+                                       href="<?= base_url() . 'production/result/approve?id=' . esc($datum->id) ?>">Edit</a>
+                                    <a class="btn btn-outline-primary btn-sm"
+                                       href="<?= base_url() . 'production/result/delete?id=' . esc($datum->id) ?>">Delete</a>
+                                </div>
+                            <?php endif; ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>
