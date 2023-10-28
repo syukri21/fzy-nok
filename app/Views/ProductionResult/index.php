@@ -102,7 +102,7 @@ $groups = auth()->getUser()->getGroups();
                                 </div>
                             <?php elseif (in_array("manager", $groups)) : ?>
                                 <div class="btn-group">
-                                    <a class="btn btn-primary btn-sm <?php if (!empty($datum->reported_by)) : echo 'disabled'; endif; ?>"
+                                    <a class="btn btn-primary btn-sm <?php if (!empty($datum->checked_by)) : echo 'disabled'; endif; ?>"
                                        href="<?= base_url() . 'production/result/approve?id=' . esc($datum->id) ?>">Approve</a>
                                     <a class="btn btn-primary btn-sm"
                                        href="<?= base_url() . 'production/result/delete?id=' . esc($datum->id) ?>">Delete</a>

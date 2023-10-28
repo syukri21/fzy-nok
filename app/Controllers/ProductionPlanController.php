@@ -94,7 +94,7 @@ class ProductionPlanController extends BaseController
                 'hidden' => true,
             ],
             'due_date' => [
-                'title' => 'Tanggal Order',
+                'title' => 'Batas Waktu',
                 'type' => 'date',
                 'name' => 'due_date',
                 'id' => 'due_date',
