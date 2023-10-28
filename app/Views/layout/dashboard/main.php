@@ -1,6 +1,6 @@
 <?php $this->extend('layout/main') ?>
 <?php $this->section('content') ?>
-<?= $this->include('layout/dashboard/navbar') ?>
+<?= $this->include('layout/Dashboard/navbar') ?>
 
 <!-- partial -->
 <div class="container-fluid page-body-wrapper">

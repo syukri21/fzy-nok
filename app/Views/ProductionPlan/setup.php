@@ -1,8 +1,8 @@
 <?php
 
-/** @var object¬ $data */
+/** @var object $data */
 
-$this->extend("layout/dashboard/main") ?>
+$this->extend("layout/Dashboard/main") ?>
 <?= $this->section('content') ?>
 <div class="card">
     <div class="card-body">

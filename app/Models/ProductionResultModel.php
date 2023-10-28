@@ -137,4 +137,80 @@ class ProductionResultModel extends BaseModel
     }
 
 
+    public function getAllTimeProduction(): array
+    {
+        $all = $this
+            ->selectSum("production_result.quantity_produced")
+            ->select("mp.name")
+            ->join("production_plans pp", "pp.id = production_result.production_plan_id")
+            ->join("master_products mp", "mp.id = pp.master_products_id")
+            ->where("production_result.checked_by !=")
+            ->groupBy("pp.master_products_id")
+            ->findAll();
+
+        $allTime = [
+            "label" => [],
+            "data" => []
+        ];
+        foreach ($all as $item) {
+            $allTime["label"] [] = $item->name;
+            $allTime["data"] [] = $item->quantity_produced;
+        }
+        return $allTime;
+    }
+
+
+    public function getMonthProduction(): array
+    {
+        $data = $this
+            ->selectSum("production_result.quantity_produced")
+            ->select("mp.name")
+            ->select("mp.id")
+            ->select("month(pp.done_date) as month")
+            ->join("production_plans pp", "pp.id = production_result.production_plan_id")
+            ->join("master_products mp", "mp.id = pp.master_products_id")
+            ->where("production_result.checked_by !=")
+            ->groupBy("pp.master_products_id, month(pp.done_date)")
+            ->findAll();
+
+
+        $results = [
+            "label" => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+            "id" => [],
+            "dataset" => []
+        ];
+
+        $arrData = [];
+
+        foreach ($data as $item) {
+            $results["label"] [] = $item->month;
+            if (empty($arrData[$item->id])) $arrData[$item->id] = [];
+            if (empty($arrData[$item->id][$item->month])) $arrData[$item->id][$item->month] = [];
+            $arrData[$item->id][$item->month] = $item->quantity_produced;
+        }
+
+
+        $color = ["red", "blue", "green"];
+        $index = 0;
+        foreach ($arrData as $arrDatum) {
+            $results["dataset"] [] = [
+                "data" => [],
+                "borderColor" => $color[$index],
+                "fill" => true
+            ];
+            foreach ($results["label"] as $r) {
+                if (!empty($arrDatum[$r])) {
+                    $results["dataset"][$index]["data"] [] = $arrDatum[$r];
+                } else {
+                    $results['dataset'][$index]["data"] [] = 0;
+                }
+            }
+            $index++;
+        }
+
+
+
+        return $results;
+    }
+
 }

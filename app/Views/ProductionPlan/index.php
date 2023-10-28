@@ -1,6 +1,6 @@
 <?php use App\Entities\ProductionPlan;
 
-$this->extend("layout/dashboard/main");
+$this->extend("layout/Dashboard/main");
 $groups = auth()->getUser()->getGroups();
 
 ?>

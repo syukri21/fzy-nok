@@ -1,4 +1,4 @@
-<?php $this->extend("layout/dashboard/main") ?>
+<?php $this->extend("layout/Dashboard/main") ?>
 <?php /** @var $pager */ ?>
 
 <?= $this->section('content') ?>

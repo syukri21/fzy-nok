@@ -1,5 +1,5 @@
 <?php
-$this->extend("layout/dashboard/main");
+$this->extend("layout/Dashboard/main");
 $groups = auth()->getUser()->getGroups();
 ?>
 <?= $this->section('content') ?>

@@ -179,7 +179,7 @@
     });
   }
 
-  //dashboard staked bar chart
+  //Dashboard staked bar chart
   if ($('#ct-chart-vartical-stacked-bar').length) {
     new Chartist.Bar('#ct-chart-vartical-stacked-bar', {
       labels: ['J', 'F', 'M', 'A', 'M', 'J', 'A'],
