@@ -87,7 +87,9 @@ $groups = auth()->getUser()->getGroups();
                         </tbody>
                     </table>
                     <div class="d-flex justify-content-end mt-3">
-                        <?php echo $todo['pager']->simpleLinks('progress') ?>
+                        <?php if ($todo['pager']->hasMore()): ?>
+                            <?php echo $todo['pager']->simpleLinks('progress') ?>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -120,7 +122,9 @@ $groups = auth()->getUser()->getGroups();
                         </tbody>
                     </table>
                     <div class="d-flex justify-content-end mt-3">
+                        <?php if ($onProgress['pager']->hasMore()): ?>
                         <?php echo $onProgress['pager']->simpleLinks('progress') ?>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -154,7 +158,9 @@ $groups = auth()->getUser()->getGroups();
                         </tbody>
                     </table>
                     <div class="d-flex justify-content-end mt-3">
+                        <?php if ($done['pager']->hasMore()): ?>
                         <?php echo $done['pager']->simpleLinks('done') ?>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
