@@ -31,7 +31,6 @@ class ProductionRunningController extends BaseController
             } elseif (in_array('manager', $groups)) {
                 $managerModel = new ManagerModel();
                 $production = $managerModel->findRunningProductionById($id);
-
             } elseif (in_array('ppic', $groups)) {
                 $model = new PPICModel();
                 $production = $model->findRunningProductionById($id);

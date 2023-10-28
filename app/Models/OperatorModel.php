@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Entities\UserEntity;
 use CodeIgniter\Database\ConnectionInterface;
 use CodeIgniter\Database\Exceptions\DataException;
-use CodeIgniter\Shield\Models\DatabaseException;
 use CodeIgniter\Validation\ValidationInterface;
 use Faker\Factory;
 use Faker\Generator;
@@ -48,11 +47,11 @@ class OperatorModel extends UserModel
         LEFT JOIN 
             nok.master_products mp ON mp.id = pp.master_products_id
         WHERE 
-            pp.status = 'ONPROGRESS'
+            pp.status = 'ONPROGRESS' AND appo.operator_id = ?
         ORDER BY 
             pp.due_date
         LIMIT 1;
-    ", [$operator_id])->getResult();
+    ", [$operator_id, $operator_id])->getResult();
 
         if (count($runningProduction) === 0) {
             throw new DataException();

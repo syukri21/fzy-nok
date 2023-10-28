@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\OperatorModel;
 use App\Models\ProductionPlanModel;
 use App\Models\ProductionResultModel;
+use CodeIgniter\Database\Exceptions\DataException;
 use CodeIgniter\Files\Exceptions\FileException;
 use CodeIgniter\HTTP\RedirectResponse;
 
@@ -20,27 +21,37 @@ class ProductionResultController extends BaseController
         if (!empty($request["limit"])) $limit = intval($request['limit']);
         if (!empty($request["offset"])) $offset = intval($request['offset']);
 
-        $production_id = $this->getProductionId();
-        $productionPlanModel = new ProductionPlanModel();
-        $productionPlan = $productionPlanModel->find($production_id);
+        try {
+            $production_id = $this->getProductionId();
+            $productionPlanModel = new ProductionPlanModel();
+            $productionPlan = $productionPlanModel->find($production_id);
 
-        $groups = auth()->getUser()->getGroups();
-        if (in_array("operator", $groups)) {
-            $productionResultModel = new ProductionResultModel();
-            $data = $productionResultModel->findAllOperatorProductionResult($production_id, $limit, $offset);
-        } elseif (in_array("manager", $groups)) {
-            $productionResultModel = new ProductionResultModel();
-            $data = $productionResultModel->findAllManagerProductionResult($production_id, $limit, $offset);
-        } elseif (in_array("ppic", $groups)) {
-            $productionResultModel = new ProductionResultModel();
-            $data = $productionResultModel->findAllPPICProductionResult($production_id, $limit, $offset);
-        } else {
-            $data = [];
+            $groups = auth()->getUser()->getGroups();
+
+            if (in_array("operator", $groups)) {
+                $productionResultModel = new ProductionResultModel();
+                $data = $productionResultModel->findAllOperatorProductionResult($production_id, $limit, $offset);
+            } elseif (in_array("manager", $groups)) {
+                $productionResultModel = new ProductionResultModel();
+                $data = $productionResultModel->findAllManagerProductionResult($production_id, $limit, $offset);
+            } elseif (in_array("ppic", $groups)) {
+                $productionResultModel = new ProductionResultModel();
+                $data = $productionResultModel->findAllPPICProductionResult($production_id, $limit, $offset);
+            } else {
+                $data = [];
+            }
+        } catch (DataException $exception) {
+            log_message("info", "no production running");
+            return view('ProductionResult/index', ['empty' => true]);
         }
 
 
-
-        return view('ProductionResult/index', ['data' => $data, 'production_id' => $production_id, 'production_ticket' => $productionPlan->production_ticket]);
+        return view('ProductionResult/index', [
+            'data' => $data,
+            'production_id' => $production_id,
+            'production_ticket' => $productionPlan->production_ticket,
+            'empty' => false
+        ]);
     }
 
     public function add(): string

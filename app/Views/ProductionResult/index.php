@@ -1,4 +1,7 @@
-<?php /** @var string $production_id */
+<?php /**
+ * @var string $production_id
+ * @var boolean $empty
+ */
 /**
  * @var string $production_ticket
  */
@@ -33,6 +36,13 @@ $groups = auth()->getUser()->getGroups();
     }
 
 </style>
+<?php if ($empty): ?>
+    <div class="card">
+        <div class="card-body d-flex align-items-center justify-content-center flex-column">
+            <img class="w-50" src="<?= base_url() . "/images/no-data.png" ?>" alt="#">
+        </div>
+    </div>
+<?php else: ?>
 <div class="card p-4">
     <div class="card-body">
         <div class="card-title mb-3 d-flex justify-content-between">
@@ -141,5 +151,5 @@ $groups = auth()->getUser()->getGroups();
         $("#total_produksi").html(total)
     })
 </script>
-
+<?php endif; ?>
 <?= $this->endSection() ?>
