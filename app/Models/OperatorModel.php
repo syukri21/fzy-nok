@@ -19,7 +19,7 @@ class OperatorModel extends UserModel
         $this->faker = Factory::create("id_ID");
     }
 
-    public function findRunningProductionById(int $operator_id): \stdClass
+    public function findRunningProductionById(int $id): \stdClass
     {
         $runningProduction = $this->db->query("
         SELECT 
@@ -47,11 +47,11 @@ class OperatorModel extends UserModel
         LEFT JOIN 
             nok.master_products mp ON mp.id = pp.master_products_id
         WHERE 
-            pp.status = 'ONPROGRESS' AND appo.operator_id = ?
+            pp.status = 'ONPROGRESS' AND ( appo.operator_id = ? OR manager.id = ? OR ppic.id = ?)
         ORDER BY 
             pp.due_date
         LIMIT 1;
-    ", [$operator_id, $operator_id])->getResult();
+    ", [$id, $id, $id, $id])->getResult();
 
         if (count($runningProduction) === 0) {
             throw new DataException();

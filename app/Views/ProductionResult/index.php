@@ -103,7 +103,7 @@ $groups = auth()->getUser()->getGroups();
                             <?php elseif (in_array("manager", $groups)) : ?>
                                 <div class="btn-group">
                                     <a class="btn btn-outline-primary btn-sm"
-                                       href="<?= base_url() . 'production/result/approve?id=' . esc($datum->id) ?>">Edit</a>
+                                       href="<?= base_url() . 'production/result/approve?id=' . esc($datum->id) ?>">Approve</a>
                                     <a class="btn btn-outline-primary btn-sm"
                                        href="<?= base_url() . 'production/result/delete?id=' . esc($datum->id) ?>">Delete</a>
                                 </div>
