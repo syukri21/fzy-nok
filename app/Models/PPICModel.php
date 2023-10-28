@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CodeIgniter\Database\Exceptions\DataException;
 use CodeIgniter\Model;
 use CodeIgniter\Shield\Models\DatabaseException;
 
@@ -73,7 +74,7 @@ class PPICModel extends Model
     ", [$ppic_id])->getResult();
 
         if (count($runningProduction) === 0) {
-            throw new DatabaseException();
+            throw new DataException();
         }
 
         $value = $runningProduction[0];

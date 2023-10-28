@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Entities\UserEntity;
 use CodeIgniter\Database\ConnectionInterface;
+use CodeIgniter\Database\Exceptions\DataException;
 use CodeIgniter\Shield\Models\DatabaseException;
 use CodeIgniter\Validation\ValidationInterface;
 use Faker\Factory;
@@ -54,7 +55,7 @@ class OperatorModel extends UserModel
     ", [$operator_id])->getResult();
 
         if (count($runningProduction) === 0) {
-            throw new DatabaseException();
+            throw new DataException();
         }
 
         $value = $runningProduction[0];

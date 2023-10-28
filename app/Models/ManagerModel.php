@@ -101,6 +101,7 @@ class ManagerModel extends UserModel
         }
 
         $productionPlan->status = DONE;
+        $productionPlan->done_date = date("Y-m-d H:i:s");
         $productionPlanModel->save($productionPlan);
     }
 

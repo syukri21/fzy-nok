@@ -148,12 +148,16 @@ class ProductionPlanModel extends BaseModel
      */
     public function findAllBase(): ?\CodeIgniter\Database\BaseBuilder
     {
+        $id = auth()->getUser()->id;
         return $this->builder()
             ->select("ppic.employee_id as ppic_employee_id, ppic.first_name as ppic_first_name")
             ->select("manager.employee_id as manager_employee_id, manager.first_name as manager_first_name")
             ->select("production_plans.id as id, quantity, production_ticket, ppic_id, due_date, done_date")
             ->join("users as ppic", "production_plans.ppic_id = ppic.id", "left")
-            ->join("users as manager", "production_plans.manager_id = manager.id", "left");
+            ->join("users as manager", "production_plans.manager_id = manager.id", "left")
+            ->groupStart()
+            ->orWhere("ppic.id", $id)->orWhere("manager.id", $id)
+            ->groupEnd();
     }
 
     public function isExistTicket(string $ticket): bool
