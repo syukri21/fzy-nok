@@ -173,42 +173,31 @@ class ProductionResultModel extends BaseModel
             ->groupBy("pp.master_products_id, month(pp.done_date)")
             ->findAll();
 
-
         $results = [
-            "label" => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-            "id" => [],
-            "dataset" => []
+            "label" => range(1, 12),
+            "dataset" => [],
         ];
 
         $arrData = [];
 
         foreach ($data as $item) {
-            if (empty($arrData[$item->id])) $arrData[$item->id] = [];
-            if (empty($arrData[$item->id][$item->month])) $arrData[$item->id][$item->month] = [];
             $arrData[$item->id][$item->month] = $item->quantity_produced;
         }
 
-
         $color = ["red", "blue", "green"];
-        $index = 0;
-        foreach ($arrData as $arrDatum) {
-            $results["dataset"] [] = [
-                "data" => [],
-                "borderColor" => $color[$index],
-                "fill" => true
-            ];
-            foreach ($results["label"] as $r) {
-                if (!empty($arrDatum[$r])) {
-                    $results["dataset"][$index]["data"] [] = $arrDatum[$r];
-                } else {
-                    $results['dataset'][$index]["data"] [] = 0;
-                }
-            }
-            $index++;
-        }
 
+        foreach ($arrData as $arrDatum) {
+            $results["dataset"][] = [
+                "data" => array_map(function ($r) use ($arrDatum) {
+                    return $arrDatum[$r] ?? 0;
+                }, $results["label"]),
+                "borderColor" => array_shift($color),
+                "fill" => true,
+            ];
+        }
 
         return $results;
     }
+
 
 }
