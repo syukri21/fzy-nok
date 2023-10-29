@@ -34,7 +34,7 @@ $routes->get('/', 'HomeController::index');
 $routes->get('/login', 'LoginController::index');
 $routes->post('/login', 'LoginController::authenticate');
 $routes->get('/logout', 'LogoutController::index');
-$routes->get('/changepassword', 'LoginController::index');
+$routes->get('/changepassword', 'ChangePasswordController::index');
 
 
 // User Management
