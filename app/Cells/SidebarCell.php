@@ -24,29 +24,6 @@ class SidebarCell extends Cell
                 ],
             ]
         ],
-        'production' => [
-            'name' => 'Produksi',
-            'menus' => [
-                'plan' => [
-                    'name' => 'Rencana Produksi',
-                    'icon_style' => 'menu-icon mdi mdi-file-check',
-                    'url' => 'production/plan',
-                    'actions' => ['read', 'create', 'update', 'delete'],
-                ],
-                'running' => [
-                    'name' => 'Produksi ',
-                    'icon_style' => 'menu-icon mdi mdi-wrench',
-                    'url' => 'production/running',
-                    'actions' => ['read', 'create', 'update', 'delete'],
-                ],
-                'result' => [
-                    'name' => 'Hasil Produksi',
-                    'icon_style' => 'menu-icon mdi  mdi-chart-areaspline',
-                    'url' => 'production/result',
-                    'actions' => ['read', 'create', 'update', 'delete'],
-                ]
-            ],
-        ],
         'master_data' => [
             'name' => 'Master Data',
             'menus' => [
