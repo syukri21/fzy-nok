@@ -2,12 +2,24 @@
 
 namespace App\Models;
 
+use App\Entities\UserEntity;
+use CodeIgniter\Database\ConnectionInterface;
 use CodeIgniter\Database\Exceptions\DataException;
-use CodeIgniter\Model;
-use CodeIgniter\Shield\Models\DatabaseException;
+use CodeIgniter\Validation\ValidationInterface;
+use Faker\Factory;
+use Faker\Generator;
 
-class PPICModel extends Model
+class PPICModel extends UserModel
 {
+
+    private Generator $faker;
+
+    public function __construct(?ConnectionInterface $db = null, ?ValidationInterface $validation = null)
+    {
+        parent::__construct($db, $validation);
+        $this->faker = Factory::create("id_ID");
+    }
+
     protected $DBGroup          = 'default';
     protected $table            = 'ppics';
     protected $primaryKey       = 'id';
@@ -99,6 +111,25 @@ class PPICModel extends Model
 
         $value->masterdatas = $materials;
         return $value;
+    }
+
+    public function generateFaker(int $total = 5)
+    {
+        for ($i = 0; $i < $total; $i++) {
+            $userEntity = new UserEntity();
+            $userEntity->fill([
+                'email' => $this->faker->unique()->email(),
+                'first_name' => $this->faker->unique()->firstName(),
+                'last_name' => $this->faker->unique()->lastName(),
+            ]);
+            $number = $this->getNextEmployeeIdLastNumber();
+            $userEntity->setUsername($number);
+            $userEntity->setPassword("ppic_password");
+            $userId = $this->insert($userEntity);
+            $user = $this->find($userId);
+            $user->activate();
+            $user->addGroup('ppic');
+        }
     }
 
 }
