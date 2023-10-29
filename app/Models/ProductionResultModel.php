@@ -183,7 +183,6 @@ class ProductionResultModel extends BaseModel
         $arrData = [];
 
         foreach ($data as $item) {
-            $results["label"] [] = $item->month;
             if (empty($arrData[$item->id])) $arrData[$item->id] = [];
             if (empty($arrData[$item->id][$item->month])) $arrData[$item->id][$item->month] = [];
             $arrData[$item->id][$item->month] = $item->quantity_produced;
@@ -207,7 +206,6 @@ class ProductionResultModel extends BaseModel
             }
             $index++;
         }
-
 
 
         return $results;
